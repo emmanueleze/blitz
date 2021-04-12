@@ -1,0 +1,5 @@
+.pytest_cache
+*.code*
+.vscode
+tmp
+build
