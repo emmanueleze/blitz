@@ -41,7 +41,6 @@
 
 
 #include "util/stable.h"
-#include "util/p_structs.h"
 #include "util/user.h"
 #include "core/alpha_stl.h"
 #include "core/base.h"
@@ -51,6 +50,7 @@
 #include "core/groups.h"
 #include "core/policy.h"
 #include "core/streaml.h"
+#include "core/bstructs.h"
 
 #pragma once
 

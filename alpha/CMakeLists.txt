@@ -55,6 +55,13 @@ pkg_search_module(GTEST REQUIRED gtest_main)
 find_package(PkgConfig)
 pkg_search_module(gsl REQUIRED gsl gslcblas m)
 
+find_package(Boost 1.72 REQUIRED)
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+#Find GTest
+find_package(PkgConfig)
+pkg_search_module(GTEST REQUIRED gtest_main)
+
+
 
 ########################################################################
 
@@ -80,10 +87,21 @@ if (DEFINED CMAKE_VERSION AND NOT "${CMAKE_VERSION}" VERSION_LESS "2.8.11")
     "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>")
 endif()
 
+cxx_library_with_type(blitz-test STATIC "${cxx_default}" test/test_run.cc)
+set_target_properties(blitz-test PROPERTIES VERSION ${BLITZ_VERSION} CMAKE_CXX_STANDARD 17)
+
+if (DEFINED CMAKE_VERSION AND NOT "${CMAKE_VERSION}" VERSION_LESS "2.8.11")
+  target_include_directories(blitz-test SYSTEM INTERFACE
+    "$<BUILD_INTERFACE:${blitz_build_include_dirs}>"
+    "$<BUILD_INTERFACE:${GTEST_INCLUDEDIR}>"
+    "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>")
+endif()
+
+target_link_libraries(blitz-test PUBLIC ${GTEST_LIBRARIES} PUBLIC blitz-alpha)
 target_link_libraries(blitz-alpha PUBLIC ${Boost_LIBRARIES})
 target_link_libraries(blitz-engine PUBLIC ${gsl_LIBRARIES})
 
 cxx_executable(alpha src blitz-alpha src/main.cc)
 cxx_executable(engine src blitz-engine src/engine.cc)
-
+cxx_executable(tests test blitz-test test/tests.cc)
 

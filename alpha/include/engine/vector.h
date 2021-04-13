@@ -24,22 +24,31 @@
 
 
 
-#ifndef ALPHA_INCLUDE_ENGINE_SENTRY_H
-#define ALPHA_INCLUDE_ENGINE_SENTRY_H
+#ifndef ALPHA_INCLUDE_ENGINE_VECTOR_H
+#define ALPHA_INCLUDE_ENGINE_VECTOR_H
 
-#include <cstddef>
-#include <limits>
-#include <memory>
-#include <thread>
-#include <ostream>
-#include <type_traits>
-#include <vector>
-#include <cstdlib>
-#include <cassert>
-#include <string>
-#include <iostream>
+#include "sentry.h"
 
+namespace blitz {
+
+  namespace engine{
+
+    template<typename T=double, unsigned... Dimension>
+    class Vector{};
+
+  }
+
+  template<unsigned...> struct Tensor;
+  template<unsigned... Dims1, unsigned... Dims2>
+    auto compose(Tensor<Dims1...>, Tensor<Dims2...>);
+
+
+
+
+}
 
 
 
 #endif
+
+

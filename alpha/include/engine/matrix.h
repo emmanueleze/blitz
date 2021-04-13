@@ -22,24 +22,3 @@
  *  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
-
-#ifndef ALPHA_INCLUDE_ENGINE_SENTRY_H
-#define ALPHA_INCLUDE_ENGINE_SENTRY_H
-
-#include <cstddef>
-#include <limits>
-#include <memory>
-#include <thread>
-#include <ostream>
-#include <type_traits>
-#include <vector>
-#include <cstdlib>
-#include <cassert>
-#include <string>
-#include <iostream>
-
-
-
-
-#endif

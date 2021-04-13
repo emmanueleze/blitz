@@ -28,7 +28,7 @@
 #define ALPHA_INCLUDE_CORE_BASE_HPP
 
 #include "util/stable.h"
-#include "util/p_structs.h"
+#include "core/bstructs.h"
 #include "core/controls.h"
 
 

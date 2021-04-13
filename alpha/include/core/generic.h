@@ -266,49 +266,6 @@ namespace blitz {
             std::for_each(_cont.rbegin(), _cont.rend(), print<T>);
             std::cout << '\n';
         }
-//*********************************************************************************************
-
-        template<typename T, class Person* Pn>
-        class List{};
-        
-        template<template<typename T> typename C>
-        class UVEx{
-            C<int> _stall;
-        };
-
-
-        
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//*********************************************************************************************
         template<typename T>
         using EnableType = std::enable_if_t<!std::is_const_v<T>>;
         //  This template is intantiated for only nonconstant objects passed to the function.
@@ -461,8 +418,9 @@ namespace blitz {
         Data<_T>::Data(){}
 
         
-
-
+        template<template<typename T,
+                        typename A = Data<T> > class Base>
+        class DataHolder{};
 
 
 
