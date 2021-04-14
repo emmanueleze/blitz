@@ -21,11 +21,9 @@ enable_testing()
 include(CMakeDependentOption)
 include(GNUInstallDirs)
 
-
-add_subdirectory(alpha)
+add_subdirectory(blitz-alpha)
+add_subdirectory(blitz-engine)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
-
-
