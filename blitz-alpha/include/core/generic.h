@@ -418,9 +418,6 @@ namespace blitz {
         Data<_T>::Data(){}
 
         
-        template<template<typename T,
-                        typename A = Data<T> > class Base>
-        class DataHolder{};
 
 
 
