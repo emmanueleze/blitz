@@ -6,7 +6,7 @@ if (POLICY CMP0048)
   cmake_policy(SET CMP0048 NEW)
 endif (POLICY CMP0048)
 
-project(BLITZ)
+project(blitz)
 set(BLITZ_VERSION 1.5.3)
 
 if (CMAKE_VERSION VERSION_GREATER "3.0.2")
@@ -17,13 +17,10 @@ endif()
 
 enable_testing()
 
-
 include(CMakeDependentOption)
 include(GNUInstallDirs)
 
-add_subdirectory(blitz-alpha)
-add_subdirectory(blitz-engine)
+add_subdirectory(alpha)
+add_subdirectory(engine)
 
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
+

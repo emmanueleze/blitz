@@ -149,3 +149,22 @@ function(cxx_executable name dir libs)
   cxx_executable_with_flags(
     ${name} "${cxx_default}" "${libs}" "${dir}/${name}.cc" ${ARGN})
 endfunction()
+
+# cxx_test_with_flags(name cxx_flags libs srcs...)
+#
+# creates a named C++ test that depends on the given libs and is built
+# from the given source files with the given compiler flags.
+function(cxx_test_with_flags name cxx_flags libs)
+  cxx_executable_with_flags(${name} "${cxx_flags}" "${libs}" ${ARGN})
+    add_test(NAME ${name} COMMAND "$<TARGET_FILE:${name}>")
+endfunction()
+
+# cxx_test(name libs srcs...)
+#
+# creates a named test target that depends on the given libs and is
+# built from the given source files.  Unlike cxx_test_with_flags,
+# test/name.cc is already implicitly included in the source file list.
+function(cxx_test name libs)
+  cxx_test_with_flags("${name}" "${cxx_default}" "${libs}"
+    "test/${name}.cc" ${ARGN})
+endfunction()
