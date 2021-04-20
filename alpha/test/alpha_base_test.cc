@@ -45,3 +45,4 @@ TEST_F(NameTest, LogicalTest){
         (_name.LastName() == "Trumann") );
 }
 
+    

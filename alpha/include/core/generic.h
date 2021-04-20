@@ -384,7 +384,7 @@ namespace blitz {
                 Data();
                 //NonTemplate Members
 
-                void Display()const;
+                void Display()const{std::cout<<"Displaying.\n";}
                 bool IsValid()const;
                 static constexpr bool copyable = true;
                 inline static double xunit = 0.0;
@@ -417,9 +417,14 @@ namespace blitz {
           template<typename _St>
         Data<_T>::Data(){}
 
-        
+        template<typename T>
+        void NewDefaultFn(T value){std::cout<<value<<'\n';}
 
-
+        template<typename C=double>
+        class NewDefClass{
+            public:
+                NewDefClass(){std::cout<<"NewDefClass constructor.\n";}
+        };
 
 
 

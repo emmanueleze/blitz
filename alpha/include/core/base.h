@@ -27,15 +27,13 @@
 #ifndef BLITZ_ALPHA_INCLUDE_CORE_BASE_H
 #define BLITZ_ALPHA_INCLUDE_CORE_BASE_H
 
-#include "util/stable.h"
-#include "core/bstructs.h"
-#include "core/controls.h"
+
+#include "alpha.h"
+
+
 
 
 namespace blitz {
-
-
-    
 
     class RawData{
         public:
@@ -46,12 +44,30 @@ namespace blitz {
 
     class DataObject : public RawData{
         public:
+            friend void DataAccess();
             DataObject(){}
             DataObject(std::string, double, int){}
             void ReadData()override{
                 std::cout<<"DataObject::ReadData()\n";
                 RawData::ReadData();}
     };
+
+    class Alpha{
+        public:
+            Alpha() =  default;
+            friend void SetAlphaName(Alpha&, std::string);
+        private:
+            
+            std::string name = "ALPHA";
+    };
+    
+
+    void SetAlphaName(Alpha& s, std::string str){
+        s.name = str;
+        std::cout<< s.name << '\n';
+    }
+
+    
 
     template<typename T1, typename T2>
     auto max(T1 a, T2 b) -> std::decay_t<decltype(true ? a : b)>

@@ -52,7 +52,8 @@ include_directories(${alpha_build_include_dirs})
 
 #Find GTest
 find_package(PkgConfig)
-pkg_search_module(GTEST REQUIRED alpha_main)
+pkg_search_module(GTEST REQUIRED gtest_main)
+find_package(GTest REQUIRED)
 #Find Boost
 find_package(Boost 1.72 REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
@@ -75,3 +76,12 @@ endif()
 
 
 cxx_executable(alpha-main src alpha src/alpha-main.cc)
+
+enable_testing()
+
+add_executable(alpha_base_test test/alpha_base_test.cc)
+
+target_link_libraries(alpha_base_test PUBLIC alpha PRIVATE GTest::GTest)
+add_test(NAME AlphaBaseTest COMMAND alpha_base_test)
+
+

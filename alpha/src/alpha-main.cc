@@ -34,7 +34,11 @@ using namespace std;
 
 int main() {
 
+  Name n1 {"Luna", "Lovegate"};
+  Name n2 {"April", "Strange"};
+
   
+  cout<<n1;
   
   
 
