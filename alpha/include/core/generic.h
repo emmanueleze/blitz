@@ -86,16 +86,16 @@ namespace blitz {
         //  ******* variadic_templates *********
 
         //binary tree structure and traversal helpers:
-        struct Node {
+        struct _Node {
             int value;
-            Node* left;
-            Node* right;
+            _Node* left;
+            _Node* right;
 
-            Node(int i = 0) : value{ i }, left{ nullptr }, right{ nullptr }{}
+            _Node(int i = 0) : value{ i }, left{ nullptr }, right{ nullptr }{}
         };
 
         template<typename T, typename... TP>
-        Node* traverse(T* np, TP... paths) {
+        _Node* traverse(T* np, TP... paths) {
             return (np ->* ...->*paths);
         }
 

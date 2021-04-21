@@ -53,6 +53,7 @@ namespace blitz {
             std::string FirstName() const;
             std::string LastName() const;
             Name& operator=(const Name&);
+            bool operator==(Name& n1)const;
         private:
             std::string firstName;
             std::string lastName;

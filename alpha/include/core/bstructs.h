@@ -31,6 +31,8 @@
 
 #include <algorithm>
 #include <stack>
+#include <iterator>
+
 #include "core/controls.h"
 #include "core/concurrent.h"
 #include "util/exceptional.h"
@@ -42,33 +44,26 @@
 namespace blitz {
 
   namespace  alg {
-
+    template<typename T> class Node; 
+    template<typename T> bool operator== (const Node<T>& d1, const Node<T>& d2);
     template<typename _Tp>
     class Node {
 
       public:
         Node() {}
+        Node(_Tp _data):data(_data){}
         Node(const Node& n);
         Node(Node&& n);
-        
-        using value_type = _Tp;
-
-      public:
-        Node(_Tp _data);
+        bool operator==(Node&)const;
+      
       private:
         _Tp data;
 
     };
 
-    template<typename T>
-    using _Node = Node<T>;
-
-    template<typename T>
-    bool operator==(const Node<T>& n0, const Node<T>& n1) {
-      if (n0.key == n1.key)
-        return true;
-      else
-        return false;
+    template<typename _Tp>
+    bool Node<_Tp>::operator==(Node& n1)const{
+      return (this->data == n1.data);
     }
 
     template<typename T, int sz>

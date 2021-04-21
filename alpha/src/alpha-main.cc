@@ -25,17 +25,16 @@
 
 
 #include "alpha.h"
-#include  "sqlite3.h"
+
+
 
 using namespace blitz;
 using namespace blitz::gen;
 using namespace std;
+using namespace blitz::alg;
 
 
 int main() {
-  
-  Singleton* single = Singleton::Instance();
-  single->DisplayStatus();
   
   
 

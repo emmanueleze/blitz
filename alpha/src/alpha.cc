@@ -38,7 +38,10 @@ lastName(lname) {}
 string Name::FirstName() const { return firstName; }
 string Name::LastName()const { return lastName; }
 
-
+bool Name::operator==(Name& n1)const{
+    return ((this->firstName == n1.firstName) &&
+        (this->lastName == n1.lastName));
+}
 bool NameAscending::operator()(const Name& n1, const Name& n2)const {
     return n1.LastName() < n2.LastName() ||
         ((n1.LastName() == n2.LastName()) &&
@@ -71,7 +74,7 @@ void Singleton::KillPhoenixSingleton(){
 }
 
 void Singleton::OnDeadReference() {
-    // Obtain the shell of the destroyed singleton
+   /*  // Obtain the shell of the destroyed singleton
     Create();
     // Now pInstance_ points to the "ashes" of the singleton
     // - the raw memory that the singleton was seated in.
@@ -80,7 +83,7 @@ void Singleton::OnDeadReference() {
     // Queue this new object's destruction
     atexit(Singleton::KillPhoenixSingleton);
     // Reset destroyed_ because we're back in business
-    _destroyed = false;
+    _destroyed = false; */
 
 }
 
