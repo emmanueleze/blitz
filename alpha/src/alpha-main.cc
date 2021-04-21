@@ -25,7 +25,7 @@
 
 
 #include "alpha.h"
-
+#include  "sqlite3.h"
 
 using namespace blitz;
 using namespace blitz::gen;
@@ -33,12 +33,9 @@ using namespace std;
 
 
 int main() {
-
-  Name n1 {"Luna", "Lovegate"};
-  Name n2 {"April", "Strange"};
-
   
-  cout<<n1;
+  Singleton* single = Singleton::Instance();
+  single->DisplayStatus();
   
   
 

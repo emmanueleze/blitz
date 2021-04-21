@@ -48,8 +48,7 @@ namespace blitz {
             
             Name() {}
             Name(std::string, std::string);
-            //friend void gen::NameAccess(Name&,const Name);
-            friend std::ostream& operator<<(std::ostream& ost,const Name&);
+            
         public:
             std::string FirstName() const;
             std::string LastName() const;
@@ -59,15 +58,15 @@ namespace blitz {
             std::string lastName;
         };
 
-       /*  void NameAccess(Name& _name, const Name n1) {
+       /*   void NameAccess(Name& _name, const Name n1) {
             _name.firstName = n1.firstName;
             _name.lastName = n1.lastName;
-        } */
+        } 
 
         std::ostream& operator<<(std::ostream& ost, const Name& name) {
             return ost << name.firstName << " " << name.lastName << std::endl;
         }
-
+ */
         class NameAscending {
         public:
             bool operator()(const Name&, const Name&) const;

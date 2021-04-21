@@ -52,7 +52,7 @@ namespace blitz {
                 RawData::ReadData();}
     };
 
-    class Alpha{
+    /* class Alpha{
         public:
             Alpha() =  default;
             friend void SetAlphaName(Alpha&, std::string);
@@ -66,7 +66,7 @@ namespace blitz {
         s.name = str;
         std::cout<< s.name << '\n';
     }
-
+ */
     
 
     template<typename T1, typename T2>

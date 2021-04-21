@@ -98,14 +98,18 @@ namespace blitz {
     class Singleton {
     public:
         static Singleton* Instance() {
-            if (!_instance) {
-                if (_destroyed) {
+            if(!_instance){
+                if(_destroyed){
                     OnDeadReference();
                 }
-                else { Create(); }
+                else{ 
+                    Create(); 
+                 }
             }
             return _instance;
         }
+        static void KillPhoenixSingleton();
+        void DisplayStatus(){std::clog<<"Singleton Activated.\n";}
 
     private:
         static Singleton* _instance;
@@ -115,17 +119,18 @@ namespace blitz {
         Singleton& operator=(const Singleton&);
     private:
         static void Create() {
-            static Singleton theInstance;
-            _instance = &theInstance;
+            static Singleton* theInstance;
+            _instance = theInstance;
         }
-        static void OnDeadReference() {
-            throw std::runtime_error("Dead Reference Detected.");
-        }
+        static void OnDeadReference();
         virtual ~Singleton() {
             _instance = 0;
             _destroyed = true;
+            std::clog<<"Destroyed.\n";
         }
     };
+
+
 
 
 

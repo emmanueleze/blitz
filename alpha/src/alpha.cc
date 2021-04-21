@@ -62,6 +62,28 @@ Name& Name::operator=(const Name& n1) {
 Singleton* Singleton::_instance = 0;
 bool Singleton::_destroyed = false;
 
+void Singleton::KillPhoenixSingleton(){
+    // Make all ashes again
+    // - call the destructor by hand.
+    // It will set pInstance_ to zero and destroyed_ to true
+    _instance->~Singleton();
+
+}
+
+void Singleton::OnDeadReference() {
+    // Obtain the shell of the destroyed singleton
+    Create();
+    // Now pInstance_ points to the "ashes" of the singleton
+    // - the raw memory that the singleton was seated in.
+    // Create a new singleton at that address
+    new(_instance) Singleton;
+    // Queue this new object's destruction
+    atexit(Singleton::KillPhoenixSingleton);
+    // Reset destroyed_ because we're back in business
+    _destroyed = false;
+
+}
+
 
 
 
