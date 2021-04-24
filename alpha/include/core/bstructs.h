@@ -32,6 +32,7 @@
 #include <algorithm>
 #include <stack>
 #include <iterator>
+#include <forward_list>
 
 #include "core/controls.h"
 #include "core/concurrent.h"
@@ -44,25 +45,24 @@
 namespace blitz {
 
   namespace  alg {
-    template<typename T> class Node; 
-    template<typename T> bool operator== (const Node<T>& d1, const Node<T>& d2);
+
     template<typename _Tp>
     class Node {
 
-      public:
-        Node() {}
-        Node(_Tp _data):data(_data){}
-        Node(const Node& n);
-        Node(Node&& n);
-        bool operator==(Node&)const;
-      
-      private:
-        _Tp data;
+    public:
+      Node() {}
+      Node(_Tp _data) :data(_data) {}
+      Node(const Node& n);
+      Node(Node&& n);
+      bool operator==(Node&)const;
+
+    private:
+      _Tp data;
 
     };
 
     template<typename _Tp>
-    bool Node<_Tp>::operator==(Node& n1)const{
+    bool Node<_Tp>::operator==(Node& n1)const {
       return (this->data == n1.data);
     }
 
@@ -212,67 +212,55 @@ namespace blitz {
 
     };
 
-    // Implementaion of a Doubly-LinkedList
-    template<typename L>
+    /**
+     * @brief LinkedList implements a doubly linked list data structure.
+     * @tparam _Tp is a node of type Node<_Tp>.
+     */
+    template<typename _Tp>
     class LinkedList {
     public:
+      LinkedList();
+      void insert();
+      void remove();
 
-      LinkedList() {
-        if (_head)
-          _head = nullptr;
-      }
-      LinkedList(Node<L>* n0) {
-        _head = n0;
-        ++Node_ct;
-      }
-
-      Node<L>* operator[](L k) {
-        Node<L>* x = _head;
-        while ((x != nullptr) && (x->key != k))
-          x = x->next;
-        return x;
-      }
+      void traverse();
+      ~LinkedList() {}
 
     public:
+      class list_iterator
+        : public std::iterator<std::bidirectional_iterator_tag, Node<_Tp>> {
 
-      void insert(Node<L>* Node) {
-        Node->next = _head;
-        if (_head == nullptr) {
-          _head->prev = Node;
-          ++Node_ct;
-        }
-        _head = Node;
-        Node->prev = nullptr;
-        ++Node_ct;
-      }
-
-      void remove(Node<L>* Node) {
-        if (Node->prev != nullptr)
-          Node->prev->next = Node->next;
-        else
-          _head = Node->next;
-        if (Node->next == nullptr)
-          Node->next->prev = Node->prev;
-      }
-
-
-      int size() { return Node_ct; }
-
-
-
-
-    public:
-      L key;
-      Node<L>* _head = nullptr;
-      int Node_ct = 0;
-
+      };
+    private:
+      Node<_Tp>* head;
+      Node<_Tp>* next;
+      Node<_Tp>* prev;
     };
 
 
+    //general distance
+    template<typename Iterator>
+    typename std::iterator_traits<Iterator>::difference_type
+      Distance(Iterator pos1, Iterator pos2) {
+      using category = typename std::iterator_traits<Iterator>::iterator_category;
+      static_assert(std::is_base_of_v<std::input_iterator_tag, category>);
+
+      if constexpr (std::is_base_of_v<std::random_access_iterator_tag, category>)
+        return pos2 - pos1;
+      else {
+        typename std::iterator_traits<Iterator>::difference_type _distance = 0;
+        while (pos1 != pos2) {
+          ++pos1;
+          ++_distance;
+        }
+        return _distance;
+      }
+    }
+   
 
 
-  }
+  } //namespace alg
 
 
-}
+} //namespace blitz
 #endif
