@@ -227,16 +227,33 @@ namespace blitz {
       ~LinkedList() {}
 
     public:
-      class list_iterator
-        : public std::iterator<std::bidirectional_iterator_tag, Node<_Tp>> {
-
-      };
+      
     private:
       Node<_Tp>* head;
       Node<_Tp>* next;
       Node<_Tp>* prev;
     };
+    
+    template<typename _Tp>
+    class list_iterator
+      : public std::iterator<std::bidirectional_iterator_tag, Node<_Tp>> {
 
+    protected:
+      LinkedList<_Tp>& _list;
+
+    public:
+      explicit list_iterator(LinkedList<_Tp>& list) : _list(list) {}
+      list_iterator<LinkedList<_Tp>>& operator=(
+        const typename LinkedList<_Tp>::value_type& value) {
+        _list.insert(value);
+        return *this;
+      }
+
+      list_iterator<LinkedList<_Tp>>& operator*(){return *this;}
+      list_iterator<LinkedList<_Tp>>& operator++(){return *this;}
+      list_iterator<LinkedList<_Tp>>& operator++(int){return *this;}
+
+    };
 
     //general distance
     template<typename Iterator>

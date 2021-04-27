@@ -21,20 +21,21 @@
  *  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "engine.h"
-#include <opencv2/opencv.hpp>
-#include "engine-cv/cvlibtest.h"
+#ifndef BLITZ_ENGINE_INCLUDE_ENGINE_H
+#define BLITZ_ENGINE_INCLUDE_ENGINE_H
 
+#include <cstddef>
+#include <limits>
+#include <memory>
+#include <thread>
+#include <ostream>
+#include <type_traits>
+#include <vector>
+#include <cstdlib>
+#include <cassert>
+#include <string>
+#include <iostream>
 
-using namespace cv;
-int main(int argc, char** argv) {
+#pragma once
 
-
-  
-  
-
-
-
-
-
-}
+#endif

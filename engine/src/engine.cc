@@ -22,6 +22,21 @@
  */
 
 
-#include "sentry.h"
+#include "engine.h"
+#include "engine-cv/cvlibtest.h"
 
+using namespace cv;
+using namespace std;
 
+void play_video(string filepath){
+  cv::namedWindow(filepath, cv::WINDOW_AUTOSIZE);
+  cv::VideoCapture cap;
+  cap.open(filepath);
+  cv::Mat frame;
+  for (;;) {
+    cap >> frame;
+    if (frame.empty()) break;
+    cv::imshow(filepath, frame);
+    if (cv::waitKey(33) >= 0) break;
+  }
+}

@@ -42,7 +42,8 @@ pkg_search_module(GTEST REQUIRED gtest_main)
 #Find Gsl
 find_package(PkgConfig)
 pkg_search_module(gsl REQUIRED gsl gslcblas m)
-
+#FInd OpenCV
+find_package( OpenCV REQUIRED )
 
 cxx_library_with_type(engine STATIC "${cxx_default}" src/engine.cc)
 set_target_properties(engine PROPERTIES VERSION ${BLITZ_VERSION} CMAKE_CXX_STANDARD 17)
@@ -50,8 +51,9 @@ set_target_properties(engine PROPERTIES VERSION ${BLITZ_VERSION} CMAKE_CXX_STAND
 if (DEFINED CMAKE_VERSION AND NOT "${CMAKE_VERSION}" VERSION_LESS "2.8.11")
   target_include_directories(engine SYSTEM INTERFACE
     "$<BUILD_INTERFACE:${engine_build_include_dirs}>"
-    "$<BUILD_INTERFACE:${gsl_INCLUDEDIR}>")
-    target_link_libraries(engine PUBLIC ${gsl_LIBRARIES})
+    "$<BUILD_INTERFACE:${gsl_INCLUDEDIR}>"
+    "$<BUILD_INTERFACE:${OpenCV_INCLUDE_DIRS}")
+    target_link_libraries(engine PUBLIC ${gsl_LIBRARIES} ${OpenCV_LIBS})
 endif()
 
 

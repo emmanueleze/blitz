@@ -351,9 +351,9 @@ namespace blitz {
 
 
         template<typename Iter, typename Callable, typename... Args>
-        void foreach(Iter begin, Iter end, Callable op, Args const&... args) {
+        void foreach(Iter begin, Iter end, Callable op, Args... args) {
             while (begin != end) {
-                std::invoke(op, args..., *begin);
+                std::invoke(op, args...);
                 ++begin;
             }
             std::cout << '\n';
