@@ -46,8 +46,7 @@ config_compiler_and_linker()  # Defined in internal_utils.cmake.
 # Where alpha's .h files can be found.
 set(alpha_build_include_dirs
 "${alpha_SOURCE_DIR}/include"
-"${alpha_SOURCE_DIR}/include/core"
-"${alpha_SOURCE_DIR}/util")
+"${alpha_SOURCE_DIR}")
 include_directories(${alpha_build_include_dirs})
 
 #Find GTest

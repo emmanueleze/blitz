@@ -24,7 +24,7 @@
 
 #include "gtest/gtest.h"
 
-
+#include "alpha.h"
 #include "core/base.h"
 #include "core/alpha_stl.h"
 
