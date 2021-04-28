@@ -21,6 +21,6 @@ include(CMakeDependentOption)
 include(GNUInstallDirs)
 
 add_subdirectory(alpha)
-add_subdirectory(engine)
+add_subdirectory(engine-8.0)
 
 

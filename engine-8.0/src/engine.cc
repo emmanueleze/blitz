@@ -1,4 +1,3 @@
-
 /**
  *  MIT License
 
@@ -23,32 +22,21 @@
  */
 
 
+#include "engine/engine.h"
+#include "engine/engine-cv/cvlibtest.h"
 
-#ifndef ALPHA_INCLUDE_ENGINE_VECTOR_H
-#define ALPHA_INCLUDE_ENGINE_VECTOR_H
+using namespace cv;
+using namespace std;
 
-#include "sentry.h"
-
-namespace blitz {
-
-  namespace engine{
-
-    template<typename T=double, unsigned... Dimension>
-    class Vector{};
-
+void play_video(string filepath){
+  cv::namedWindow(filepath, cv::WINDOW_AUTOSIZE);
+  cv::VideoCapture cap;
+  cap.open(filepath);
+  cv::Mat frame;
+  for (;;) {
+    cap >> frame;
+    if (frame.empty()) break;
+    cv::imshow(filepath, frame);
+    if (cv::waitKey(33) >= 0) break;
   }
-
-  template<unsigned...> struct Tensor;
-  template<unsigned... Dims1, unsigned... Dims2>
-    auto compose(Tensor<Dims1...>, Tensor<Dims2...>);
-
-
-
-
 }
-
-
-
-#endif
-
-

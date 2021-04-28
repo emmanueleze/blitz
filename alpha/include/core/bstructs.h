@@ -278,6 +278,6 @@ namespace blitz {
 
   } //namespace alg
 
-
+  
 } //namespace blitz
 #endif

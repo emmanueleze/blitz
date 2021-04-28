@@ -21,21 +21,18 @@
  *  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef BLITZ_ENGINE_INCLUDE_ENGINE_H
-#define BLITZ_ENGINE_INCLUDE_ENGINE_H
+#include "engine/engine.h"
 
-#include <cstddef>
-#include <limits>
-#include <memory>
-#include <thread>
-#include <ostream>
-#include <type_traits>
-#include <vector>
-#include <cstdlib>
-#include <cassert>
-#include <string>
-#include <iostream>
 
-#pragma once
 
-#endif
+int main(int argc, char** argv) {
+
+
+  
+  
+
+
+
+
+
+}

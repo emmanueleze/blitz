@@ -58,12 +58,14 @@ find_package(GTest REQUIRED)
 find_package(Boost 1.72 REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=leak -fsanitize=address  -fsanitize=undefined -g -O3")
+
 ########################################################################
 
 # Blitz libraries.  We build them using more strict warnings than what
 # are used for other targets, to ensure that alpha can be compiled by a user
 # aggressive about warnings.
-cxx_library_with_type(alpha STATIC "${cxx_default}" src/alpha.cc)
+cxx_library_with_type(alpha STATIC "${cxx_base_flags}" src/alpha.cc)
 set_target_properties(alpha PROPERTIES VERSION ${BLITZ_VERSION} CMAKE_CXX_STANDARD 17)
 
 if (DEFINED CMAKE_VERSION AND NOT "${CMAKE_VERSION}" VERSION_LESS "2.8.11")
