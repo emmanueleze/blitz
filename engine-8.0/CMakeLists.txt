@@ -1,7 +1,7 @@
 
-option(engine_build_tests "Build all of engine's own tests." OFF)
+option(engine-8.0_build_tests "Build all of engine's own tests." OFF)
 
-option(engine_build_samples "Build engine's sample programs." OFF)
+option(engine-8.0_build_samples "Build engine's sample programs." ON)
 
 
 if (CMAKE_VERSION VERSION_LESS 3.0)
@@ -60,3 +60,6 @@ endif()
 cxx_executable(engine-main src engine src/engine-main.cc)
 
 
+if(engine-8.0_build_samples)
+  cxx_executable(sample1 samples -lopencv_highgui samples/sample1.cc)
+endif()
