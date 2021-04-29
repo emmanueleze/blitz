@@ -48,6 +48,10 @@ bool NameDescending::operator()(const Name& n1, const Name& n2) const {
     (n1.FirstName() > n2.FirstName()));
 }
 
+std::ostream& gen::operator<<(std::ostream& ost, const Name& name) {
+  return ost << name.firstName << " " << name.lastName;
+}
+
 Name& Name::operator=(const Name& n1) {
   this->firstName = n1.firstName;
   this->lastName = n1.lastName;

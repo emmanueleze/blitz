@@ -43,7 +43,7 @@ int main() {
   coll.insert(adam);
 
   for(auto e : coll){
-    cout<<e.FirstName()<<' '<<e.LastName()<<'\n';
+    cout<<e<<'\n';
   }
   
 }

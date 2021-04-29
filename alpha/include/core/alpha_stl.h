@@ -40,34 +40,26 @@
 
 using namespace std::placeholders;
 namespace blitz {
-
     namespace gen {
-
-        class Name {
+class Name {
         public:
-            
             Name() {}
             Name(std::string, std::string);
-            
+
         public:
             std::string FirstName() const;
             std::string LastName() const;
             Name& operator=(const Name&);
-            bool operator==(Name& n1)const;
+            bool operator==(Name& n1) const;
+            friend std::ostream& operator<<(std::ostream& ost, const Name& name);
+
         private:
             std::string firstName;
             std::string lastName;
         };
 
-       /*   void NameAccess(Name& _name, const Name n1) {
-            _name.firstName = n1.firstName;
-            _name.lastName = n1.lastName;
-        } 
+        std::ostream& operator<<(std::ostream& ost, const Name& name);
 
-        std::ostream& operator<<(std::ostream& ost, const Name& name) {
-            return ost << name.firstName << " " << name.lastName << std::endl;
-        }
- */
         class NameAscending {
         public:
             bool operator()(const Name&, const Name&) const;
