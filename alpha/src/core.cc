@@ -22,10 +22,7 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#include "core/alpha_stl.h"
-#include "core/concurrent.h"
-#include "core/generic.h"
-#include "core/policy.h"
+#include "alpha.h"
 
 using namespace std;
 using namespace blitz;
@@ -38,27 +35,27 @@ Name::Name(std::string fname, std::string lname)
 string Name::FirstName() const { return firstName; }
 string Name::LastName() const { return lastName; }
 
-bool Name::operator==(Name &n1) const {
+bool Name::operator==(Name& n1) const {
   return ((this->firstName == n1.firstName) && (this->lastName == n1.lastName));
 }
-bool NameAscending::operator()(const Name &n1, const Name &n2) const {
+bool NameAscending::operator()(const Name& n1, const Name& n2) const {
   return n1.LastName() < n2.LastName() || ((n1.LastName() == n2.LastName()) &&
-                                           (n1.FirstName() < n2.FirstName()));
+    (n1.FirstName() < n2.FirstName()));
 }
 
-bool NameDescending::operator()(const Name &n1, const Name &n2) const {
+bool NameDescending::operator()(const Name& n1, const Name& n2) const {
   return n1.LastName() > n2.LastName() || ((n1.LastName() == n2.LastName()) &&
-                                           (n1.FirstName() > n2.FirstName()));
+    (n1.FirstName() > n2.FirstName()));
 }
 
-Name &Name::operator=(const Name &n1) {
+Name& Name::operator=(const Name& n1) {
   this->firstName = n1.firstName;
   this->lastName = n1.lastName;
 
   return *this;
 }
 
-Singleton *Singleton::_instance = 0;
+Singleton* Singleton::_instance = 0;
 bool Singleton::_destroyed = false;
 
 void Singleton::KillPhoenixSingleton() {
@@ -79,4 +76,45 @@ void Singleton::OnDeadReference() {
    atexit(Singleton::KillPhoenixSingleton);
    // Reset destroyed_ because we're back in business
    _destroyed = false; */
+}
+
+void concurrent::wait_for_flag() {
+  std::unique_lock<std::mutex> lk(concurrent::_m);
+  while (!concurrent::flag) {
+    lk.unlock();
+    cout << "wait_for_flag(): sleeping for 100ms.\n";
+    this_thread::sleep_for(chrono::seconds(5));
+    cout << "wait_for_flag(): awake.\n";
+    lk.lock();
+  }
+}
+
+void concurrent::show_front(std::queue<gen::Name>& q) {
+  cout << "Waiting thread --> show_front()\n";
+  while (true) {
+    std::unique_lock<mutex> lk(_m);
+    concurrent::_Cv.wait(lk, [=] {return !q.empty();});
+    lk.unlock();
+    std::cout << q.front().FirstName() <<
+      q.front().LastName() << '\n';
+
+    if (q.empty())
+      break;
+  }
+
+}
+
+void concurrent::process_queue(std::queue<gen::Name>& q) {
+  cout << "Processing thread --> process_queue()\n";
+  try {
+    if (q.empty())
+      throw runtime_error("Queue is empty.");
+  }
+  catch (const runtime_error& e) { cout << e.what() << '\n'; }
+  while (!q.empty()) {
+    lock_guard<mutex> lock(_m);
+    std::this_thread::sleep_for(chrono::seconds(2));
+    q.pop();
+    concurrent::_Cv.notify_one();
+  }
 }

@@ -25,19 +25,32 @@
 #ifndef BLITZ_ALPHA_INCLUDE_CORE_CONCURRENT_H_
 #define BLITZ_ALPHA_INCLUDE_CORE_CONCURRENT_H_
 
-#pragma once
+
+
+#include "alpha.h"
 
 #include <atomic>
 #include <chrono>
 #include <condition_variable>
 #include <future>
 #include <mutex>
+#include <queue>
+#include <random>
 #include <shared_mutex>
 
 namespace blitz {
 
 namespace concurrent {
+
+  static bool flag;
+  static std::mutex _m;
+  static std::condition_variable _Cv;
+
+  void wait_for_flag();
   
+  void show_front(std::queue<gen::Name>&);
+  void process_queue(std::queue<gen::Name>&);
+
 } // namespace concurrent
 
 } // namespace blitz
