@@ -30,20 +30,10 @@ using namespace std;
 using namespace blitz::alg;
 
 int main() {
-
-  Name elaine {"Elaine", "Shebang"};
-  Name potter {"Kyle", "Potter"};
-  Name lena {"Lena", "McShaw"};
-  Name adam {"Bani", "Adam"};
-
-  NameSet<Name, NameAscending> coll;
-  coll.insert(elaine);
-  coll.insert(potter);
-  coll.insert(lena);
-  coll.insert(adam);
-
-  for(auto e : coll){
-    cout<<e<<'\n';
-  }
   
+  
+
+
+
+
 }

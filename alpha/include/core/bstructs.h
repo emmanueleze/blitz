@@ -37,7 +37,7 @@
 #include "core/controls.h"
 #include "core/concurrent.h"
 #include "util/exceptional.h"
-
+#include "core/policy.h"
 
 
 #pragma once
@@ -173,12 +173,9 @@ namespace blitz {
 
     template<typename  T, int sz>
     class Queue {
-
     public:
-      Queue();
-      Queue(T* a) :arr{ a } {
-
-      }
+      Queue(){}
+      Queue(T* a) :arr{ a } {}
 
       void enqueue(T t) {
         if (tail == (sz))
@@ -214,46 +211,25 @@ namespace blitz {
 
     /**
      * @brief LinkedList implements a doubly linked list data structure.
-     * @tparam _Tp is a node of type Node<_Tp>.
+     * @tparam _NodeType
      */
-    template<typename _Tp>
-    class LinkedList {
+    template<typename T, typename _NodeType = blitz::SingleNode<T> >
+    class LinkedList : public _NodeType{
     public:
-      LinkedList();
+      LinkedList(){
+        
+      }
       void insert();
       void remove();
 
       void traverse();
       ~LinkedList() {}
-
-    public:
       
-    private:
-      Node<_Tp>* head;
-      Node<_Tp>* next;
-      Node<_Tp>* prev;
+      private:
+
     };
     
-    template<typename _Tp>
-    class list_iterator
-      : public std::iterator<std::bidirectional_iterator_tag, Node<_Tp>> {
-
-    protected:
-      LinkedList<_Tp>& _list;
-
-    public:
-      explicit list_iterator(LinkedList<_Tp>& list) : _list(list) {}
-      list_iterator<LinkedList<_Tp>>& operator=(
-        const typename LinkedList<_Tp>::value_type& value) {
-        _list.insert(value);
-        return *this;
-      }
-
-      list_iterator<LinkedList<_Tp>>& operator*(){return *this;}
-      list_iterator<LinkedList<_Tp>>& operator++(){return *this;}
-      list_iterator<LinkedList<_Tp>>& operator++(int){return *this;}
-
-    };
+    
 
     //general distance
     template<typename Iterator>
