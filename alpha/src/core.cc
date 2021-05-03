@@ -30,7 +30,7 @@ using namespace blitz::gen;
 using namespace blitz::concurrent;
 
 Name::Name(std::string fname, std::string lname)
-  : firstName(fname), lastName(lname) {}
+    : firstName(fname), lastName(lname) {}
 
 string Name::FirstName() const { return firstName; }
 string Name::LastName() const { return lastName; }
@@ -40,12 +40,12 @@ bool Name::operator==(Name& n1) const {
 }
 bool NameAscending::operator()(const Name& n1, const Name& n2) const {
   return n1.LastName() < n2.LastName() || ((n1.LastName() == n2.LastName()) &&
-    (n1.FirstName() < n2.FirstName()));
+                                           (n1.FirstName() < n2.FirstName()));
 }
 
 bool NameDescending::operator()(const Name& n1, const Name& n2) const {
   return n1.LastName() > n2.LastName() || ((n1.LastName() == n2.LastName()) &&
-    (n1.FirstName() > n2.FirstName()));
+                                           (n1.FirstName() > n2.FirstName()));
 }
 
 std::ostream& gen::operator<<(std::ostream& ost, const Name& name) {
@@ -95,30 +95,35 @@ void concurrent::wait_for_flag() {
 
 void concurrent::show_front(std::queue<gen::Name>& q) {
   cout << "Waiting thread --> show_front()\n";
-  while (true) {
+  while (!q.empty()) {
     std::unique_lock<mutex> lk(_m);
-    concurrent::_Cv.wait(lk, [=] {return !q.empty();});
+    concurrent::_Cv.wait(lk, [=] { return !q.empty(); });
     lk.unlock();
-    std::cout << q.front().FirstName() <<
-      q.front().LastName() << '\n';
-
-    if (q.empty())
-      break;
+    std::cout << q.front() << '\n';
+    this_thread::sleep_for(chrono::seconds(2));
   }
-
 }
 
 void concurrent::process_queue(std::queue<gen::Name>& q) {
   cout << "Processing thread --> process_queue()\n";
   try {
-    if (q.empty())
-      throw runtime_error("Queue is empty.");
+    if (q.empty()) throw runtime_error("Queue is empty.");
+  } catch (const runtime_error& e) {
+    cout << e.what() << '\n';
   }
-  catch (const runtime_error& e) { cout << e.what() << '\n'; }
   while (!q.empty()) {
     lock_guard<mutex> lock(_m);
     std::this_thread::sleep_for(chrono::seconds(2));
     q.pop();
     concurrent::_Cv.notify_one();
   }
+}
+
+int concurrent::random_generator(const int _min, const int _max) {
+
+  static thread_local mt19937 generator(hash<thread::id>() (this_thread::get_id()));
+  uniform_int_distribution<int> distribution(_min, _max);
+  return distribution(generator);
+
+
 }

@@ -50,7 +50,7 @@ namespace concurrent {
   
   void show_front(std::queue<gen::Name>&);
   void process_queue(std::queue<gen::Name>&);
-
+  int random_generator(const int, const int);
 } // namespace concurrent
 
 } // namespace blitz
