@@ -25,6 +25,9 @@
 #ifndef BLITZ_ALPHA_INCLUDE_ALPHA_H
 #define BLITZ_ALPHA_INCLUDE_ALPHA_H
 
+#pragma once
+
+
 #include <cassert>
 #include <cstddef>
 #include <cstdlib>
@@ -48,7 +51,8 @@
 #include "core/streaml.h"
 #include "util/stable.h"
 #include "util/user.h"
+#include "util/alpha_posix.h"
 
-#pragma once
+
 
 #endif

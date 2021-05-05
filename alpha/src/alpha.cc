@@ -25,5 +25,6 @@
 #include "alpha.h"
 
 #include "src/core.cc"
+#include "src/alpha_posix.c"
 
 

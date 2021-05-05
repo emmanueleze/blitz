@@ -21,16 +21,28 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#include "alpha.h"
+#include "util/alpha_posix.h"
 
-using namespace blitz;
-using namespace std;
 
-int main() {
+
+void* worker(void* arg){
+  int value = *((int*) arg);
+  printf("value passed: %d\n", value);
+  return 0;
+}
+
+
+int thread_runner() {
+  pthread_t threads[NUM_THREADS];
+  int thread_args[NUM_THREADS];
+  for (unsigned int i = 0; i < NUM_THREADS; ++i) {
+    thread_args[i] = i;
+    pthread_create(&threads[i], 0, worker, (void*)
+      &thread_args[i]); }
   
-  
+  for (int i = 0; i < NUM_THREADS; ++i) {
+    pthread_join(threads[i], 0);
+  }
 
-
-
-
+  exit(0);
 }

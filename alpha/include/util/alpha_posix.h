@@ -21,16 +21,16 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#include "alpha.h"
+#ifndef BLITZ_ALPHA_INCLUDE_UTIL_ALPHA_POSIX_H_
+#define BLITZ_ALPHA_INCLUDE_UTIL_ALPHA_POSIX_H_
 
-using namespace blitz;
-using namespace std;
+#include <pthread.h>
+#include <stdlib.h>
 
-int main() {
-  
-  
-
+#define NUM_THREADS     5
 
 
+int thread_runner();
+void* worker(void*);
 
-}
+#endif
