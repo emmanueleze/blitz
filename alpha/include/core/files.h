@@ -1,4 +1,3 @@
-
 // MIT License
 //
 // Copyright (c) 2021 Emmanuel Godwin
@@ -22,37 +21,45 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_H
-#define BLITZ_ALPHA_INCLUDE_ALPHA_H
+#ifndef BLITZ_ALPHA_INCLUDE_CORE_FILES_H
+#define BLITZ_ALPHA_INCLUDE_CORE_FILES_H
 
-#pragma once
+#include <fstream>
+#include <iomanip>
 
+#include "alpha.h"
 
-#include <cassert>
-#include <cstddef>
-#include <cstdlib>
-#include <iostream>
-#include <limits>
-#include <memory>
-#include <ostream>
-#include <string>
-#include <thread>
-#include <type_traits>
-#include <vector>
+namespace blitz {
 
-#include "core/alpha_stl.h"
-#include "core/base.h"
-#include "core/bstructs.h"
-#include "core/concurrent.h"
-#include "core/controls.h"
-#include "core/generic.h"
-#include "core/groups.h"
-#include "core/policy.h"
-#include "core/files.h"
-#include "util/stable.h"
-#include "util/user.h"
-#include "util/alpha_posix.h"
+namespace stream {
 
+class Reader {
+ public:
+  Reader() = default;
+  Reader(std::string _filename) : filename{_filename} {}
 
+  void OpenFile() { file.open(filename); }
+  void Read() {
+    char buf[512];
+    if (file.is_open() && !file.fail()) {
+      while (!file.eof()) {
+        file.getline(buf, 512, '\n');
+        std::cout << buf << '\n';
+      }
+    }
+  }
+
+ private:
+  std::string filename;
+  std::ifstream file;
+};
+class Writer {};
+
+template <typename _Md>
+class FileHandler {};
+
+}  // namespace stream
+
+}  // namespace blitz
 
 #endif
