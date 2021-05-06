@@ -127,3 +127,13 @@ int concurrent::random_generator(const int _min, const int _max) {
 
 
 }
+
+
+long alg::factorial(int n) {
+  if (n < 0) return 0;
+  if ((n == 0) || (n == 1))
+    return 1;
+  else
+    return n * factorial(n - 1);
+
+}

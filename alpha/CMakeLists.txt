@@ -1,5 +1,5 @@
 
-
+option(alpha_build_tests "Build all alpha's tests" OFF)
 
 
 if (CMAKE_VERSION VERSION_LESS 3.0)
@@ -51,11 +51,12 @@ include_directories(${alpha_build_include_dirs})
 
 #Find GTest
 find_package(PkgConfig)
-pkg_search_module(GTEST REQUIRED gtest_main)
+find_package(GTest REQUIRED gtest_main)
 find_package(GTest REQUIRED)
 #Find Boost
 find_package(Boost 1.72 REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=thread -fsanitize=undefined -g -O3")
 
@@ -70,19 +71,22 @@ set_target_properties(alpha PROPERTIES VERSION ${BLITZ_VERSION} CMAKE_CXX_STANDA
 if (DEFINED CMAKE_VERSION AND NOT "${CMAKE_VERSION}" VERSION_LESS "2.8.11")
   target_include_directories(alpha SYSTEM INTERFACE
     "$<BUILD_INTERFACE:${alpha_build_include_dirs}>"
-    "$<BUILD_INTERFACE:${Boost_INCLUDE_DIR}>")
-    target_link_libraries(alpha PUBLIC ${Boost_LIBRARIES})
+    "$<BUILD_INTERFACE:${Boost_INCLUDE_DIR}>"
+    "$<BUILD_INTERFACE:${GTEST_INCLUDE_DIR}")
+    target_link_libraries(alpha PUBLIC ${Boost_LIBRARIES} PUBLIC ${GTEST_LIBRARIES})
 endif()
 
 
 
 cxx_executable(alpha-main src alpha src/alpha-main.cc)
 
-enable_testing()
+if(alpha_build_tests)
 
-add_executable(alpha_base_test test/alpha_base_test.cc)
+  enable_testing()
+  
+  cxx_test(alpha_controls_test alpha)
+  cxx_test(alpha_base_test alpha)
+  cxx_test(alpha-tests alpha)
 
-target_link_libraries(alpha_base_test PUBLIC alpha PRIVATE GTest::GTest)
-add_test(NAME AlphaBaseTest COMMAND alpha_base_test)
 
-
+endif()

@@ -24,7 +24,6 @@
 
 #include "gtest/gtest.h"
 
-#include "alpha.h"
 #include "core/base.h"
 #include "core/alpha_stl.h"
 
@@ -45,4 +44,8 @@ TEST_F(NameTest, LogicalTest){
         (_name.LastName() == "Trumann") );
 }
 
-    
+
+int main(int argc, char **argv){
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}

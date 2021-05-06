@@ -29,7 +29,8 @@ using namespace std;
 int main() {
   
   
-
+  auto res = alg::factorial(8);
+  cout<<res<<'\n';
 
 
 
