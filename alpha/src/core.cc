@@ -1,4 +1,3 @@
-
 // MIT License
 //
 // Copyright (c) 2021 Emmanuel Godwin
@@ -22,7 +21,10 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#include "alpha.h"
+#include "alpha/alpha.h"
+
+#include "alpha/core/alpha_stl.h"
+#include "alpha/core/concurrent.h"
 
 using namespace std;
 using namespace blitz;
@@ -30,7 +32,7 @@ using namespace blitz::gen;
 using namespace blitz::concurrent;
 
 Name::Name(std::string fname, std::string lname)
-    : firstName(fname), lastName(lname) {}
+  : firstName(fname), lastName(lname) {}
 
 string Name::FirstName() const { return firstName; }
 string Name::LastName() const { return lastName; }
@@ -40,12 +42,12 @@ bool Name::operator==(Name& n1) const {
 }
 bool NameAscending::operator()(const Name& n1, const Name& n2) const {
   return n1.LastName() < n2.LastName() || ((n1.LastName() == n2.LastName()) &&
-                                           (n1.FirstName() < n2.FirstName()));
+    (n1.FirstName() < n2.FirstName()));
 }
 
 bool NameDescending::operator()(const Name& n1, const Name& n2) const {
   return n1.LastName() > n2.LastName() || ((n1.LastName() == n2.LastName()) &&
-                                           (n1.FirstName() > n2.FirstName()));
+    (n1.FirstName() > n2.FirstName()));
 }
 
 std::ostream& gen::operator<<(std::ostream& ost, const Name& name) {
@@ -68,6 +70,7 @@ void Singleton::KillPhoenixSingleton() {
   // It will set pInstance_ to zero and destroyed_ to true
   _instance->~Singleton();
 }
+
 
 void Singleton::OnDeadReference() {
   /*  // Obtain the shell of the destroyed singleton
@@ -95,12 +98,13 @@ void concurrent::wait_for_flag() {
 
 void concurrent::show_front(std::queue<gen::Name>& q) {
   cout << "Waiting thread --> show_front()\n";
-  while (!q.empty()) {
+  while (true) {
     std::unique_lock<mutex> lk(_m);
     concurrent::_Cv.wait(lk, [=] { return !q.empty(); });
     lk.unlock();
     std::cout << q.front() << '\n';
     this_thread::sleep_for(chrono::seconds(2));
+    if(q.empty()) break;
   }
 }
 
@@ -108,16 +112,20 @@ void concurrent::process_queue(std::queue<gen::Name>& q) {
   cout << "Processing thread --> process_queue()\n";
   try {
     if (q.empty()) throw runtime_error("Queue is empty.");
-  } catch (const runtime_error& e) {
+  }
+  catch (const runtime_error& e) {
     cout << e.what() << '\n';
   }
   while (!q.empty()) {
-    lock_guard<mutex> lock(_m);
-    std::this_thread::sleep_for(chrono::seconds(2));
+    unique_lock<mutex> lk(_m);
+    std::this_thread::sleep_for(chrono::seconds(5));
+    //cout<<q.front()<<'\n';
     q.pop();
+    lk.unlock();
     concurrent::_Cv.notify_one();
   }
 }
+
 
 int concurrent::random_generator(const int _min, const int _max) {
 
@@ -127,8 +135,6 @@ int concurrent::random_generator(const int _min, const int _max) {
 
 
 }
-
-
 long alg::factorial(int n) {
   if (n < 0) return 0;
   if ((n == 0) || (n == 1))
@@ -136,4 +142,23 @@ long alg::factorial(int n) {
   else
     return n * factorial(n - 1);
 
+}
+
+file::Reader::Reader(std::string _filename) : filename{ _filename } {
+  if (!file.is_open())
+    this->OpenFile();
+}
+void file::Reader::OpenFile() {
+  file.open(filename);
+}
+
+void file::Reader::Read() {
+
+  char buf[512];
+  if (file.is_open() && !file.fail()) {
+    while (!file.eof()) {
+      file.getline(buf, 512, '\n');
+      std::cout << buf << '\n';
+    }
+  }
 }

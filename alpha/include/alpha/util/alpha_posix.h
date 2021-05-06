@@ -1,4 +1,3 @@
-
 // MIT License
 //
 // Copyright (c) 2021 Emmanuel Godwin
@@ -22,37 +21,16 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_H
-#define BLITZ_ALPHA_INCLUDE_ALPHA_H
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_UTIL_ALPHA_POSIX_H
+#define BLITZ_ALPHA_INCLUDE_ALPHA_UTIL_ALPHA_POSIX_H
 
-#pragma once
+#include <pthread.h>
+#include <stdlib.h>
 
-
-#include <cassert>
-#include <cstddef>
-#include <cstdlib>
-#include <iostream>
-#include <limits>
-#include <memory>
-#include <ostream>
-#include <string>
-#include <thread>
-#include <type_traits>
-#include <vector>
-
-#include "core/alpha_stl.h"
-#include "core/base.h"
-#include "core/bstructs.h"
-#include "core/concurrent.h"
-#include "core/controls.h"
-#include "core/generic.h"
-#include "core/groups.h"
-#include "core/policy.h"
-#include "core/files.h"
-#include "util/stable.h"
-#include "util/user.h"
-#include "util/alpha_posix.h"
+#define NUM_THREADS     5
 
 
+int thread_runner();
+void* worker(void*);
 
 #endif

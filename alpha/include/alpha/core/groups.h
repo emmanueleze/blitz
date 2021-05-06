@@ -21,14 +21,7 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#include "alpha/alpha.h"
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GROUPS_H
+#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GROUPS_H
 
-using namespace blitz;
-using namespace std;
-
-int main() {
-  
-  
-  
-
-}
+#endif

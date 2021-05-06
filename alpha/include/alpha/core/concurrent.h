@@ -21,45 +21,39 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ALPHA_INCLUDE_CORE_FILES_H
-#define BLITZ_ALPHA_INCLUDE_CORE_FILES_H
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_CONCURRENT_H
+#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_CONCURRENT_H
 
-#include <fstream>
-#include <iomanip>
 
-#include "alpha.h"
+#include <atomic>
+#include <chrono>
+#include <condition_variable>
+#include <future>
+#include <mutex>
+#include <queue>
+#include <random>
+#include <shared_mutex>
+
+#include "alpha/alpha.h"
+
+
 
 namespace blitz {
 
-namespace stream {
+  namespace concurrent {
 
-class Reader {
- public:
-  Reader() = default;
-  Reader(std::string _filename) : filename{_filename} {}
+    bool flag;
+    std::mutex _m;
+    std::condition_variable _Cv;
 
-  void OpenFile() { file.open(filename); }
-  void Read() {
-    char buf[512];
-    if (file.is_open() && !file.fail()) {
-      while (!file.eof()) {
-        file.getline(buf, 512, '\n');
-        std::cout << buf << '\n';
-      }
-    }
-  }
 
- private:
-  std::string filename;
-  std::ifstream file;
-};
-class Writer {};
+    void wait_for_flag();
 
-template <typename _Md>
-class FileHandler {};
+    void show_front(std::queue<gen::Name>&);
+    void process_queue(std::queue<gen::Name>&);
+    int random_generator(const int, const int);
+  } // namespace concurrent
 
-}  // namespace stream
+} // namespace blitz
 
-}  // namespace blitz
-
-#endif
+#endif // BLITZ_ALPHA_INCLUDE_CORE_CONCURRENT_H_

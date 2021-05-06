@@ -1,4 +1,3 @@
-
 // MIT License
 //
 // Copyright (c) 2021 Emmanuel Godwin
@@ -22,60 +21,48 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_BSTRUCTS_H
+#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_BSTRUCTS_H
 
-
-
-#ifndef BLITZ_ALPHA_INCLUDE_CORE_BSTRUCTS_H
-#define BLITZ_ALPHA_INCLUDE_CORE_BSTRUCTS_H
-
-#include "alpha.h"
+#include "alpha/alpha.h"
 
 #include <algorithm>
-#include <stack>
-#include <iterator>
 #include <forward_list>
+#include <iterator>
+#include <stack>
+#include <mutex>
 
-#include "core/controls.h"
-#include "core/concurrent.h"
-#include "util/exceptional.h"
-#include "core/policy.h"
+#include "alpha/core/policy.h"
 
-
-#pragma once
 
 namespace blitz {
 
-  namespace  alg {
+  namespace alg {
 
-    template<typename _Tp>
+    template <typename _Tp>
     class Node {
-
     public:
       Node() {}
-      Node(_Tp _data) :data(_data) {}
+      Node(_Tp _data) : data(_data) {}
       Node(const Node& n);
       Node(Node&& n);
-      bool operator==(Node&)const;
+      bool operator==(Node&) const;
 
     private:
       _Tp data;
-
     };
 
-    template<typename _Tp>
-    bool Node<_Tp>::operator==(Node& n1)const {
+    template <typename _Tp>
+    bool Node<_Tp>::operator==(Node& n1) const {
       return (this->data == n1.data);
     }
 
-    template<typename T, int sz>
+    template <typename T, int sz>
     class naive_stack {
-
     public:
       naive_stack() = default;
-      naive_stack(T* a) {
-        arr = a;
-      }
-      bool is_empty()const {
+      naive_stack(T* a) { arr = a; }
+      bool is_empty() const {
         if (top < 0)
           return true;
         else
@@ -84,29 +71,26 @@ namespace blitz {
 
       void push(T x) {
         try {
-
           top = top + 1;
           if (top == sz)
-            throw except::overflow{ "buffer overflowed." };
+            throw std::overflow_error{ "buffer overflowed." };
           else {
             arr[top] = x;
           }
         }
-        catch (except::overflow o) {
+        catch (std::overflow_error o) {
           std::cout << o.what() << '\n';
         }
       }
       void pop() {
-        if (top < 0)
-          std::cout << "buffer underflow.\n";
+        if (top < 0) std::cout << "buffer underflow.\n";
         top = top - 1;
       }
-      void show()const {
+      void show() const {
         std::cout << "[ ";
         for (int i = 0; i <= top; ++i) {
           std::cout << arr[i] << ' ';
-          if (i < top - 1)
-            std::cout << ", ";
+          if (i < top - 1) std::cout << ", ";
         }
         std::cout << " ]" << '\n';
       }
@@ -114,15 +98,13 @@ namespace blitz {
     private:
       int top = -1;
       T* arr = nullptr;
-
     };
     /** @brief Stack
      * Thread-Safe implementation of a stack
      * @param T type of element in the stack
-    */
-    template<typename T>
+     */
+    template <typename T>
     class Stack {
-
     public:
       Stack() {}
       Stack(const Stack& _stack) {
@@ -148,7 +130,7 @@ namespace blitz {
 
       T top() {
         std::lock_guard<std::mutex> lock(m);
-        //std::cout<<data.top()<<'\n';
+        // std::cout<<data.top()<<'\n';
         return data.top();
       }
 
@@ -164,75 +146,64 @@ namespace blitz {
         std::lock_guard<std::mutex> lock(m);
         return data.empty();
       }
+
     private:
       std::stack<T> data;
       mutable std::mutex m;
       unsigned int sz;
-
     };
 
-
-    template<typename  T, int sz>
+    template <typename T, int sz>
     class Queue {
     public:
-      Queue(){}
-      Queue(T* a) :arr{ a } {}
+      Queue() {}
+      Queue(T* a) : arr{ a } {}
 
       void enqueue(T t) {
         if (tail == (sz))
           tail = 0;
         else {
-          if (head == -1)
-            head = 0;
+          if (head == -1) head = 0;
           ++tail;
           printf("%d\n", tail);
           arr[tail] = t;
         }
       }
-      T dequeue() {
-
-      }
-      bool isempty()const {
+      T dequeue() {}
+      bool isempty() const {
         if ((head == -1) && (tail == -1))
           return true;
         else
           return false;
       }
 
-      void showfront()const {
-        std::cout << arr[head] << '\n';
-      }
+      void showfront() const { std::cout << arr[head] << '\n'; }
 
     private:
       int head = -1;
       int tail = -1;
       T* arr = nullptr;
-
     };
 
     /**
      * @brief LinkedList implements a doubly linked list data structure.
      * @tparam _NodeType
      */
-    template<typename T, typename _NodeType = SingleNode<T> >
-    class LinkedList : public _NodeType{
+    template <typename T, typename _NodeType = SingleNode<T> >
+    class LinkedList : public _NodeType {
     public:
-      LinkedList(){
-        
-      }
+      LinkedList() {}
       void insert();
       void remove();
 
       void traverse();
       ~LinkedList() {}
     };
-    
-    
 
-    //general distance
-    template<typename Iterator>
-    typename std::iterator_traits<Iterator>::difference_type
-      Distance(Iterator pos1, Iterator pos2) {
+    // general distance
+    template <typename Iterator>
+    typename std::iterator_traits<Iterator>::difference_type Distance(
+      Iterator pos1, Iterator pos2) {
       using category = typename std::iterator_traits<Iterator>::iterator_category;
       static_assert(std::is_base_of_v<std::input_iterator_tag, category>);
 
@@ -247,11 +218,8 @@ namespace blitz {
         return _distance;
       }
     }
-   
 
+  }  // namespace alg
 
-  } //namespace alg
-
-  
-} //namespace blitz
+}  // namespace blitz
 #endif

@@ -1,4 +1,3 @@
-
 // MIT License
 //
 // Copyright (c) 2021 Emmanuel Godwin
@@ -22,10 +21,10 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ALPHA_INCLUDE_CORE_POLICY_H
-#define BLITZ_ALPHA_INCLUDE_CORE_POLICY_H
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_POLICY_H
+#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_POLICY_H
 
-#include "alpha.h"
+#include "alpha/alpha.h"
 
 namespace blitz {
 
@@ -130,10 +129,9 @@ namespace blitz {
   protected:
     SingleNode() {}
     _Tp* next();
-  protected:
-    
-    _Tp data;
 
+  protected:
+    _Tp data;
   };
 
   template <typename _Tp>
@@ -142,7 +140,6 @@ namespace blitz {
     DoubleNode() {}
     _Tp* next();
     _Tp* prev();
-
   };
 
   template <typename _Tp>

@@ -1,0 +1,6 @@
+The support for atomic operations directly in C++ enables programmers to write
+efficient code with defined semantics without the need for platform-specific assembly
+language. This is a real boon for those trying to write efficient, portable code; not only
+does the compiler take care of the platform specifics, but the optimizer can be written
+to take into account the semantics of the operations, thus enabling better optimiza-
+tion of the program as a whole.
