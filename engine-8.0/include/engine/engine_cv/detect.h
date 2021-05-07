@@ -22,32 +22,31 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-#ifndef BLITZ_ENGINE_INCLUDE_ENGINE_ENGINE_CORE_VECTOR_H
-#define BLITZ_ENGINE_INCLUDE_ENGINE_ENGINE_CORE_VECTOR_H
+#ifndef BLITZ_ENGINE_INCLUDE_ENGINE_ENGINE_CV_DETECT_H
+#define BLITZ_ENGINE_INCLUDE_ENGINE_ENGINE_CV_DETECT_H
 
 #include "engine/engine.h"
-#include "gsl/gsl_linalg.h"
 
-namespace blitz {
-
-  namespace engine{
-
-    template<typename T=double, unsigned... Dimension>
-    class Vector{};
-
-  }
-
-  template<unsigned...> struct Tensor;
-  template<unsigned... Dims1, unsigned... Dims2>
-    auto compose(Tensor<Dims1...>, Tensor<Dims2...>);
+#include "opencv2/objdetect.hpp"
+#include "opencv2/highgui.hpp"
+#include "opencv2/imgproc.hpp"
+#include "opencv2/videoio.hpp"
 
 
 
 
-}
+static void help(const char** argv);
+
+void detectAndDraw(cv::Mat& img, cv::CascadeClassifier& cascade,
+    cv::CascadeClassifier& nestedCascade,
+    double scale, bool tryflip);
 
 
 
-#endif
 
 
+
+
+
+
+#endif    

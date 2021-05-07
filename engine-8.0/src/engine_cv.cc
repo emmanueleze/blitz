@@ -22,32 +22,16 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-#ifndef BLITZ_ENGINE_INCLUDE_ENGINE_ENGINE_CORE_VECTOR_H
-#define BLITZ_ENGINE_INCLUDE_ENGINE_ENGINE_CORE_VECTOR_H
-
 #include "engine/engine.h"
-#include "gsl/gsl_linalg.h"
-
-namespace blitz {
-
-  namespace engine{
-
-    template<typename T=double, unsigned... Dimension>
-    class Vector{};
-
-  }
-
-  template<unsigned...> struct Tensor;
-  template<unsigned... Dims1, unsigned... Dims2>
-    auto compose(Tensor<Dims1...>, Tensor<Dims2...>);
 
 
+int engine::display_image(std::string file) {
+  cv::Mat img = cv::imread(file, -1);
+  if (img.empty()) return -1;
+  cv::namedWindow("Example1", cv::WINDOW_AUTOSIZE);
+  cv::imshow("Example1", img);
+  cv::waitKey(0);
+  cv::destroyWindow("Example1");
 
-
+  return 0;
 }
-
-
-
-#endif
-
-

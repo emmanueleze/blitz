@@ -1,7 +1,7 @@
 
 option(engine-8.0_build_tests "Build all of engine's own tests." OFF)
 
-option(engine-8.0_build_samples "Build engine's sample programs." ON)
+option(engine-8.0_build_samples "Build engine's sample programs." OFF)
 
 
 if (CMAKE_VERSION VERSION_LESS 3.0)
@@ -55,11 +55,10 @@ if (DEFINED CMAKE_VERSION AND NOT "${CMAKE_VERSION}" VERSION_LESS "2.8.11")
 endif()
 
 
-
-
-cxx_executable(engine-main src engine src/engine-main.cc)
+cxx_executable(engine-main src engine-8.0 src/engine-main.cc)
 
 
 if(engine-8.0_build_samples)
-  cxx_executable(sample1 samples -lopencv_highgui samples/sample1.cc)
+  cxx_executable(sample1 samples engine-8.0 samples/sample1.cc)
+  cxx_executable(detect samples engine-8.0 samples/detect.cc)
 endif()
