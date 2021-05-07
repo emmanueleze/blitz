@@ -1,0 +1,9 @@
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
+
+Name: engine-8.0
+Description: Engine-8.0
+Version: @PROJECT_VERSION@
+
+Libs: -L${libdir} -lengine-8.0 @CMAKE_THREAD_LIBS_INIT@
+Cflags: -I${includedir} @BLITZ_ENGINE_HAS_PTHREAD_MACRO@
