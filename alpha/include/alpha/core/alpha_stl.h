@@ -24,6 +24,8 @@
 #ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_ALPHA_STL_H
 #define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_ALPHA_STL_H
 
+#include "alpha/alpha.h"
+
 #include <algorithm>
 #include <functional>
 #include <iterator>
@@ -32,7 +34,7 @@
 #include <type_traits>
 #include <unordered_set>
 
-#include "alpha/alpha.h"
+
 
 using namespace std::placeholders;
 
@@ -97,18 +99,6 @@ namespace blitz {
       long int sum;
     };
 
-    template <typename T>
-    bool fn(const T& t) {
-      if (std::is_pointer_v<T>) {
-        std::cout << "is_pointer == true" << '\n';
-      }
-      else {
-        std::cout << "is_pointer == false" << '\n';
-      }
-      return std::is_pointer_v<T>;
-    }
-
-    void set_flag(bool);
 
   }  // namespace gen
 }  // namespace blitz

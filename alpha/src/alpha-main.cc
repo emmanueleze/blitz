@@ -28,9 +28,7 @@ using namespace std;
 
 int main() {
   
-  auto res = async(alg::factorial, 64);
   
-  cout<<res.get()<<'\n';
   
 
 }

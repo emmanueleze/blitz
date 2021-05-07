@@ -25,6 +25,8 @@
 #define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_CONCURRENT_H
 
 
+#include "alpha/alpha.h"
+
 #include <atomic>
 #include <chrono>
 #include <condition_variable>
@@ -34,17 +36,13 @@
 #include <random>
 #include <shared_mutex>
 
-#include "alpha/alpha.h"
-
-
-
 namespace blitz {
 
   namespace concurrent {
 
-    bool flag;
-    std::mutex _m;
-    std::condition_variable _Cv;
+    extern bool flag;
+    extern std::mutex _m;
+    extern std::condition_variable _Cv;
 
 
     void wait_for_flag();

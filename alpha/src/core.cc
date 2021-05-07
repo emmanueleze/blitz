@@ -23,13 +23,16 @@
 
 #include "alpha/alpha.h"
 
-#include "alpha/core/alpha_stl.h"
-#include "alpha/core/concurrent.h"
-
 using namespace std;
 using namespace blitz;
 using namespace blitz::gen;
 using namespace blitz::concurrent;
+
+
+bool concurrent::flag = false;
+std::condition_variable concurrent::_Cv {};
+std::mutex concurrent::_m {};
+
 
 Name::Name(std::string fname, std::string lname)
   : firstName(fname), lastName(lname) {}
