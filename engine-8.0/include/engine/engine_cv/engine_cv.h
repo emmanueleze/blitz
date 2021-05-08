@@ -26,13 +26,32 @@
 
 
 #include "engine/engine.h"
+
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
+#include <fstream>
 
-namespace engine{
-  int display_image(std::string);
+namespace engine {
+  namespace Cv {
+    int display_image(std::string);
+    
+    void onTrackBarSlide(int, void*);
+    int playVideo(std::string);
+
+
+    class NamedWindow{
+      public:
+        NamedWindow() = delete;
+        NamedWindow(std::string, cv::WindowFlags);
+        void operator()();
+        ~NamedWindow();
+      private:
+        std::string _name;
+        cv::WindowFlags _size;
+    };
+
+  }
+
 }
-
-
 #endif
