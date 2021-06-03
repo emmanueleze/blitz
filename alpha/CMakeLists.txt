@@ -51,12 +51,10 @@ include_directories(${alpha_build_include_dirs})
 
 #Find GTest
 find_package(PkgConfig)
-find_package(GTest REQUIRED gtest_main)
 find_package(GTest REQUIRED)
-#Find Boost
-find_package(Boost 1.72 REQUIRED)
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 
+#Find Boost
+find_package(Boost 1.75.0 REQUIRED)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=thread -fsanitize=undefined -g -O3")
 
@@ -71,7 +69,7 @@ set_target_properties(alpha PROPERTIES VERSION ${BLITZ_VERSION} CMAKE_CXX_STANDA
 if (DEFINED CMAKE_VERSION AND NOT "${CMAKE_VERSION}" VERSION_LESS "2.8.11")
   target_include_directories(alpha SYSTEM INTERFACE
     "$<BUILD_INTERFACE:${alpha_build_include_dirs}>"
-    "$<BUILD_INTERFACE:${Boost_INCLUDE_DIR}>"
+    "$<BUILD_INTERFACE:${Boost_INCLUDE_DIRS}>"
     "$<BUILD_INTERFACE:${GTEST_INCLUDE_DIR}")
     target_link_libraries(alpha PUBLIC ${Boost_LIBRARIES} PUBLIC ${GTEST_LIBRARIES})
 endif()

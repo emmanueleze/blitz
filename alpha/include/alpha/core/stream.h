@@ -21,37 +21,23 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ENGINE_INCLUDE_ENGINE_ENGINECV_ENGINE_CV_H
-#define BLITZ_ENGINE_INCLUDE_ENGINE_ENGINECV_ENGINE_CV_H
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_STREAM_H
+#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_STREAM_H
+
+#include "alpha/alpha.h"
 
 
-#include "engine/engine.h"
+namespace blitz{
+  
 
-#include "opencv2/highgui/highgui.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
 
-#include <fstream>
 
-namespace engine {
-  namespace Cv {
-    int display_image(std::string);
-    
-    void onTrackBarSlide(int, void*);
-    int playVideo(std::string);
+  
 
-    int show_mat(cv::Mat, std::string = "Test");
-    class NamedWindow{
-      public:
-        NamedWindow() = delete;
-        NamedWindow(std::string, cv::WindowFlags);
-        void operator()();
-        ~NamedWindow();
-      private:
-        std::string _name;
-        cv::WindowFlags _size;
-    };
-
-  }
 
 }
+
+
+
+
 #endif

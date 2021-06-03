@@ -43,13 +43,23 @@ namespace blitz {
     extern bool flag;
     extern std::mutex _m;
     extern std::condition_variable _Cv;
-
+    extern std::vector<std::packaged_task<void()>> tasks;
 
     void wait_for_flag();
 
     void show_front(std::queue<gen::Name>&);
     void process_queue(std::queue<gen::Name>&);
     int random_generator(const int, const int);
+
+    template<typename Func>
+    std::future<void> init_pack_task(Func f){
+      std::packaged_task<void()> task(f);
+      auto res = task.get_future();
+      std::lock_guard<std::mutex> lk(_m);
+      tasks.push_back(f);
+      return res;
+    }
+
   } // namespace concurrent
 
 } // namespace blitz

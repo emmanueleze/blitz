@@ -143,31 +143,6 @@ namespace blitz {
       }
     }
 
-    template <typename T>
-    void merge_sort(T* A, int re, int m, int le) {
-      int n1 = m - re + 1;
-      int n2 = le - m;
-      T L[n1 + 1];
-      T R[n2 + 1];
-      for (int i = 0; i < n1; ++i) L[i] = A[re + i - 1];
-      for (int j = 1; j < n2; ++j) R[j] = A[m + j];
-
-      L[n1 + 1] = '\0';
-      R[n2 + 1] = '\0';
-      int i = 1;
-      int j = 1;
-
-      for (int k = re; k <= le; ++k) {
-        if (L[i] <= R[j]) {
-          A[k] = L[i];
-          i = i + 1;
-        }
-        else {
-          A[k] = R[j];
-          j = j + 1;
-        }
-      }
-    }
 
     long factorial(int n);
 

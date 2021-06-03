@@ -31,7 +31,15 @@ int g_slider_position = 0;
 int g_run = 1, g_dontset = 0; //start out in single step mode
 cv::VideoCapture g_cap;
 
+int Cv::show_mat(cv::Mat _mat, std::string _title){
+  if(_mat.empty()) return -1;
+  cv::namedWindow(_title, cv::WINDOW_AUTOSIZE);
+  cv::imshow(_title, _mat);
+  cv::waitKey(0);
+  cv::destroyWindow(_title);
 
+  return 0;
+}
 Cv::NamedWindow::NamedWindow(string name, cv::WindowFlags size) :
   _name(name), _size(size){}
 

@@ -48,6 +48,7 @@
 #include "alpha/core/groups.h"
 #include "alpha/core/policy.h"
 #include "alpha/core/files.h"
+#include "alpha/core/stream.h"
 #include "alpha/util/alpha_posix.h"
 
 namespace blitz{
@@ -55,6 +56,7 @@ namespace blitz{
   namespace gen{}
   namespace alg{}
   namespace file{}
+  namespace stream{}
 }
 
 #endif

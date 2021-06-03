@@ -44,6 +44,11 @@
 
 namespace engine{
   
+const std::string DEFAULT_PATH {"${PWD}/tmp/"};
+
+
+
+
 }
 
 

@@ -24,8 +24,8 @@
 
 
 
-#include "engine.h"
-#include "engine-cv/detect.h"
+#include "engine/engine.h"
+#include "engine/engine_cv/detect.h"
 
 using namespace cv;
 using namespace std;
