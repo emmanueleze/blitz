@@ -21,7 +21,40 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GROUPS_H
-#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GROUPS_H
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GENERIC_HPP_
+#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GENERIC_HPP_
 
-#endif
+#pragma once
+
+#include "alpha/alpha.hpp"
+
+#include <array>
+#include <functional>
+#include <iterator>
+#include <map>
+#include <ostream>
+#include <queue>
+#include <type_traits>
+#include <utility>
+
+
+
+namespace blitz {
+
+  namespace gen {
+
+    //  Function Templates
+    //  **********************************************
+
+    template<typename _Tp>
+    _Tp max (_Tp a, _Tp b){
+      return b < a ? a : b;
+    }
+
+
+
+  } // namespace gen
+
+} // namespace blitz
+
+#endif  // BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GENERIC_H

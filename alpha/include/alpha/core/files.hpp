@@ -21,16 +21,35 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_UTIL_ALPHA_POSIX_H
-#define BLITZ_ALPHA_INCLUDE_ALPHA_UTIL_ALPHA_POSIX_H
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_FILES_HPP_
+#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_FILES_HPP_
 
-#include <pthread.h>
-#include <stdlib.h>
+#include <fstream>
+#include <iomanip>
 
-#define NUM_THREADS     5
+#include "alpha/alpha.hpp"
 
+namespace blitz {
+  namespace file {
 
-int thread_runner();
-void* worker(void*);
+    class Reader {
+    public:
+      Reader() = delete;
+      Reader(std::string);
+      void OpenFile();
+      void Read();
+
+    private:
+      std::string filename;
+      std::ifstream file;
+    };
+    class Writer {};
+
+    template <typename _Md>
+    class FileHandler {};
+
+  }  // namespace file
+
+}  // namespace blitz
 
 #endif

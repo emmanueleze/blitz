@@ -21,23 +21,42 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_STREAM_H
-#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_STREAM_H
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_ALPHA_HPP_
+#define BLITZ_ALPHA_INCLUDE_ALPHA_ALPHA_HPP_
 
-#include "alpha/alpha.h"
+#pragma once
 
+
+#include <cassert>
+#include <cstddef>
+#include <cstdlib>
+#include <iostream>
+#include <limits>
+#include <memory>
+#include <ostream>
+#include <string>
+#include <thread>
+#include <type_traits>
+#include <vector>
+
+#include "alpha/core/alpha_stl.hpp"
+#include "alpha/core/base.hpp"
+#include "alpha/core/bstructs.hpp"
+#include "alpha/core/concurrent.hpp"
+#include "alpha/core/controls.hpp"
+#include "alpha/core/generic.hpp"
+#include "alpha/core/groups.hpp"
+#include "alpha/core/policy.hpp"
+#include "alpha/core/files.hpp"
+#include "alpha/core/stream.hpp"
+#include "alpha/util/alpha_posix.hpp"
 
 namespace blitz{
-  
-
-
-
-  
-
-
+  namespace concurrent{}
+  namespace gen{}
+  namespace alg{}
+  namespace file{}
+  namespace stream{}
 }
-
-
-
 
 #endif

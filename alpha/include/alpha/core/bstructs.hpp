@@ -21,10 +21,10 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_BSTRUCTS_H
-#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_BSTRUCTS_H
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_BSTRUCTS_HPP_
+#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_BSTRUCTS_HPP_
 
-#include "alpha/alpha.h"
+#include "alpha/alpha.hpp"
 
 #include <algorithm>
 #include <forward_list>
@@ -32,7 +32,7 @@
 #include <stack>
 #include <mutex>
 
-#include "alpha/core/policy.h"
+#include "alpha/core/policy.hpp"
 
 
 namespace blitz {

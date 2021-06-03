@@ -21,42 +21,16 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_ALPHA_H
-#define BLITZ_ALPHA_INCLUDE_ALPHA_ALPHA_H
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_UTIL_ALPHA_POSIX_HPP_
+#define BLITZ_ALPHA_INCLUDE_ALPHA_UTIL_ALPHA_POSIX_HPP_
 
-#pragma once
+#include <pthread.h>
+#include <stdlib.h>
+
+#define NUM_THREADS     5
 
 
-#include <cassert>
-#include <cstddef>
-#include <cstdlib>
-#include <iostream>
-#include <limits>
-#include <memory>
-#include <ostream>
-#include <string>
-#include <thread>
-#include <type_traits>
-#include <vector>
-
-#include "alpha/core/alpha_stl.h"
-#include "alpha/core/base.h"
-#include "alpha/core/bstructs.h"
-#include "alpha/core/concurrent.h"
-#include "alpha/core/controls.h"
-#include "alpha/core/generic.h"
-#include "alpha/core/groups.h"
-#include "alpha/core/policy.h"
-#include "alpha/core/files.h"
-#include "alpha/core/stream.h"
-#include "alpha/util/alpha_posix.h"
-
-namespace blitz{
-  namespace concurrent{}
-  namespace gen{}
-  namespace alg{}
-  namespace file{}
-  namespace stream{}
-}
+int thread_runner();
+void* worker(void*);
 
 #endif

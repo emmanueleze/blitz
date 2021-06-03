@@ -21,44 +21,23 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_STREAM_HPP_
+#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_STREAM_HPP_
 
-#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_UTIL_NETCONFIG_H
-#define BLITZ_ALPHA_INCLUDE_ALPHA_UTIL_NETCONFIG_H
-
-#include <sys/socket.h>
-
+#include "alpha/alpha.hpp"
 
 
-
-
+namespace blitz{
+  
 
 
 
+  
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
 }
 
 
 
 
-
-#endif      //NETCONFIG_HPP
+#endif
