@@ -41,15 +41,59 @@
 
 namespace blitz {
 
+  namespace gen{
+    template<typename T, typename Cont = std::vector<T>>
+    class Stack;
+  }
+  namespace stream{
+    template<typename T>
+    std::ostream& operator<<(std::ostream& os, gen::Stack<T> const& _st);
+  }
   namespace gen {
 
     //  Function Templates
     //  **********************************************
 
     template<typename _Tp>
-    _Tp max (_Tp a, _Tp b){
+    constexpr auto  max(_Tp const& a, _Tp const& b)->std::decay_t<decltype(b < a ? a : b)> {
       return b < a ? a : b;
     }
+
+    //  Class Templates
+    //  **********************************************
+
+      template<typename _Tp, typename Cont >
+      class Stack{
+        public:
+          void push(_Tp const&);
+          void pop();
+          _Tp const& top()const;
+          bool  empty () const {
+            return elems.empty();
+          }
+
+          friend std::ostream& stream::operator<< <_Tp> (std::ostream& os, Stack<_Tp> const& _stack);
+
+        private:
+          Cont elems;
+      };
+    
+      template<typename _Tp, typename Cont>
+      void Stack<_Tp, Cont>::push(_Tp const& elem){
+        elems.push_back(elem);
+      }
+
+      template<typename _Tp, typename Cont>
+      void gen::Stack<_Tp, Cont>::pop() {
+        assert (!elems.empty());
+        elems.pop_back();
+      }
+
+      template<typename _Tp, typename Cont>
+      _Tp const& Stack<_Tp, Cont>::top() const {
+        assert(!elems.empty());
+        return elems.back();
+      }
 
 
 
@@ -57,4 +101,4 @@ namespace blitz {
 
 } // namespace blitz
 
-#endif  // BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GENERIC_H
+#endif  // BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GENERIC_HPP_

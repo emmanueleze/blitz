@@ -31,7 +31,7 @@ using namespace std;
 
 int main() {
   
-  cout<<gen::max(32, 8) <<endl;
+  
   
 
 
