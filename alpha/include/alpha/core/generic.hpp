@@ -41,11 +41,11 @@
 
 namespace blitz {
 
-  namespace gen{
-    template<typename T, typename Cont = std::vector<T>>
+  namespace gen {
+    template<typename T, typename Cont = std::deque<T>>
     class Stack;
   }
-  namespace stream{
+  namespace stream {
     template<typename T>
     std::ostream& operator<<(std::ostream& os, gen::Stack<T> const& _st);
   }
@@ -62,38 +62,47 @@ namespace blitz {
     //  Class Templates
     //  **********************************************
 
-      template<typename _Tp, typename Cont >
-      class Stack{
-        public:
-          void push(_Tp const&);
-          void pop();
-          _Tp const& top()const;
-          bool  empty () const {
-            return elems.empty();
-          }
+    template<typename _Tp, typename Cont >
+    class Stack {
+    public:
+      void push(_Tp const&);
+      void pop();
+      _Tp const top()const;
+      bool  empty() const {
+        return elems.empty();
+      }
+      size_t size()const {return  elems.size(); }
+      friend std::ostream& stream::operator<< <_Tp> (std::ostream& os,
+        Stack<_Tp> const& _stack);
 
-          friend std::ostream& stream::operator<< <_Tp> (std::ostream& os, Stack<_Tp> const& _stack);
+    private:
+      Cont elems;
+      std::mutex _stack_mutex;
+      size_t sz;
+    };
 
-        private:
-          Cont elems;
-      };
     
-      template<typename _Tp, typename Cont>
-      void Stack<_Tp, Cont>::push(_Tp const& elem){
-        elems.push_back(elem);
-      }
 
-      template<typename _Tp, typename Cont>
-      void gen::Stack<_Tp, Cont>::pop() {
-        assert (!elems.empty());
-        elems.pop_back();
-      }
+    template<typename _Tp, typename Cont>
+    void Stack<_Tp, Cont>::push(_Tp const& elem) {
+      std::lock_guard<std::mutex> lk(_stack_mutex);
+      elems.push_back(elem);
 
-      template<typename _Tp, typename Cont>
-      _Tp const& Stack<_Tp, Cont>::top() const {
-        assert(!elems.empty());
-        return elems.back();
-      }
+    }
+
+    template<typename _Tp, typename Cont>
+    void gen::Stack<_Tp, Cont>::pop() {
+      std::lock_guard<std::mutex> lk(_stack_mutex);
+      assert(!elems.empty());
+      elems.pop_back();
+    }
+
+    template<typename _Tp, typename Cont>
+    _Tp const Stack<_Tp, Cont>::top() const {
+      std::lock_guard<std::mutex> lk(_stack_mutex);
+      assert(!elems.empty());
+      return elems.back();
+    }
 
 
 
