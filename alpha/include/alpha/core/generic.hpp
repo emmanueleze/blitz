@@ -87,7 +87,7 @@ namespace blitz {
     void Stack<_Tp, Cont>::push(_Tp const& elem) {
       std::lock_guard<std::mutex> lk(_stack_mutex);
       elems.push_back(elem);
-
+      ++sz;
     }
 
     template<typename _Tp, typename Cont>
@@ -95,6 +95,7 @@ namespace blitz {
       std::lock_guard<std::mutex> lk(_stack_mutex);
       assert(!elems.empty());
       elems.pop_back();
+      --sz;
     }
 
     template<typename _Tp, typename Cont>
@@ -104,7 +105,13 @@ namespace blitz {
       return elems.back();
     }
 
+    //  Nontype Template Parameter
+    //  **********************************************
 
+    template<auto Val, typename T = decltype(Val)>
+    T addVal(T x){
+      return Val + x;
+    }
 
   } // namespace gen
 

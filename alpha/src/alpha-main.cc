@@ -32,7 +32,15 @@ using namespace std;
 int main() {
   
   
-  
+  vector<int> vi {7, 15, 31, 63};
+  vector<int> v_new(4);
+  std::transform(vi.begin(), vi.end(),
+    v_new.begin(),  gen::addVal<1,int>);
+
+  for(int i : v_new)
+    cout<<i<<" ";
+  cout<<endl;
+
 
 
 

@@ -121,8 +121,11 @@ namespace blitz {
     }
   };
 
-  template <typename _Tp>
-  class NodeGen {};
+  enum NodeType {
+    NODE_SINGLE,
+    NODE_DOUBLE,
+    NODE_CIRC
+  };
 
   template <typename _Tp>
   class SingleNode {
