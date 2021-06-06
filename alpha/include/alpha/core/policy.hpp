@@ -131,10 +131,10 @@ namespace blitz {
   class SingleNode {
   protected:
     SingleNode() {}
-    _Tp* next();
+    
 
   protected:
-    _Tp data;
+    SingleNode *next;
   };
 
   template <typename _Tp>

@@ -48,7 +48,9 @@ namespace blitz {
       Node(Node&& n);
       bool operator==(Node&) const;
 
-    private:
+      friend SingleNode<_Tp>;
+
+    protected:
       _Tp data;
     };
 
@@ -189,8 +191,8 @@ namespace blitz {
      * @brief LinkedList implements a doubly linked list data structure.
      * @tparam _NodeType
      */
-    template <typename T, typename _NodeType = SingleNode<T> >
-    class LinkedList : public _NodeType {
+    template <typename T, auto _NodeType = NodeType::NODE_SINGLE >
+    class LinkedList : public SingleNode<T> {
     public:
       LinkedList() {}
       void insert();
@@ -199,6 +201,9 @@ namespace blitz {
       void traverse();
       ~LinkedList() {}
     };
+
+    
+
 
     // general distance
     template <typename Iterator>
@@ -220,6 +225,13 @@ namespace blitz {
     }
 
   }  // namespace alg
+  
+  template<typename _Tp>
+  using SingleList = alg::LinkedList<_Tp, NodeType::NODE_SINGLE>;
+
+  template<typename _Tp>
+  using DoubleList = alg::LinkedList<_Tp, NodeType::NODE_DOUBLE>;
+
 
 }  // namespace blitz
 #endif

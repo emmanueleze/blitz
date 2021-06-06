@@ -113,6 +113,15 @@ namespace blitz {
       return Val + x;
     }
 
+    extern char const s1[] = "Into the Matrix.";    // external linkage 
+    char const s2[] = "The Holographic Principle";   // internal linkage
+
+    template<auto T>
+    class Message{
+      public:
+        Message() {std::cout<< T <<std::endl;}
+    };
+    
   } // namespace gen
 
 } // namespace blitz
