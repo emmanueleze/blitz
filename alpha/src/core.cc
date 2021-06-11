@@ -29,10 +29,6 @@ using namespace blitz::gen;
 using namespace blitz::concurrent;
 
 
-bool concurrent::flag = false;
-std::condition_variable concurrent::_Cv {};
-std::mutex concurrent::_m {};
-
 
 Name::Name(std::string fname, std::string lname)
   : firstName(fname), lastName(lname) {}
@@ -88,56 +84,6 @@ void Singleton::OnDeadReference() {
    _destroyed = false; */
 }
 
-void concurrent::wait_for_flag() {
-  std::unique_lock<std::mutex> lk(concurrent::_m);
-  while (!concurrent::flag) {
-    lk.unlock();
-    cout << "wait_for_flag(): sleeping for 100ms.\n";
-    this_thread::sleep_for(chrono::seconds(5));
-    cout << "wait_for_flag(): awake.\n";
-    lk.lock();
-  }
-}
-
-void concurrent::show_front(std::queue<gen::Name>& q) {
-  cout << "Waiting thread --> show_front()\n";
-  while (true) {
-    std::unique_lock<mutex> lk(_m);
-    concurrent::_Cv.wait(lk, [=] { return !q.empty(); });
-    lk.unlock();
-    std::cout << q.front() << '\n';
-    this_thread::sleep_for(chrono::seconds(2));
-    if(q.empty()) break;
-  }
-}
-
-void concurrent::process_queue(std::queue<gen::Name>& q) {
-  cout << "Processing thread --> process_queue()\n";
-  try {
-    if (q.empty()) throw runtime_error("Queue is empty.");
-  }
-  catch (const runtime_error& e) {
-    cout << e.what() << '\n';
-  }
-  while (!q.empty()) {
-    unique_lock<mutex> lk(_m);
-    std::this_thread::sleep_for(chrono::seconds(5));
-    //cout<<q.front()<<'\n';
-    q.pop();
-    lk.unlock();
-    concurrent::_Cv.notify_one();
-  }
-}
-
-
-int concurrent::random_generator(const int _min, const int _max) {
-
-  static thread_local mt19937 generator(hash<thread::id>() (this_thread::get_id()));
-  uniform_int_distribution<int> distribution(_min, _max);
-  return distribution(generator);
-
-
-}
 long alg::factorial(int n) {
   if (n < 0) return 0;
   if ((n == 0) || (n == 1))

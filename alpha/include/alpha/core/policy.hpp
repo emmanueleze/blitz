@@ -28,6 +28,11 @@
 
 namespace blitz {
 
+  namespace alg {
+    template<typename _Tp>
+    class Node;
+  }
+
   template <bool>
   struct CompileTimeError;
   template <>
@@ -127,22 +132,23 @@ namespace blitz {
     NODE_CIRC
   };
 
-  template <typename _Tp>
-  class SingleNode {
-  protected:
-    SingleNode() {}
-    
+  template <typename _Tp, typename NodeTp = alg::Node<_Tp> >
+  class SingleNode : public NodeTp {
+    public:
+      SingleNode(){}
 
-  protected:
-    SingleNode *next;
+      SingleNode* next;
   };
 
-  template <typename _Tp>
-  class DoubleNode {
-  protected:
+  template <typename _Tp, typename NodeTp = alg::Node<_Tp>>
+  class DoubleNode : public NodeTp{
+  public:
     DoubleNode() {}
-    _Tp* next();
-    _Tp* prev();
+
+    
+
+    DoubleNode *prev;
+    DoubleNode *next;
   };
 
   template <typename _Tp>

@@ -40,25 +40,19 @@ namespace blitz {
 
   namespace concurrent {
 
-    extern bool flag;
-    extern std::mutex _m;
-    extern std::condition_variable _Cv;
-    extern std::vector<std::packaged_task<void()>> tasks;
+    class SpinLockMutex {
+    public:
+      SpinLockMutex() :at_flag(ATOMIC_FLAG_INIT) {}
 
-    void wait_for_flag();
+      void lock() {
+        while (at_flag.test_and_set(std::memory_order_acquire));
+      }
 
-    void show_front(std::queue<gen::Name>&);
-    void process_queue(std::queue<gen::Name>&);
-    int random_generator(const int, const int);
+      void unlock() { at_flag.clear(std::memory_order_release); }
 
-    template<typename Func>
-    std::future<void> init_pack_task(Func f){
-      std::packaged_task<void()> task(f);
-      auto res = task.get_future();
-      std::lock_guard<std::mutex> lk(_m);
-      tasks.push_back(f);
-      return res;
-    }
+    private:
+      std::atomic_flag at_flag;
+    };
 
     
 
