@@ -98,11 +98,7 @@ namespace blitz {
   template <bool _Cond, typename T, typename F>
   using Conditional = typename std::conditional<_Cond, T, F>::type;
 
-  class BigInt{
-    public:
-      BigInt() = default;
-      BigInt(long long _value){}
-  };
+  
 
 }  // namespace blitz
 

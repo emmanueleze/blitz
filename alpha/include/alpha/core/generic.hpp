@@ -100,11 +100,10 @@ namespace blitz {
       return elems.back();
     }
 
-    template <typename T>
+    template <typename T, typename AT = AccumulatorTraits<T> >
     auto accumulate(T const* p1, T const* p2) {
-      using AccT = typename AccumulatorTraits<T>::AccT;
-
-      AccT total{};
+    
+      typename AT::AccT total =  AT::zero;
       while (p1 != p2) {
         total += *p1;
         ++p1;

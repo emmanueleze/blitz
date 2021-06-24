@@ -65,13 +65,7 @@ struct AccumulatorTraits<float> {
   static constexpr AccT const zero = 0;
 };
 
-template <>
-struct AccumulatorTraits<BigInt> {
-  using AccT = BigInt;
-  static constexpr AccT zero(){
-    return BigInt{0};
-  }
-};
+
 
 template <bool>
 struct CompileTimeError;

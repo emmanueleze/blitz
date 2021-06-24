@@ -32,7 +32,8 @@ using namespace blitz::concurrent;
 
 int main() {
 
-  
+  int arr[] {2,4,8,16,32,64};
+  cout<< gen::accumulate(arr, arr+6) << endl;
   
   
   
