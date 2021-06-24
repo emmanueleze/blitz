@@ -29,92 +29,85 @@
 namespace blitz {
 
 namespace alg {
-template <typename _Tp>
-class Node;
+template <typename _Tp> class Node;
 }
 
-template <typename T>
-struct AccumulatorTraits;
+template <typename T> struct AccumulatorTraits;
 
-template <>
-struct AccumulatorTraits<char> {
+template <> struct AccumulatorTraits<char> {
   using AccT = int;
   static AccT const zero = 0;
 };
 
-template <>
-struct AccumulatorTraits<short> {
+template <> struct AccumulatorTraits<short> {
   using AccT = int;
   static AccT const zero = 0;
 };
 
-template <>
-struct AccumulatorTraits<int> {
+template <> struct AccumulatorTraits<int> {
   using AccT = long;
   static AccT const zero = 0;
 };
 
-template <>
-struct AccumulatorTraits<unsigned int> {
+template <> struct AccumulatorTraits<unsigned int> {
   using AccT = unsigned long;
   static AccT const zero = 0;
 };
-template <>
-struct AccumulatorTraits<float> {
+template <> struct AccumulatorTraits<float> {
   using AccT = double;
   static AccT const zero = 0;
 };
 
-template <bool>
-struct CompileTimeError;
-template <>
-struct CompileTimeError<true> {};
+template <> struct AccumulatorTraits<BigInt> {
+  using AccT = BigInt;
+  inline static BigInt const zero = BigInt{0};
+};
+
+template <bool> struct CompileTimeError;
+template <> struct CompileTimeError<true> {};
 
 #define STATIC_CHECK(expr) (CompileTimeError<(expr) != 0>())
 
-template <typename _To, typename _From>
-_To safe_reinterpret_cast(_From from) {
+template <typename _To, typename _From> _To safe_reinterpret_cast(_From from) {
   STATIC_CHECK(sizeof(_From) <= sizeof(_To));
 
   return reinterpret_cast<_To>(from);
 }
 
-template <typename T>
-class NewCreator {
- public:
+template <typename T> class NewCreator {
+public:
   static T *Create() { return new T; }
 };
 
-template <typename T>
-class MallocCreator {
- public:
+template <typename T> class MallocCreator {
+public:
   static T *Create() {
     void *buf = std::malloc(sizeof(T));
-    if (!buf) return 0;
+    if (!buf)
+      return 0;
     return new (buf) T;
   }
 };
 
-template <typename T>
-class PrototypeCreator {
- public:
+template <typename T> class PrototypeCreator {
+public:
   PrototypeCreator(T *p_obj = 0) : _prototype(p_obj) {}
   T *Create() { return _prototype ? _prototype->Clone : 0; }
   T *GetPrototype() { return _prototype; }
   void SetPrototype(T *p_obj) { _prototype = p_obj; }
 
- private:
+private:
   T *_prototype;
 };
 
 class Widget {
- public:
+public:
   Widget() { std::cout << "Widget::Created.\n"; }
 };
 
 template <template <typename> class CreationPolicy>
 class WidgetManager : CreationPolicy<Widget> {
- public:
+public:
   WidgetManager() {}
 };
 
@@ -123,7 +116,7 @@ typedef WidgetManager<MallocCreator> MalWidgetMgr;
 typedef WidgetManager<PrototypeCreator> ProWidgetMgr;
 
 class Singleton {
- public:
+public:
   static Singleton *Instance() {
     if (!_instance) {
       if (_destroyed) {
@@ -137,14 +130,14 @@ class Singleton {
   static void KillPhoenixSingleton();
   void DisplayStatus() { std::clog << "Singleton Activated.\n"; }
 
- private:
+private:
   static Singleton *_instance;
   static bool _destroyed;
   Singleton();
   Singleton(const Singleton &);
   Singleton &operator=(const Singleton &);
 
- private:
+private:
   static void Create() {
     static Singleton *theInstance;
     _instance = theInstance;
@@ -161,7 +154,7 @@ enum NodeType { NODE_SINGLE, NODE_DOUBLE, NODE_CIRC };
 
 template <typename _Tp, typename NodeTp = alg::Node<_Tp>>
 class SingleNode : public NodeTp {
- public:
+public:
   SingleNode() {}
 
   SingleNode *next;
@@ -169,20 +162,19 @@ class SingleNode : public NodeTp {
 
 template <typename _Tp, typename NodeTp = alg::Node<_Tp>>
 class DoubleNode : public NodeTp {
- public:
+public:
   DoubleNode() {}
 
   DoubleNode *prev;
   DoubleNode *next;
 };
 
-template <typename _Tp>
-class CircularNode {};
+template <typename _Tp> class CircularNode {};
 
 template <typename T>
 using EnableIfSingle =
-  std::enable_if_t<std::is_convertible_v<T, blitz::SingleNode<T>>>;
+    std::enable_if_t<std::is_convertible_v<T, blitz::SingleNode<T>>>;
 
-}  // namespace blitz
+} // namespace blitz
 
 #endif
