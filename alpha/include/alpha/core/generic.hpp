@@ -37,43 +37,40 @@
 #include <type_traits>
 #include <utility>
 
-
-
 namespace blitz {
 
   namespace gen {
-    template<typename T, typename Cont = std::deque<T>>
+    template <typename T, typename Cont = std::deque<T>>
     class Stack;
-  }
-  namespace stream {
-    template<typename T>
+    }
+    namespace stream {
+    template <typename T>
     std::ostream& operator<<(std::ostream& os, gen::Stack<T> const& _st);
-  }
-  namespace gen {
+    }
+    namespace gen {
 
     //  Function Templates
     //  **********************************************
 
-    template<typename _Tp>
-    constexpr auto  max(_Tp const& a, _Tp const& b)->std::decay_t<decltype(b < a ? a : b)> {
+    template <typename _Tp>
+    constexpr auto max(_Tp const& a, _Tp const& b)
+      -> std::decay_t<decltype(b < a ? a : b)> {
       return b < a ? a : b;
     }
 
     //  Class Templates
     //  **********************************************
 
-    template<typename _Tp, typename Cont >
+    template <typename _Tp, typename Cont>
     class Stack {
     public:
       void push(_Tp const&);
       void pop();
-      _Tp const top()const;
-      bool  empty() const {
-        return elems.empty();
-      }
-      size_t size()const {return  elems.size(); }
-      friend std::ostream& stream::operator<< <_Tp> (std::ostream& os,
-        Stack<_Tp> const& _stack);
+      _Tp const top() const;
+      bool empty() const { return elems.empty(); }
+      size_t size() const { return elems.size(); }
+      friend std::ostream& stream::operator<<<_Tp>(std::ostream& os,
+                                                  Stack<_Tp> const& _stack);
 
     private:
       Cont elems;
@@ -81,16 +78,14 @@ namespace blitz {
       size_t sz;
     };
 
-    
-
-    template<typename _Tp, typename Cont>
+    template <typename _Tp, typename Cont>
     void Stack<_Tp, Cont>::push(_Tp const& elem) {
       std::lock_guard<std::mutex> lk(_stack_mutex);
       elems.push_back(elem);
       ++sz;
     }
 
-    template<typename _Tp, typename Cont>
+    template <typename _Tp, typename Cont>
     void gen::Stack<_Tp, Cont>::pop() {
       std::lock_guard<std::mutex> lk(_stack_mutex);
       assert(!elems.empty());
@@ -98,32 +93,27 @@ namespace blitz {
       --sz;
     }
 
-    template<typename _Tp, typename Cont>
+    template <typename _Tp, typename Cont>
     _Tp const Stack<_Tp, Cont>::top() const {
       std::lock_guard<std::mutex> lk(_stack_mutex);
       assert(!elems.empty());
       return elems.back();
     }
 
-    //  Nontype Template Parameter
-    //  **********************************************
+    template <typename T>
+    auto accumulate(T const* p1, T const* p2) {
+      using AccT = typename AccumulatorTraits<T>::AccT;
 
-    template<auto Val, typename T = decltype(Val)>
-    T addVal(T x){
-      return Val + x;
+      AccT total{};
+      while (p1 != p2) {
+        total += *p1;
+        ++p1;
+      }
+      return total;
     }
 
-    extern char const s1[] = "Into the Matrix.";    // external linkage 
-    char const s2[] = "The Holographic Principle";   // internal linkage
+  }  // namespace gen
 
-    template<auto T>
-    class Message{
-      public:
-        Message() {std::cout<< T <<std::endl;}
-    };
-    
-  } // namespace gen
-
-} // namespace blitz
+}  // namespace blitz
 
 #endif  // BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GENERIC_HPP_
