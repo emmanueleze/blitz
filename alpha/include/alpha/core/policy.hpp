@@ -31,7 +31,23 @@ namespace blitz {
 namespace alg {
 template <typename _Tp>
 class Node;
-}
+};
+
+class SumPolicy{
+  public:
+    template<typename T1, typename T2>
+    static void accum(T1& total, T2 const& value){
+      total  +=  value;
+    }
+};
+
+class MultPolicy{
+  public:
+    template<typename T1, typename T2>
+    static void accum(T1& total, T2 const& value){
+      total  *=  value;
+    }
+};
 
 template <typename T>
 struct AccumulatorTraits;
