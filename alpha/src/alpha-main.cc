@@ -20,23 +20,17 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#include "alpha/alpha.hpp"
+#include "alpha/alpha.h"
 
 using namespace blitz;
 using namespace std;
 
-using namespace blitz::concurrent;
-
-
+using namespace blitz::mt;
 
 
 int main() {
 
-  int arr[] {1,2,4,8,16,32,64};
-  cout<< gen::accumulate(arr, arr+7) << endl;
-  
-  
-  
+
 
 
 

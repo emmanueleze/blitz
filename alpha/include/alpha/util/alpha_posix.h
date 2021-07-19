@@ -21,34 +21,16 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_STREAM_HPP_
-#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_STREAM_HPP_
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_UTIL_ALPHA_POSIX_H_
+#define BLITZ_ALPHA_INCLUDE_ALPHA_UTIL_ALPHA_POSIX_H_
 
-#include "alpha/alpha.hpp"
+#include <pthread.h>
+#include <stdlib.h>
 
-
-namespace blitz{
-  
-  namespace stream{
-
-    template<typename T>
-    std::ostream& operator<<(std::ostream& os, gen::Stack<T> const& _st){
-      for(T elm : _st.elems)
-        os << elm <<std::endl;
-      return os;
-    }
+#define NUM_THREADS     5
 
 
-
-  }
-
-
-  
-
-
-}
-
-
-
+int thread_runner();
+void* worker(void*);
 
 #endif

@@ -21,43 +21,27 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_CONCURRENT_HPP_
-#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_CONCURRENT_HPP_
+#include "alpha/core/policy.h"
+
+#include "gtest/gtest.h"
+
+using namespace blitz;
+
+class SingletonTest : public ::testing::Test {
+  protected:
+    void SetUp() override {
+
+    }
+    Singleton* singleton;
+
+};
+
+TEST_F(SingletonTest, InitialInstanceIsZero){
+    ASSERT_TRUE(singleton == nullptr);
+}
 
 
-#include "alpha/alpha.hpp"
-
-#include <atomic>
-#include <chrono>
-#include <condition_variable>
-#include <future>
-#include <mutex>
-#include <queue>
-#include <random>
-#include <shared_mutex>
-
-namespace blitz {
-
-  namespace concurrent {
-
-    class SpinLockMutex {
-    public:
-      SpinLockMutex() :at_flag(ATOMIC_FLAG_INIT) {}
-
-      void lock() {
-        while (at_flag.test_and_set(std::memory_order_acquire));
-      }
-
-      void unlock() { at_flag.clear(std::memory_order_release); }
-
-    private:
-      std::atomic_flag at_flag;
-    };
-
-    
-
-  } // namespace concurrent
-
-} // namespace blitz
-
-#endif // BLITZ_ALPHA_INCLUDE_CORE_CONCURRENT_H_
+int main(int argc, char** argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}

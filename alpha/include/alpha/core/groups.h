@@ -21,28 +21,31 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#include "alpha/util/alpha_posix.h"
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GROUPS_H_
+#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GROUPS_H_
+
+
+#include <exception>
+
+namespace blitz {
+
+    struct EmptyStack : public std::exception{
+        const char* what() const throw(){
+            return "Stack is empty";
+        }
+    };
 
 
 
-void* worker(void* arg){
-  int value = *((int*) arg);
-  printf("value passed: %d\n", value);
-  return 0;
 }
 
 
-int thread_runner() {
-  pthread_t threads[NUM_THREADS];
-  int thread_args[NUM_THREADS];
-  for (unsigned int i = 0; i < NUM_THREADS; ++i) {
-    thread_args[i] = i;
-    pthread_create(&threads[i], 0, worker, (void*)
-      &thread_args[i]); }
-  
-  for (int i = 0; i < NUM_THREADS; ++i) {
-    pthread_join(threads[i], 0);
-  }
 
-  exit(0);
-}
+
+
+
+
+
+
+
+#endif

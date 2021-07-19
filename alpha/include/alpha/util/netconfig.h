@@ -21,16 +21,44 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_UTIL_ALPHA_POSIX_HPP_
-#define BLITZ_ALPHA_INCLUDE_ALPHA_UTIL_ALPHA_POSIX_HPP_
 
-#include <pthread.h>
-#include <stdlib.h>
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_UTIL_NETCONFIG_H_
+#define BLITZ_ALPHA_INCLUDE_ALPHA_UTIL_NETCONFIG_H_
 
-#define NUM_THREADS     5
+#include <sys/socket.h>
 
 
-int thread_runner();
-void* worker(void*);
 
-#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+}
+
+
+
+
+
+#endif      //NETCONFIG_HPP

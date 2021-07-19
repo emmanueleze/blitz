@@ -21,35 +21,43 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_FILES_HPP_
-#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_FILES_HPP_
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_ALPHA_MT_H_
+#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_ALPHA_MT_H_
 
-#include <fstream>
-#include <iomanip>
 
-#include "alpha/alpha.hpp"
+#include "alpha/alpha.h"
+
+#include <atomic>
+#include <chrono>
+#include <condition_variable>
+#include <future>
+#include <mutex>
+#include <queue>
+#include <random>
+#include <shared_mutex>
 
 namespace blitz {
-  namespace file {
 
-    class Reader {
+  namespace mt {
+
+    class SpinLockMutex {
     public:
-      Reader() = delete;
-      Reader(std::string);
-      void OpenFile();
-      void Read();
+      SpinLockMutex() :at_flag(ATOMIC_FLAG_INIT) {}
+
+      void lock() {
+        while (at_flag.test_and_set(std::memory_order_acquire));
+      }
+
+      void unlock() { at_flag.clear(std::memory_order_release); }
 
     private:
-      std::string filename;
-      std::ifstream file;
+      std::atomic_flag at_flag;
     };
-    class Writer {};
 
-    template <typename _Md>
-    class FileHandler {};
+    
 
-  }  // namespace file
+  } // namespace mt
 
-}  // namespace blitz
+} // namespace blitz
 
-#endif
+#endif // BLITZ_ALPHA_INCLUDE_CORE_ALPHA_MT_H_

@@ -21,12 +21,12 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GENERIC_HPP_
-#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GENERIC_HPP_
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GENERIC_H_
+#define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GENERIC_H_
 
 #pragma once
 
-#include "alpha/alpha.hpp"
+#include "alpha/alpha.h"
 
 #include <array>
 #include <functional>
@@ -100,7 +100,8 @@ namespace blitz {
       return elems.back();
     }
 
-    template <typename T,typename Policy = SumPolicy, typename Traits = AccumulatorTraits<T> >
+    template <typename T,typename Policy = SumPolicy,
+                          typename Traits = AccumulatorTraits <T> >
     auto accumulate(T const* p1, T const* p2) {
     
       using AccT = typename Traits::AccT;

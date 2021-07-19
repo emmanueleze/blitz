@@ -21,8 +21,8 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_ALPHA_HPP_
-#define BLITZ_ALPHA_INCLUDE_ALPHA_ALPHA_HPP_
+#ifndef BLITZ_ALPHA_INCLUDE_ALPHA_ALPHA_H_
+#define BLITZ_ALPHA_INCLUDE_ALPHA_ALPHA_H_
 
 #pragma once
 
@@ -39,20 +39,20 @@
 #include <type_traits>
 #include <vector>
 
-#include "alpha/core/alpha_stl.hpp"
-#include "alpha/core/base.hpp"
-#include "alpha/core/bstructs.hpp"
-#include "alpha/core/concurrent.hpp"
-#include "alpha/core/controls.hpp"
-#include "alpha/core/generic.hpp"
-#include "alpha/core/groups.hpp"
-#include "alpha/core/policy.hpp"
-#include "alpha/core/files.hpp"
-#include "alpha/core/stream.hpp"
-#include "alpha/util/alpha_posix.hpp"
+#include "alpha/core/alpha_stl.h"
+#include "alpha/core/base.h"
+#include "alpha/core/bstructs.h"
+#include "alpha/core/alpha_mt.h"
+#include "alpha/core/controls.h"
+#include "alpha/core/generic.h"
+#include "alpha/core/groups.h"
+#include "alpha/core/policy.h"
+#include "alpha/core/files.h"
+#include "alpha/core/stream.h"
+#include "alpha/util/alpha_posix.h"
 
 namespace blitz{
-  namespace concurrent{}
+  namespace mt{}
   namespace gen{}
   namespace alg{}
   namespace file{}

@@ -21,12 +21,12 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#include "alpha/alpha.hpp"
+#include "alpha/alpha.h"
 
 using namespace std;
 using namespace blitz;
 using namespace blitz::gen;
-using namespace blitz::concurrent;
+using namespace blitz::mt;
 
 
 
@@ -61,6 +61,7 @@ Name& Name::operator=(const Name& n1) {
 }
 
 Singleton* Singleton::_instance = 0;
+
 bool Singleton::_destroyed = false;
 
 void Singleton::KillPhoenixSingleton() {
@@ -79,9 +80,11 @@ void Singleton::OnDeadReference() {
    // Create a new singleton at that address
    new(_instance) Singleton;
    // Queue this new object's destruction
-   atexit(Singleton::KillPhoenixSingleton);
+   
    // Reset destroyed_ because we're back in business
-   _destroyed = false; */
+    */
+   atexit(Singleton::KillPhoenixSingleton);
+   _destroyed = false;
 }
 
 long alg::factorial(int n) {

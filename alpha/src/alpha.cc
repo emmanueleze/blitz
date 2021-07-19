@@ -21,10 +21,11 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-#include "alpha/alpha.hpp"
+#include "alpha/alpha.h"
 
 
 #include "src/core.cc"
 #include "src/alpha_posix.c"
+#include "src/util.cc"
 
 
