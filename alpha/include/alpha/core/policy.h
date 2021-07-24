@@ -33,20 +33,55 @@ template <typename _Tp>
 class Node;
 };
 
-class SumPolicy{
-  public:
-    template<typename T1, typename T2>
-    static void accum(T1& total, T2 const& value){
-      total  +=  value;
-    }
+  // using AccumulatorTraits::AccT to represent additional type 
+  //  information to the given main type.
+  template<typename T>
+  struct AccumulationTraits;
+
+  template<>
+  struct AccumulationTraits<char>{
+    using AccT = int;
+    static AccT const zero = 0;
+  };
+
+  template<>
+  struct AccumulationTraits<short>{
+    using AccT = int;
+    static AccT const zero = 0;
+  };
+
+  template<>
+  struct AccumulationTraits<int>{
+    using AccT = long;
+    static AccT const zero = 0;
+  };
+
+  template<>
+  struct AccumulationTraits<unsigned int>{
+    using AccT = unsigned long;
+    static AccT const zero = 0;
+  };
+
+  template<>
+  struct AccumulationTraits<float>{
+    using AccT = float;
+    static constexpr float zero = 0.0f;
+  };
+
+template <typename T1, typename T2>
+class SumPolicy {
+ public:
+  static void reduce(T1 &total, T2 const &value) {
+    total += value;
+  }
 };
 
-class MultPolicy{
-  public:
-    template<typename T1, typename T2>
-    static void accum(T1& total, T2 const& value){
-      total  *=  value;
-    }
+template<typename T1, typename T2>
+class MultPolicy {
+ public:
+  static void reduce(T1 &total, T2 const &value) {
+    total *= value;
+  }
 };
 
 template <typename T>
@@ -77,11 +112,9 @@ struct AccumulatorTraits<unsigned int> {
 };
 template <>
 struct AccumulatorTraits<float> {
-  using AccT = double;
-  static constexpr AccT const zero = 0;
+  using AccT = float;
+  static constexpr AccT zero = 0.0f;
 };
-
-
 
 template <bool>
 struct CompileTimeError;
@@ -199,7 +232,7 @@ class CircularNode {};
 
 template <typename T>
 using EnableIfSingle =
-    std::enable_if_t<std::is_convertible_v<T, blitz::SingleNode<T>>>;
+  std::enable_if_t<std::is_convertible_v<T, blitz::SingleNode<T>>>;
 
 }  // namespace blitz
 

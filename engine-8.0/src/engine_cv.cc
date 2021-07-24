@@ -21,18 +21,17 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
 #include "engine/engine.h"
 
 using namespace engine;
 using namespace std;
 
 int g_slider_position = 0;
-int g_run = 1, g_dontset = 0; //start out in single step mode
+int g_run = 1, g_dontset = 0;  // start out in single step mode
 cv::VideoCapture g_cap;
 
-int Cv::show_mat(cv::Mat _mat, std::string _title){
-  if(_mat.empty()) return -1;
+int Cv::show_mat(cv::Mat _mat, std::string _title) {
+  if (_mat.empty()) return -1;
   cv::namedWindow(_title, cv::WINDOW_AUTOSIZE);
   cv::imshow(_title, _mat);
   cv::waitKey(0);
@@ -40,18 +39,15 @@ int Cv::show_mat(cv::Mat _mat, std::string _title){
 
   return 0;
 }
-Cv::NamedWindow::NamedWindow(string name, cv::WindowFlags size) :
-  _name(name), _size(size){}
+Cv::NamedWindow::NamedWindow(string name, cv::WindowFlags size)
+  : _name(name), _size(size) {}
 
-void Cv::NamedWindow::operator()(){
+void Cv::NamedWindow::operator()() {
   cv::namedWindow(_name, _size);
   cv::waitKey(0);
-  
 }
 
-Cv::NamedWindow::~NamedWindow(){
-  cv::destroyWindow(_name);
-}
+Cv::NamedWindow::~NamedWindow() { cv::destroyWindow(_name); }
 
 int engine::Cv::display_image(std::string file) {
   cv::Mat img = cv::imread(file, -1);
@@ -64,26 +60,22 @@ int engine::Cv::display_image(std::string file) {
   return 0;
 }
 
-void Cv::onTrackBarSlide(int pos, void* ){
-  g_cap.set( cv::CAP_PROP_POS_FRAMES, pos );
-  if( !g_dontset )
-    g_run = 1;
+void Cv::onTrackBarSlide(int pos, void*) {
+  g_cap.set(cv::CAP_PROP_POS_FRAMES, pos);
+  if (!g_dontset) g_run = 1;
   g_dontset = 0;
-
 }
 
 int Cv::playVideo(string path) {
   cv::namedWindow("Example2_4", cv::WINDOW_AUTOSIZE);
   g_cap.open(path);
   int frames = (int)g_cap.get(cv::CAP_PROP_FRAME_COUNT);
-  int tmpw
-    = (int)g_cap.get(cv::CAP_PROP_FRAME_WIDTH);
-  int tmph
-    = (int)g_cap.get(cv::CAP_PROP_FRAME_HEIGHT);
-  cout << "Video has " << frames << " frames of dimensions("
-    << tmpw << ", " << tmph << ")." << endl;
+  int tmpw = (int)g_cap.get(cv::CAP_PROP_FRAME_WIDTH);
+  int tmph = (int)g_cap.get(cv::CAP_PROP_FRAME_HEIGHT);
+  cout << "Video has " << frames << " frames of dimensions(" << tmpw << ", "
+       << tmph << ")." << endl;
   cv::createTrackbar("Position", "Example2_4", &g_slider_position, frames,
-    Cv::onTrackBarSlide);
+                     Cv::onTrackBarSlide);
   cv::Mat frame;
   for (;;) {
     if (g_run != 0) {
@@ -96,19 +88,18 @@ int Cv::playVideo(string path) {
       g_run -= 1;
     }
     char c = (char)cv::waitKey(10);
-    if (c == 's') // single step
-      if (c =='s') // single step
+    if (c == 's')    // single step
+      if (c == 's')  // single step
       {
         g_run = 1;
         cout << "Single step, run = " << g_run << endl;
       }
-    if (c == 'r') // run mode
+    if (c == 'r')  // run mode
     {
-      g_run = -1; cout << "Run mode, run = " << g_run << endl;
+      g_run = -1;
+      cout << "Run mode, run = " << g_run << endl;
     }
-    if (c == 27)
-      break;
+    if (c == 27) break;
   }
-  return(0);
-
+  return (0);
 }

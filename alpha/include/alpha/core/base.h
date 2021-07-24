@@ -46,6 +46,51 @@ namespace blitz {
   };
 
 
+  class Switchable{
+    public:
+      virtual void toggleOn() const = 0;
+      virtual void toggleOff() const = 0;
+      
+      virtual ~Switchable() = default;
+      
+  };
+
+  class Lights : public Switchable{
+    public:
+      Lights(){}
+
+      void toggleOn() const override { std::cout << "Lights On!" <<std::endl; }
+      void toggleOff() const override { std::cout <<"Lights Off!" << std::endl; }
+  };
+
+  class PowerSwitch : public Switchable{
+    public:
+      PowerSwitch(){}
+      void toggleOn() const override { std::cout << "Power On!" <<std::endl; }
+      void toggleOff() const override { std::cout << "Power Off!" << std::endl; }
+  };
+
+
+  class Engine {
+  public:
+    Engine(Switchable* sw) {
+      _sw = sw;
+      ON = false;
+    }
+    void activate() {
+      if (ON) {
+        _sw->toggleOff();
+        ON = false;
+      } else {
+        _sw->toggleOn();
+        ON = true;
+      }
+    }
+
+  private:
+    bool ON;
+    Switchable* _sw;
+  };
 
   template <typename T1, typename T2>
   auto max(T1 a, T2 b) -> std::decay_t<decltype(true ? a : b)> {
@@ -56,6 +101,19 @@ namespace blitz {
   struct Array_type {
     using type = T;
     static const int dim;
+  };
+
+
+  class Integer{
+    public:
+      Integer();
+      Integer(long long);
+
+      Integer operator+(Integer);
+      ~Integer();
+      
+      private:
+        long long* value;
   };
 
   constexpr int MAX_ONSTSCK = sizeof(std::string);
@@ -97,8 +155,6 @@ namespace blitz {
 
   template <bool _Cond, typename T, typename F>
   using Conditional = typename std::conditional<_Cond, T, F>::type;
-
-  
 
 }  // namespace blitz
 

@@ -24,32 +24,26 @@
 #ifndef BLITZ_ENGINE_INCLUDE_ENGINE_ENGINE_H
 #define BLITZ_ENGINE_INCLUDE_ENGINE_ENGINE_H
 
+#include <cassert>
 #include <cstddef>
+#include <cstdlib>
+#include <iostream>
 #include <limits>
 #include <memory>
-#include <thread>
 #include <ostream>
+#include <string>
+#include <thread>
 #include <type_traits>
 #include <vector>
-#include <cstdlib>
-#include <cassert>
-#include <string>
-#include <iostream>
 
 #include "engine/engine_cv/engine_cv.h"
 
 #pragma once
 
+namespace engine {
 
-
-namespace engine{
-  
-const std::string DEFAULT_PATH {"${PWD}/tmp/"};
-
-
-
+const std::string DEFAULT_PATH{"${PWD}/tmp/"};
 
 }
-
 
 #endif

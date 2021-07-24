@@ -30,123 +30,122 @@
 #include "alpha/alpha.h"
 
 namespace blitz {
-  namespace alg {
+namespace alg {
 
-    template <typename T>
-    void i_sort(T* A, int sz) {
-      int i, j;
-      T key;
-      for (j = 1; j < sz; ++j) {
-        key = A[j];
-        i = j - 1;
-        while (i >= 0 && A[i] > key) {
-          A[i + 1] = A[i];
-          i = i - 1;
+template <typename T>
+void i_sort(T* A, int sz) {
+  int i, j;
+  T key;
+  for (j = 1; j < sz; ++j) {
+    key = A[j];
+    i = j - 1;
+    while (i >= 0 && A[i] > key) {
+      A[i + 1] = A[i];
+      i = i - 1;
+    }
+    A[i + 1] = key;
+  }
+}
+/* template<typename T>
+void insertion_sort(T* arr, int sz) {
+    T key;
+    for (int j = 1; j <= sz; ++j) {
+        int i = 0;
+        while (arr[j] > arr[i]) {
+            i = i + 1;
         }
-        A[i + 1] = key;
-      }
-    }
-    /* template<typename T>
-    void insertion_sort(T* arr, int sz) {
-        T key;
-        for (int j = 1; j <= sz; ++j) {
-            int i = 0;
-            while (arr[j] > arr[i]) {
-                i = i + 1;
-            }
-            key = arr[j];
-            for (int k = 0; k < (j - i - 1); ++k) {
-                arr[j - k] = arr[j - k - 1];
-            }
-            arr[i] = key;
+        key = arr[j];
+        for (int k = 0; k < (j - i - 1); ++k) {
+            arr[j - k] = arr[j - k - 1];
         }
-    } */
-
-    template <typename T>
-    void print(T* arr, int sz) {
-      std::cout << "[ ";
-      for (int i = 0; i < sz; ++i) {
-        std::cout << arr[i];
-        if (i < sz - 1) std::cout << ", ";
-      }
-      std::cout << " ]" << '\n';
+        arr[i] = key;
     }
+} */
 
-    template <typename _Tp>
-    _Tp Max(_Tp* arr, int sz) {
-      _Tp max = arr[0];
-      for (int i = 1; i <= sz; ++i) {
-        if (max < arr[i]) max = arr[i];
-      }
-      return max;
+template <typename T>
+void print(T* arr, int sz) {
+  std::cout << "[ ";
+  for (int i = 0; i < sz; ++i) {
+    std::cout << arr[i];
+    if (i < sz - 1) std::cout << ", ";
+  }
+  std::cout << " ]" << '\n';
+}
+
+template <typename _Tp>
+_Tp Max(_Tp* arr, int sz) {
+  _Tp max = arr[0];
+  for (int i = 1; i <= sz; ++i) {
+    if (max < arr[i]) max = arr[i];
+  }
+  return max;
+}
+
+template <typename T>
+int linear_search(T* arr, T val, int sz) {
+  int pos = -1;
+  for (int i = 0; i <= sz; ++i) {
+    if (arr[i] == val) {
+      pos = i;
+      break;
     }
+  }
+  return pos;
+}
 
-    template <typename T>
-    int linear_search(T* arr, T val, int sz) {
-      int pos = -1;
-      for (int i = 0; i <= sz; ++i) {
-        if (arr[i] == val) {
-          pos = i;
-          break;
-        }
-      }
-      return pos;
+template <typename T>
+int binary_search(T* arr, T key, int sz) {
+  int loc = -1;
+  int i = 0;
+  int j = sz;
+
+  while (i < j) {
+    int mid = floor((i + j) / 2);
+    if (key > arr[mid])
+      i = mid + 1;
+    else
+      j = mid;
+  }
+  if (key == arr[i]) loc = i;
+  return loc;
+}
+
+template <typename T>
+void bubble_sort(T* arr, int sz) {
+  for (int i = 1; i < sz - 1; ++i) {
+    for (int j = 0; j < sz - i; ++j) {
+      if (arr[j] > arr[j + 1]) std::swap(arr[j], arr[j + 1]);
     }
+  }
+}
 
-    template <typename T>
-    int binary_search(T* arr, T key, int sz) {
-      int loc = -1;
-      int i = 0;
-      int j = sz;
+template <typename T>
+void Swap(T&& t1, T&& t2) {
+  std::swap(std::forward<T>(t1), std::forward<T>(t2));
+}
 
-      while (i < j) {
-        int mid = floor((i + j) / 2);
-        if (key > arr[mid])
-          i = mid + 1;
-        else
-          j = mid;
-      }
-      if (key == arr[i]) loc = i;
-      return loc;
+/**
+ * @brief Insertion Sort Algorithm
+ * @tparam _Tp Array type
+ * @tparam size number of elements to be sorted.
+ *
+ */
+template <typename _Tp, int size>
+void insertion_sort(_Tp* array) {
+  for (int j = 1; j < size; j++) {  // Loop from 1 to end
+    _Tp key = array[j];             // set current key for comparison
+    int i = j - 1;                  //  i is set to one step behind index j
+    while ((i >= 0) && array[i] > key) {
+      array[i + 1] = array[i];
+      i = i - 1;
     }
+    array[i + 1] = key;
+  }
+}
 
-    template <typename T>
-    void bubble_sort(T* arr, int sz) {
-      for (int i = 1; i < sz - 1; ++i) {
-        for (int j = 0; j < sz - i; ++j) {
-          if (arr[j] > arr[j + 1]) std::swap(arr[j], arr[j + 1]);
-        }
-      }
-    }
+long factorial(int n);
 
-    template <typename T>
-    void Swap(T&& t1, T&& t2) {
-      std::swap(std::forward<T>(t1), std::forward<T>(t2));
-    }
-
-    /**
-     * @brief Insertion Sort Algorithm
-     * @tparam _Tp Array type
-     * @tparam size number of elements to be sorted.
-     *
-     */
-    template <typename _Tp, int size>
-    void insertion_sort(_Tp* array) {
-      for (int j = 1; j < size; j++) {  // Loop from 1 to end
-        _Tp key = array[j];             // set current key for comparison
-        int i = j - 1;                  //  i is set to one step behind index j
-        while ((i >= 0) && array[i] > key) {
-          array[i + 1] = array[i];
-          i = i - 1;
-        }
-        array[i + 1] = key;
-      }
-    }
-
-
-    long factorial(int n);
-
-  }  // namespace alg
+}  // namespace alg
 
 }  // namespace blitz
 

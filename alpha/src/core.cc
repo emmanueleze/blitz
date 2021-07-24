@@ -28,8 +28,6 @@ using namespace blitz;
 using namespace blitz::gen;
 using namespace blitz::mt;
 
-
-
 Name::Name(std::string fname, std::string lname)
   : firstName(fname), lastName(lname) {}
 
@@ -41,12 +39,12 @@ bool Name::operator==(Name& n1) const {
 }
 bool NameAscending::operator()(const Name& n1, const Name& n2) const {
   return n1.LastName() < n2.LastName() || ((n1.LastName() == n2.LastName()) &&
-    (n1.FirstName() < n2.FirstName()));
+                                           (n1.FirstName() < n2.FirstName()));
 }
 
 bool NameDescending::operator()(const Name& n1, const Name& n2) const {
   return n1.LastName() > n2.LastName() || ((n1.LastName() == n2.LastName()) &&
-    (n1.FirstName() > n2.FirstName()));
+                                           (n1.FirstName() > n2.FirstName()));
 }
 
 std::ostream& gen::operator<<(std::ostream& ost, const Name& name) {
@@ -71,7 +69,6 @@ void Singleton::KillPhoenixSingleton() {
   _instance->~Singleton();
 }
 
-
 void Singleton::OnDeadReference() {
   /*  // Obtain the shell of the destroyed singleton
    Create();
@@ -80,11 +77,11 @@ void Singleton::OnDeadReference() {
    // Create a new singleton at that address
    new(_instance) Singleton;
    // Queue this new object's destruction
-   
+
    // Reset destroyed_ because we're back in business
     */
-   atexit(Singleton::KillPhoenixSingleton);
-   _destroyed = false;
+  atexit(Singleton::KillPhoenixSingleton);
+  _destroyed = false;
 }
 
 long alg::factorial(int n) {
@@ -93,19 +90,14 @@ long alg::factorial(int n) {
     return 1;
   else
     return n * factorial(n - 1);
-
 }
 
-file::Reader::Reader(std::string _filename) : filename{ _filename } {
-  if (!file.is_open())
-    this->OpenFile();
+file::Reader::Reader(std::string _filename) : filename{_filename} {
+  if (!file.is_open()) this->OpenFile();
 }
-void file::Reader::OpenFile() {
-  file.open(filename);
-}
+void file::Reader::OpenFile() { file.open(filename); }
 
 void file::Reader::Read() {
-
   char buf[512];
   if (file.is_open() && !file.fail()) {
     while (!file.eof()) {
@@ -113,4 +105,18 @@ void file::Reader::Read() {
       std::cout << buf << '\n';
     }
   }
+}
+
+Integer::Integer(){}
+
+Integer::Integer(long long _value) {
+  value = new long long(_value);
+}
+
+/* Integer::operator+(Integer _value){
+  auto res = this->value += _value.value;
+}
+ */
+Integer::~Integer(){
+  delete value;
 }

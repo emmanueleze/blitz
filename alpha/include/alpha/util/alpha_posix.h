@@ -27,8 +27,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-#define NUM_THREADS     5
-
+#define NUM_THREADS 5
 
 int thread_runner();
 void* worker(void*);

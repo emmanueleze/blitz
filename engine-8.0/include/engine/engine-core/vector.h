@@ -21,7 +21,6 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
 #ifndef BLITZ_ENGINE_INCLUDE_ENGINE_ENGINE_CORE_VECTOR_H
 #define BLITZ_ENGINE_INCLUDE_ENGINE_ENGINE_CORE_VECTOR_H
 
@@ -30,24 +29,18 @@
 
 namespace blitz {
 
-  namespace engine{
+namespace engine {
 
-    template<typename T=double, unsigned... Dimension>
-    class Vector{};
+template <typename T = double, unsigned... Dimension>
+class Vector {};
 
-  }
+}  // namespace engine
 
-  template<unsigned...> struct Tensor;
-  template<unsigned... Dims1, unsigned... Dims2>
-    auto compose(Tensor<Dims1...>, Tensor<Dims2...>);
+template <unsigned...>
+struct Tensor;
+template <unsigned... Dims1, unsigned... Dims2>
+auto compose(Tensor<Dims1...>, Tensor<Dims2...>);
 
-
-
-
-}
-
-
+}  // namespace blitz
 
 #endif
-
-

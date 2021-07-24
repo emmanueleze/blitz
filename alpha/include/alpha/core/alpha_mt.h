@@ -24,9 +24,6 @@
 #ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_ALPHA_MT_H_
 #define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_ALPHA_MT_H_
 
-
-#include "alpha/alpha.h"
-
 #include <atomic>
 #include <chrono>
 #include <condition_variable>
@@ -36,28 +33,29 @@
 #include <random>
 #include <shared_mutex>
 
+#include "alpha/alpha.h"
+
 namespace blitz {
 
-  namespace mt {
+namespace mt {
 
-    class SpinLockMutex {
-    public:
-      SpinLockMutex() :at_flag(ATOMIC_FLAG_INIT) {}
+class SpinLockMutex {
+ public:
+  SpinLockMutex() : at_flag(ATOMIC_FLAG_INIT) {}
 
-      void lock() {
-        while (at_flag.test_and_set(std::memory_order_acquire));
-      }
+  void lock() {
+    while (at_flag.test_and_set(std::memory_order_acquire))
+      ;
+  }
 
-      void unlock() { at_flag.clear(std::memory_order_release); }
+  void unlock() { at_flag.clear(std::memory_order_release); }
 
-    private:
-      std::atomic_flag at_flag;
-    };
+ private:
+  std::atomic_flag at_flag;
+};
 
-    
+}  // namespace mt
 
-  } // namespace mt
+}  // namespace blitz
 
-} // namespace blitz
-
-#endif // BLITZ_ALPHA_INCLUDE_CORE_ALPHA_MT_H_
+#endif  // BLITZ_ALPHA_INCLUDE_CORE_ALPHA_MT_H_

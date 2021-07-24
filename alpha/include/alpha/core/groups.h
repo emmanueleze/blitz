@@ -24,28 +24,14 @@
 #ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GROUPS_H_
 #define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_GROUPS_H_
 
-
 #include <exception>
 
 namespace blitz {
 
-    struct EmptyStack : public std::exception{
-        const char* what() const throw(){
-            return "Stack is empty";
-        }
-    };
+struct EmptyStack : public std::exception {
+  const char* what() const throw() { return "Stack is empty"; }
+};
 
-
-
-}
-
-
-
-
-
-
-
-
-
+}  // namespace blitz
 
 #endif

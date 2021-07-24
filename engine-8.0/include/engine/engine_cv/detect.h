@@ -21,32 +21,19 @@
 // ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
 #ifndef BLITZ_ENGINE_INCLUDE_ENGINE_ENGINE_CV_DETECT_H
 #define BLITZ_ENGINE_INCLUDE_ENGINE_ENGINE_CV_DETECT_H
 
 #include "engine/engine.h"
-
-#include "opencv2/objdetect.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgproc.hpp"
+#include "opencv2/objdetect.hpp"
 #include "opencv2/videoio.hpp"
-
-
-
 
 static void help(const char** argv);
 
 void detectAndDraw(cv::Mat& img, cv::CascadeClassifier& cascade,
-    cv::CascadeClassifier& nestedCascade,
-    double scale, bool tryflip);
+                   cv::CascadeClassifier& nestedCascade, double scale,
+                   bool tryflip);
 
-
-
-
-
-
-
-
-
-#endif    
+#endif

@@ -22,24 +22,19 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #include "alpha/core/policy.h"
-
 #include "gtest/gtest.h"
 
 using namespace blitz;
 
 class SingletonTest : public ::testing::Test {
-  protected:
-    void SetUp() override {
-
-    }
-    Singleton* singleton;
-
+ protected:
+  void SetUp() override {}
+  Singleton* singleton;
 };
 
-TEST_F(SingletonTest, InitialInstanceIsZero){
-    ASSERT_TRUE(singleton == nullptr);
+TEST_F(SingletonTest, InitialInstanceIsZero) {
+  ASSERT_TRUE(singleton == nullptr);
 }
-
 
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);

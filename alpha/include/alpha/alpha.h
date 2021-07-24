@@ -26,7 +26,6 @@
 
 #pragma once
 
-
 #include <cassert>
 #include <cstddef>
 #include <cstdlib>
@@ -39,24 +38,24 @@
 #include <type_traits>
 #include <vector>
 
+#include "alpha/core/alpha_mt.h"
 #include "alpha/core/alpha_stl.h"
 #include "alpha/core/base.h"
 #include "alpha/core/bstructs.h"
-#include "alpha/core/alpha_mt.h"
 #include "alpha/core/controls.h"
+#include "alpha/core/files.h"
 #include "alpha/core/generic.h"
 #include "alpha/core/groups.h"
 #include "alpha/core/policy.h"
-#include "alpha/core/files.h"
 #include "alpha/core/stream.h"
 #include "alpha/util/alpha_posix.h"
 
-namespace blitz{
-  namespace mt{}
-  namespace gen{}
-  namespace alg{}
-  namespace file{}
-  namespace stream{}
-}
+namespace blitz {
+namespace mt {}
+namespace gen {}
+namespace alg {}
+namespace file {}
+namespace stream {}
+}  // namespace blitz
 
 #endif

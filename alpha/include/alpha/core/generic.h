@@ -26,8 +26,6 @@
 
 #pragma once
 
-#include "alpha/alpha.h"
-
 #include <array>
 #include <functional>
 #include <iterator>
@@ -36,6 +34,8 @@
 #include <queue>
 #include <type_traits>
 #include <utility>
+
+#include "alpha/alpha.h"
 
 namespace blitz {
 
@@ -100,18 +100,20 @@ namespace blitz {
       return elems.back();
     }
 
-    template <typename T,typename Policy = SumPolicy,
-                          typename Traits = AccumulatorTraits <T> >
+    template <typename T, 
+      template<typename, typename> class Policy = SumPolicy,
+              typename Traits = AccumulatorTraits<T>>
     auto accumulate(T const* p1, T const* p2) {
-    
       using AccT = typename Traits::AccT;
       AccT total = Traits::zero;
       while (p1 != p2) {
-        Policy::accum(total, *p1);
+        Policy<AccT,T>::reduce(total, *p1);
         ++p1;
       }
       return total;
     }
+
+
 
   }  // namespace gen
 

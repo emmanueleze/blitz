@@ -26,29 +26,18 @@
 
 #include "alpha/alpha.h"
 
+namespace blitz {
 
-namespace blitz{
-  
-  namespace stream{
+namespace stream {
 
-    template<typename T>
-    std::ostream& operator<<(std::ostream& os, gen::Stack<T> const& _st){
-      for(T elm : _st.elems)
-        os << elm <<std::endl;
-      return os;
-    }
-
-
-
-  }
-
-
-  
-
-
+template <typename T>
+std::ostream& operator<<(std::ostream& os, gen::Stack<T> const& _st) {
+  for (T elm : _st.elems) os << elm << std::endl;
+  return os;
 }
 
+}  // namespace stream
 
-
+}  // namespace blitz
 
 #endif

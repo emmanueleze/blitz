@@ -24,8 +24,6 @@
 #ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_ALPHA_STL_H_
 #define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_ALPHA_STL_H_
 
-#include "alpha/alpha.h"
-
 #include <algorithm>
 #include <functional>
 #include <iterator>
@@ -34,73 +32,71 @@
 #include <type_traits>
 #include <unordered_set>
 
-
+#include "alpha/alpha.h"
 
 using namespace std::placeholders;
 
-
 namespace blitz {
-  namespace gen {
-    class Name {
-    public:
-      Name() {}
-      Name(std::string, std::string);
+namespace gen {
+class Name {
+ public:
+  Name() {}
+  Name(std::string, std::string);
 
-    public:
-      std::string FirstName() const;
-      std::string LastName() const;
-      Name& operator=(const Name&);
-      bool operator==(Name& n1) const;
-      friend std::ostream& operator<<(std::ostream& ost, const Name& name);
+ public:
+  std::string FirstName() const;
+  std::string LastName() const;
+  Name& operator=(const Name&);
+  bool operator==(Name& n1) const;
+  friend std::ostream& operator<<(std::ostream& ost, const Name& name);
 
-    private:
-      std::string firstName;
-      std::string lastName;
-    };
+ private:
+  std::string firstName;
+  std::string lastName;
+};
 
-    std::ostream& operator<<(std::ostream& ost, const Name& name);
+std::ostream& operator<<(std::ostream& ost, const Name& name);
 
-    class NameAscending {
-    public:
-      bool operator()(const Name&, const Name&) const;
-    };
+class NameAscending {
+ public:
+  bool operator()(const Name&, const Name&) const;
+};
 
-    class NameDescending {
-    public:
-      bool operator()(const Name&, const Name&) const;
-    };
+class NameDescending {
+ public:
+  bool operator()(const Name&, const Name&) const;
+};
 
-    template <typename T, typename SortCriterion>
-    using NameSet = std::set<T, SortCriterion>;
+template <typename T, typename SortCriterion>
+using NameSet = std::set<T, SortCriterion>;
 
-    class IntSequence {
-    public:
-      friend int GetIntValue();
-      IntSequence(int init) : value(init) {}
-      int operator()() { return ++value; }
+class IntSequence {
+ public:
+  friend int GetIntValue();
+  IntSequence(int init) : value(init) {}
+  int operator()() { return ++value; }
 
-    private:
-      int value;
-    };
+ private:
+  int value;
+};
 
-    class MeanValue {
-    public:
-      MeanValue() : num(0), sum(0) {}
+class MeanValue {
+ public:
+  MeanValue() : num(0), sum(0) {}
 
-      void operator()(long int elem) {
-        ++num;
-        sum += elem;
-      }
+  void operator()(long int elem) {
+    ++num;
+    sum += elem;
+  }
 
-      double value() { return static_cast<double>(sum) / static_cast<double>(num); }
+  double value() { return static_cast<double>(sum) / static_cast<double>(num); }
 
-    private:
-      long int num;
-      long int sum;
-    };
+ private:
+  long int num;
+  long int sum;
+};
 
-
-  }  // namespace gen
+}  // namespace gen
 }  // namespace blitz
 
 #endif

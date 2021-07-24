@@ -30,25 +30,25 @@
 #include "alpha/alpha.h"
 
 namespace blitz {
-  namespace file {
+namespace file {
 
-    class Reader {
-    public:
-      Reader() = delete;
-      Reader(std::string);
-      void OpenFile();
-      void Read();
+class Reader {
+ public:
+  Reader() = delete;
+  Reader(std::string);
+  void OpenFile();
+  void Read();
 
-    private:
-      std::string filename;
-      std::ifstream file;
-    };
-    class Writer {};
+ private:
+  std::string filename;
+  std::ifstream file;
+};
+class Writer {};
 
-    template <typename _Md>
-    class FileHandler {};
+template <typename _Md>
+class FileHandler {};
 
-  }  // namespace file
+}  // namespace file
 
 }  // namespace blitz
 
