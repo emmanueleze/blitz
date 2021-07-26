@@ -113,6 +113,18 @@ namespace blitz {
       return total;
     }
 
+    template<typename _It, typename Traits = AccumulatorTraits<_It>>
+    auto accumulate(_It start, _It end){
+      using val_type =  typename std::iterator_traits<_It>::value_type;
+
+      val_type total{};
+      while(start != end){
+        total += *start;
+        ++start;
+      }
+
+      return total;
+    }
 
 
   }  // namespace gen
