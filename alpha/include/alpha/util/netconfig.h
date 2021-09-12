@@ -25,7 +25,12 @@
 #define BLITZ_ALPHA_INCLUDE_ALPHA_UTIL_NETCONFIG_H_
 
 #include <sys/socket.h>
+
+namespace blitz{
+  namespace net{
+    
+  }
 }
-}
+
 
 #endif  // NETCONFIG_HPP

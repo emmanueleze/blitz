@@ -44,16 +44,14 @@ class Node {
   Node(_Tp _data) : data(_data) {}
   Node(const Node& n);
   Node(Node&& n);
-  bool operator==(Node&) const;
+  Node& operator=(const Node& n0){
+    this->data = n0.data;
+    return  *this;
+  }
 
  public:
   _Tp data;
 };
-
-template <typename _Tp>
-bool Node<_Tp>::operator==(Node& n1) const {
-  return (this->data == n1.data);
-}
 
 template <typename T, int sz>
 class naive_stack {
@@ -188,18 +186,95 @@ class Queue {
  */
 template <typename T, template <typename> class _Node = Node>
 class LinkedList {
- public:
-  LinkedList() {}
-  void insert(T);
-  void remove();
-  void traverse();
-  ~LinkedList() {}
 
+ public:
+  LinkedList() {
+    head = nullptr;
+    
+  }
+  void insert(T _data){
+    auto _node = new _Node(_data);
+    _node->data = _data;
+    _node->next = nullptr;
+
+    if(head == nullptr){
+      head = _node;
+    }
+    else{
+      //  Critical section.!
+      _node->next = head;
+      head = _node;
+    }
+  
+  }
+  void remove();
+  void traverse()const{
+    auto begin = head;
+    while(begin != nullptr){
+      std::cout << begin->data << " ";
+      begin = begin->next;
+    }
+    std::cout<<"\n";
+  }
+
+  bool search(T _data) const{
+    auto begin = head;
+    
+    while(begin != nullptr){
+      if(begin->data == _data)
+        return true;
+    }
+    return false;
+    
+  }
+ 
  private:
   _Node<T>* head;
-  _Node<T>* current;
-  _Node<T>* tail;
+  std::mutex _mutex;
 };
+ 
+
+  template <typename _Tp, typename NodeTp = alg::Node<_Tp>>
+  class SingleNode : public NodeTp {
+  friend class LinkedList<_Tp,SingleNode>;
+  public:
+    SingleNode() {}
+    SingleNode(_Tp _data) : NodeTp(_data){}
+  private:
+    SingleNode *next;
+  };
+
+  template <typename _Tp, typename NodeTp = alg::Node<_Tp>>
+  class DoubleNode : public NodeTp {
+  friend class LinkedList<_Tp, DoubleNode>;
+  public:
+    DoubleNode() {}
+    DoubleNode(_Tp _data) : NodeTp(_data){}
+
+  private:
+    DoubleNode *prev;
+    DoubleNode *next;
+  };
+
+  template <typename _Tp, typename NodeType = alg::Node<_Tp>>
+  class CircularNode : public NodeType {
+  friend class LinkedList<_Tp, CircularNode>;
+  
+  public:
+    CircularNode() = default;
+    CircularNode(_Tp _data) : NodeType(_data){}
+
+  private:
+    CircularNode *first;  
+  };
+
+
+template<>
+class LinkedList<int> {
+  public:
+    LinkedList(){std::cout << "LinkedList<int>\n";}
+};
+
 
 // general distance
 template <typename Iterator>
@@ -220,13 +295,20 @@ typename std::iterator_traits<Iterator>::difference_type Distance(
   }
 }
 
+void display(){std::cout << "structures" <<std::endl;}
+
 }  // namespace alg
 
 template <typename _Tp>
-using SingleList = alg::LinkedList<_Tp, SingleNode>;
+using SingleList = alg::LinkedList<_Tp, alg::SingleNode>;
 
 template <typename _Tp>
-using DoubleList = alg::LinkedList<_Tp, DoubleNode>;
+using DoubleList = alg::LinkedList<_Tp, alg::DoubleNode>;
+
+template<typename _Tp>
+using CircularList = alg::LinkedList<_Tp, alg::DoubleNode>;
+
+
 
 }  // namespace blitz
 #endif

@@ -34,97 +34,41 @@
 #include <queue>
 #include <type_traits>
 #include <utility>
+#include <typeinfo>
+
 
 #include "alpha/alpha.h"
+#include "alpha/core/bstructs.h"
+
+
+using namespace blitz;
 
 namespace blitz {
 
   namespace gen {
-    template <typename T, typename Cont = std::deque<T>>
-    class Stack;
-    }
-    namespace stream {
-    template <typename T>
-    std::ostream& operator<<(std::ostream& os, gen::Stack<T> const& _st);
-    }
-    namespace gen {
 
-    //  Function Templates
-    //  **********************************************
+    
+    class Iota{
+      public:
+        Iota(){}
+        
+        template<typename T>
+        class Node : public alg::Node<T> {
+          
+        };
 
-    template <typename _Tp>
-    constexpr auto max(_Tp const& a, _Tp const& b)
-      -> std::decay_t<decltype(b < a ? a : b)> {
-      return b < a ? a : b;
-    }
+        template<typename T>
+        using IotaPtr = Node<T>*;
+      private:
+        
 
-    //  Class Templates
-    //  **********************************************
-
-    template <typename _Tp, typename Cont>
-    class Stack {
-    public:
-      void push(_Tp const&);
-      void pop();
-      _Tp const top() const;
-      bool empty() const { return elems.empty(); }
-      size_t size() const { return elems.size(); }
-      friend std::ostream& stream::operator<<<_Tp>(std::ostream& os,
-                                                  Stack<_Tp> const& _stack);
-
-    private:
-      Cont elems;
-      std::mutex _stack_mutex;
-      size_t sz;
+        
     };
 
-    template <typename _Tp, typename Cont>
-    void Stack<_Tp, Cont>::push(_Tp const& elem) {
-      std::lock_guard<std::mutex> lk(_stack_mutex);
-      elems.push_back(elem);
-      ++sz;
+    void printt(){
+      blitz::alg::display();
     }
 
-    template <typename _Tp, typename Cont>
-    void gen::Stack<_Tp, Cont>::pop() {
-      std::lock_guard<std::mutex> lk(_stack_mutex);
-      assert(!elems.empty());
-      elems.pop_back();
-      --sz;
-    }
-
-    template <typename _Tp, typename Cont>
-    _Tp const Stack<_Tp, Cont>::top() const {
-      std::lock_guard<std::mutex> lk(_stack_mutex);
-      assert(!elems.empty());
-      return elems.back();
-    }
-
-    template <typename T, 
-      template<typename, typename> class Policy = SumPolicy,
-              typename Traits = AccumulatorTraits<T>>
-    auto accumulate(T const* p1, T const* p2) {
-      using AccT = typename Traits::AccT;
-      AccT total = Traits::zero;
-      while (p1 != p2) {
-        Policy<AccT,T>::reduce(total, *p1);
-        ++p1;
-      }
-      return total;
-    }
-
-    template<typename _It, typename Traits = AccumulatorTraits<_It>>
-    auto accumulate(_It start, _It end){
-      using val_type =  typename std::iterator_traits<_It>::value_type;
-
-      val_type total{};
-      while(start != end){
-        total += *start;
-        ++start;
-      }
-
-      return total;
-    }
 
 
   }  // namespace gen

@@ -27,6 +27,7 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdlib>
+#include <math.h>
 #include <iostream>
 #include <limits>
 #include <memory>
@@ -45,5 +46,15 @@ namespace engine {
 const std::string DEFAULT_PATH{"${PWD}/tmp/"};
 
 }
+
+// Writes input to output stream.
+// fix to accept multiple messages.
+template<typename _MsgType>
+void message(const _MsgType _message, std::ostream& os = std::cout){
+
+    os << _message << std::endl;
+    
+  }
+
 
 #endif

@@ -26,6 +26,25 @@
 
 using namespace blitz;
 
+
+class ListTest : public ::testing::Test{
+  
+  protected:
+    void SetUp() override{
+      //auto _node = (alg::SingleNode<int>*)malloc(sizeof(alg::SingleNode<int>));
+      value = 32;
+    }
+    int value;
+    SingleList<int> list;
+};
+
+TEST_F(ListTest, ListHeadEqualsThirtyTwo){
+  list.insert(32);
+  ASSERT_EQ(list.get_head(), 32);
+}
+
+
+
 class FactorialTest : public ::testing::Test {
  protected:
   void SetUp() override {

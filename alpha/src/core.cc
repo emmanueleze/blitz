@@ -107,16 +107,4 @@ void file::Reader::Read() {
   }
 }
 
-Integer::Integer(){}
 
-Integer::Integer(long long _value) {
-  value = new long long(_value);
-}
-
-/* Integer::operator+(Integer _value){
-  auto res = this->value += _value.value;
-}
- */
-Integer::~Integer(){
-  delete value;
-}

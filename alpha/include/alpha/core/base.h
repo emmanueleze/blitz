@@ -26,136 +26,17 @@
 
 #include "alpha/alpha.h"
 
+
 namespace blitz {
 
-  class RawData {
-  public:
-    RawData() {}
-    virtual void ReadData() { std::cout << "RawData::ReadData()\n"; }
-  };
-
-  class DataObject : public RawData {
-  public:
-    friend void DataAccess();
-    DataObject() {}
-    DataObject(std::string, double, int) {}
-    void ReadData() override {
-      std::cout << "DataObject::ReadData()\n";
-      RawData::ReadData();
-    }
-  };
 
 
-  class Switchable{
-    public:
-      virtual void toggleOn() const = 0;
-      virtual void toggleOff() const = 0;
-      
-      virtual ~Switchable() = default;
-      
-  };
-
-  class Lights : public Switchable{
-    public:
-      Lights(){}
-
-      void toggleOn() const override { std::cout << "Lights On!" <<std::endl; }
-      void toggleOff() const override { std::cout <<"Lights Off!" << std::endl; }
-  };
-
-  class PowerSwitch : public Switchable{
-    public:
-      PowerSwitch(){}
-      void toggleOn() const override { std::cout << "Power On!" <<std::endl; }
-      void toggleOff() const override { std::cout << "Power Off!" << std::endl; }
-  };
+  
+  
 
 
-  class Engine {
-  public:
-    Engine(Switchable* sw) {
-      _sw = sw;
-      ON = false;
-    }
-    void activate() {
-      if (ON) {
-        _sw->toggleOff();
-        ON = false;
-      } else {
-        _sw->toggleOn();
-        ON = true;
-      }
-    }
 
-  private:
-    bool ON;
-    Switchable* _sw;
-  };
-
-  template <typename T1, typename T2>
-  auto max(T1 a, T2 b) -> std::decay_t<decltype(true ? a : b)> {
-    return b < a ? a : b;
-  }
-
-  template <typename T, int N>
-  struct Array_type {
-    using type = T;
-    static const int dim;
-  };
-
-
-  class Integer{
-    public:
-      Integer();
-      Integer(long long);
-
-      Integer operator+(Integer);
-      ~Integer();
-      
-      private:
-        long long* value;
-  };
-
-  constexpr int MAX_ONSTSCK = sizeof(std::string);
-
-  template <typename T>
-  class Scoped {
-  public:
-    T& operator*() { return x; }
-    T* operator->() { return &x; }
-
-    Scoped(const Scoped&) = delete;
-    Scoped operator=(const Scoped&) = delete;
-
-  private:
-    T x;
-  };
-
-  template <typename T>
-  class On_heap {
-  public:
-    On_heap() : p{new T} {}   // allocate
-    ~On_heap() { delete p; }  // de-allocate
-
-    T& operator*() { return *p; }
-    T* operator->() { return p; }
-
-    On_heap(const On_heap&) = delete;
-    On_heap operator()(const On_heap&) = delete;
-
-  private:
-    T* p;
-  };
-
-  template <typename T>
-  struct Obj_holder {
-    using type = typename std::conditional<(sizeof(T) <= MAX_ONSTSCK), Scoped<T>,
-                                          On_heap<T>>::type;
-  };
-
-  template <bool _Cond, typename T, typename F>
-  using Conditional = typename std::conditional<_Cond, T, F>::type;
-
+  
 }  // namespace blitz
 
 #endif

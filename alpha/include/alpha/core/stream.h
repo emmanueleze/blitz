@@ -30,11 +30,6 @@ namespace blitz {
 
 namespace stream {
 
-template <typename T>
-std::ostream& operator<<(std::ostream& os, gen::Stack<T> const& _st) {
-  for (T elm : _st.elems) os << elm << std::endl;
-  return os;
-}
 
 }  // namespace stream
 

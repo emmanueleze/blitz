@@ -2,39 +2,46 @@
 // Copyright (c) 2021 Emmanuel Godwin
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
+// of this software and associated documentation files (the "alg::Software"), to deal
+// in the alg::Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
+// copies of the alg::Software, and to permit persons to whom the alg::Software is
 // furnished to do so, subject to the following conditions:
 //
 // The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
+// all copies or substantial portions of the alg::Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A
-// PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+// THE alg::SOFTWARE Ialg::S PROVIDED "Aalg::S Ialg::S", WITHOUT WARRANTY OF ANY KIND, EXPREalg::Salg::S OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIEalg::S OF MERCHANTABILITY,
+// FITNEalg::Salg::S FOR A
+// PARTICULAR PURPOalg::SE AND NONINFRINGEMENT. IN NO EVENT alg::SHALL THE AUTHORalg::S OR
 // COPYRIGHT
-// HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-// ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+// HOLDERalg::S BE LIABLE FOR ANY CLAIM, DAMAGEalg::S OR OTHER LIABILITY, WHETHER IN AN
+// ACTION OF CONTRACT, TORT OR OTHERWIalg::SE, ARIalg::SING FROM, OUT OF OR IN CONNECTION
+// WITH THE alg::SOFTWARE OR THE Ualg::SE OR OTHER DEALINGalg::S IN THE alg::SOFTWARE.
 
 #include "alpha/alpha.h"
 
+
 using namespace blitz;
+using namespace blitz::alg;
+using namespace blitz::mt;
 using namespace std;
 
-using namespace blitz::mt;
+
+
 
 
 int main() {
 
+  
 
+  
+  
+  
+  
+  
 
-
-
-
-
+  
 
 }

@@ -26,12 +26,13 @@
 
 #include "alpha/alpha.h"
 
+#include <vector>
+#include <list>
+
+#include "alpha/core/bstructs.h"
+
 namespace blitz {
 
-namespace alg {
-template <typename _Tp>
-class Node;
-};
 
   // using AccumulatorTraits::AccT to represent additional type 
   //  information to the given main type.
@@ -68,172 +69,171 @@ class Node;
     static constexpr float zero = 0.0f;
   };
 
-template <typename T1, typename T2>
-class SumPolicy {
- public:
-  static void reduce(T1 &total, T2 const &value) {
-    total += value;
-  }
-};
-
-template<typename T1, typename T2>
-class MultPolicy {
- public:
-  static void reduce(T1 &total, T2 const &value) {
-    total *= value;
-  }
-};
-
-template <typename T>
-struct AccumulatorTraits;
-
-template <>
-struct AccumulatorTraits<char> {
-  using AccT = int;
-  static constexpr AccT zero = 0;
-};
-
-template <>
-struct AccumulatorTraits<short> {
-  using AccT = int;
-  static constexpr AccT zero = 0;
-};
-
-template <>
-struct AccumulatorTraits<int> {
-  using AccT = long;
-  static constexpr AccT zero = 0;
-};
-
-template <>
-struct AccumulatorTraits<unsigned int> {
-  using AccT = unsigned long;
-  static constexpr AccT zero = 0;
-};
-template <>
-struct AccumulatorTraits<float> {
-  using AccT = float;
-  static constexpr AccT zero = 0.0f;
-};
-
-template <bool>
-struct CompileTimeError;
-template <>
-struct CompileTimeError<true> {};
-
-#define STATIC_CHECK(expr) (CompileTimeError<(expr) != 0>())
-
-template <typename _To, typename _From>
-_To safe_reinterpret_cast(_From from) {
-  STATIC_CHECK(sizeof(_From) <= sizeof(_To));
-
-  return reinterpret_cast<_To>(from);
-}
-
-template <typename T>
-class NewCreator {
- public:
-  static T *Create() { return new T; }
-};
-
-template <typename T>
-class MallocCreator {
- public:
-  static T *Create() {
-    void *buf = std::malloc(sizeof(T));
-    if (!buf) return 0;
-    return new (buf) T;
-  }
-};
-
-template <typename T>
-class PrototypeCreator {
- public:
-  PrototypeCreator(T *p_obj = 0) : _prototype(p_obj) {}
-  T *Create() { return _prototype ? _prototype->Clone : 0; }
-  T *GetPrototype() { return _prototype; }
-  void SetPrototype(T *p_obj) { _prototype = p_obj; }
-
- private:
-  T *_prototype;
-};
-
-class Widget {
- public:
-  Widget() { std::cout << "Widget::Created.\n"; }
-};
-
-template <template <typename> class CreationPolicy>
-class WidgetManager : CreationPolicy<Widget> {
- public:
-  WidgetManager() {}
-};
-
-typedef WidgetManager<NewCreator> NewWidgetMgr;
-typedef WidgetManager<MallocCreator> MalWidgetMgr;
-typedef WidgetManager<PrototypeCreator> ProWidgetMgr;
-
-class Singleton {
- public:
-  static Singleton *Instance() {
-    if (!_instance) {
-      if (_destroyed) {
-        OnDeadReference();
-      } else {
-        Create();
-      }
+  template <typename T1, typename T2>
+  class SumPolicy {
+  public:
+    static void reduce(T1 &total, T2 const &value) {
+      total += value;
     }
-    return _instance;
+  };
+
+  template<typename T1, typename T2>
+  class MultPolicy {
+  public:
+    static void reduce(T1 &total, T2 const &value) {
+      total *= value;
+    }
+  };
+
+  template <typename T>
+  struct AccumulatorTraits;
+
+  template <>
+  struct AccumulatorTraits<char> {
+    using AccT = int;
+    static constexpr AccT zero = 0;
+  };
+
+  template <>
+  struct AccumulatorTraits<short> {
+    using AccT = int;
+    static constexpr AccT zero = 0;
+  };
+
+  template <>
+  struct AccumulatorTraits<int> {
+    using AccT = long;
+    static constexpr AccT zero = 0;
+  };
+
+  template <>
+  struct AccumulatorTraits<unsigned int> {
+    using AccT = unsigned long;
+    static constexpr AccT zero = 0;
+  };
+  template <>
+  struct AccumulatorTraits<float> {
+    using AccT = float;
+    static constexpr AccT zero = 0.0f;
+  };
+
+  template <bool>
+  struct CompileTimeError;
+  template <>
+  struct CompileTimeError<true> {};
+
+  #define STATIC_CHECK(expr) (CompileTimeError<(expr) != 0>())
+
+  template <typename _To, typename _From>
+  _To safe_reinterpret_cast(_From from) {
+    STATIC_CHECK(sizeof(_From) <= sizeof(_To));
+
+    return reinterpret_cast<_To>(from);
   }
-  static void KillPhoenixSingleton();
-  void DisplayStatus() { std::clog << "Singleton Activated.\n"; }
 
- private:
-  static Singleton *_instance;
-  static bool _destroyed;
-  Singleton();
-  Singleton(const Singleton &);
-  Singleton &operator=(const Singleton &);
+  template <typename T>
+  class NewCreator {
+  public:
+    static T *Create() { return new T; }
+  };
 
- private:
-  static void Create() {
-    static Singleton *theInstance;
-    _instance = theInstance;
-  }
-  static void OnDeadReference();
-  virtual ~Singleton() {
-    _instance = 0;
-    _destroyed = true;
-    std::clog << "Destroyed.\n";
-  }
-};
+  template <typename T>
+  class MallocCreator {
+  public:
+    static T *Create() {
+      void *buf = std::malloc(sizeof(T));
+      if (!buf) return 0;
+      return new (buf) T;
+    }
+  };
 
-enum NodeType { NODE_SINGLE, NODE_DOUBLE, NODE_CIRC };
+  template <typename T>
+  class PrototypeCreator {
+  public:
+    PrototypeCreator(T *p_obj = 0) : _prototype(p_obj) {}
+    T *Create() { return _prototype ? _prototype->Clone : 0; }
+    T *GetPrototype() { return _prototype; }
+    void SetPrototype(T *p_obj) { _prototype = p_obj; }
 
-template <typename _Tp, typename NodeTp = alg::Node<_Tp>>
-class SingleNode : public NodeTp {
- public:
-  SingleNode() {}
+  private:
+    T *_prototype;
+  };
 
-  SingleNode *next;
-};
+  class Widget {
+  public:
+    Widget() { std::cout << "Widget::Created.\n"; }
+  };
 
-template <typename _Tp, typename NodeTp = alg::Node<_Tp>>
-class DoubleNode : public NodeTp {
- public:
-  DoubleNode() {}
+  template <template <typename> class CreationPolicy>
+  class WidgetManager : CreationPolicy<Widget> {
+  public:
+    WidgetManager() {}
+  };
 
-  DoubleNode *prev;
-  DoubleNode *next;
-};
+  typedef WidgetManager<NewCreator> NewWidgetMgr;
+  typedef WidgetManager<MallocCreator> MalWidgetMgr;
+  typedef WidgetManager<PrototypeCreator> ProWidgetMgr;
 
-template <typename _Tp>
-class CircularNode {};
+  class Singleton {
+  public:
+    static Singleton *Instance() {
+      if (!_instance) {
+        if (_destroyed) {
+          OnDeadReference();
+        } else {
+          Create();
+        }
+      }
+      return _instance;
+    }
+    static void KillPhoenixSingleton();
+    void DisplayStatus() { std::clog << "Singleton Activated.\n"; }
 
-template <typename T>
-using EnableIfSingle =
-  std::enable_if_t<std::is_convertible_v<T, blitz::SingleNode<T>>>;
+  private:
+    static Singleton *_instance;
+    static bool _destroyed;
+    Singleton();
+    Singleton(const Singleton &);
+    Singleton &operator=(const Singleton &);
+
+  private:
+    static void Create() {
+      static Singleton *theInstance;
+      _instance = theInstance;
+    }
+    static void OnDeadReference();
+    virtual ~Singleton() {
+      _instance = 0;
+      _destroyed = true;
+      std::clog << "Destroyed.\n";
+    }
+  };
+
+  
+  template<typename T>
+  struct ElemenT;
+
+  template<typename T>
+  struct ElemenT<std::vector<T>>{
+    using Type = T;
+  };
+
+  template<typename T>
+  struct ElemenT<std::list<T>>{
+    using Type = T;
+  };
+
+  template<typename T, std::size_t N>
+  struct ElemenT<T[N]>{
+    using Type = T;
+  };
+
+  template<typename T>
+  struct ElemenT<T[]>{
+    using Type = T;
+  };
 
 }  // namespace blitz
+
 
 #endif

@@ -23,6 +23,33 @@
 
 #include "engine/engine.h"
 
+
 using namespace engine;
 using namespace std;
-int main(int argc, char** argv) {}
+using namespace cv;
+
+void func(Point2i& _point){
+  message(_point);
+}
+
+int main(int argc, char** argv) {
+
+  printf("Enter index.\n");
+  int a, b, c;
+  cin >> a;
+  cin >> b;
+  cin >> c;
+  Mat m1 = Mat::eye(3,4, CV_32FC3);
+  randu(m1,0,9);
+  message(m1);
+  printf("Element at (%d,%d,%d) is [%f, %f, %f]\n",
+    a, b, c,
+    m1.at<Vec3f>(a,b,c)[0],
+    m1.at<Vec3f>(a,b,c)[1],
+    m1.at<Vec3f>(a,b,c)[2] );
+  
+
+
+
+
+}

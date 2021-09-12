@@ -24,37 +24,45 @@
 #ifndef BLITZ_ALPHA_INCLUDE_ALPHA_CORE_ALPHA_MT_H_
 #define BLITZ_ALPHA_INCLUDE_ALPHA_CORE_ALPHA_MT_H_
 
-#include <atomic>
 #include <chrono>
 #include <condition_variable>
-#include <future>
 #include <mutex>
-#include <queue>
-#include <random>
-#include <shared_mutex>
 
 #include "alpha/alpha.h"
+#include "alpha/core/generic.h"
 
 namespace blitz {
+  namespace gen{
 
-namespace mt {
-
-class SpinLockMutex {
- public:
-  SpinLockMutex() : at_flag(ATOMIC_FLAG_INIT) {}
-
-  void lock() {
-    while (at_flag.test_and_set(std::memory_order_acquire))
-      ;
   }
+  namespace mt {
 
-  void unlock() { at_flag.clear(std::memory_order_release); }
+    class SpinLockMutex {
+    public:
+      SpinLockMutex() : at_flag(ATOMIC_FLAG_INIT) {}
 
- private:
-  std::atomic_flag at_flag;
-};
+      void lock() {
+        while (at_flag.test_and_set(std::memory_order_acquire))
+          ;
+      }
 
-}  // namespace mt
+      void unlock() { at_flag.clear(std::memory_order_release); }
+
+    private:
+      std::atomic_flag at_flag;
+    };
+
+    void thread_routine(const std::vector<int>& _vec){
+      std::this_thread::sleep_for(std::chrono::duration(std::chrono::milliseconds(500)));
+      //message(_thread.append(": hello, blitzwolf!"));
+      //message(_thread);
+
+      
+
+    }
+
+
+  }  // namespace mt
 
 }  // namespace blitz
 
