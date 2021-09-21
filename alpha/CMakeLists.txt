@@ -18,7 +18,7 @@ if (POLICY CMP0063)
 endif (POLICY CMP0063)
 
 # Require C++20 and disable extensions for all targets
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -65,7 +65,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=thread -fsanitize=undefined -
 # are used for other targets, to ensure that alpha can be compiled by a user
 # aggressive about warnings.
 cxx_library(alpha "${cxx_strict}" src/alpha.cc)
-set_target_properties(alpha PROPERTIES VERSION ${BLITZ_VERSION} CMAKE_CXX_STANDARD 20)
+set_target_properties(alpha PROPERTIES VERSION ${BLITZ_VERSION} )
 
 if (DEFINED CMAKE_VERSION AND NOT "${CMAKE_VERSION}" VERSION_LESS "2.8.11")
   target_include_directories(alpha SYSTEM INTERFACE
