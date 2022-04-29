@@ -1,23 +1,36 @@
 
 #include <gtest/gtest.h>
 
-#include "alpha.h"
+#include "alpha/alpha.h"
 
-using namespace blitz;
-using namespace blitz::gen;
+using namespace alpha;
+using factory = ComponentFactory;
+using CType::ENGINE;
+using CType::PISTON;
+using CType::NONE;
 
-class NameTest : public ::testing::Test {
+class ComponentFactoryTest : public ::testing::Test {
  protected:
   void SetUp() override {
-    Name lori{"Lori", "Trumann"};
-    _name = lori;
+    e0 = factory::create("Aelos", ENGINE);
+    e1 = factory::create();
   }
-  Name _name;
+  Component *e0;
+  Component *e1;
+
 };
 
-TEST_F(NameTest, LogicalTest) {
-  ASSERT_TRUE((_name.FirstName() == "Lori") && (_name.LastName() == "Trumann"));
+TEST_F(ComponentFactoryTest, ComponentNameAndTypeMatch) {
+  ASSERT_TRUE((e0->name() == "Aelos") && (e0->type() == ENGINE)) <<
+  "Component name and type mismatch";
 }
+
+TEST_F(ComponentFactoryTest, ComponentWithNoArgs){
+  EXPECT_EQ(e1->type(),  NONE);
+  EXPECT_EQ(e1->name(), "Generic");
+}
+
+
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);

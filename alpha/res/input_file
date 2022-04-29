@@ -1,6 +1,35 @@
-The support for atomic operations directly in C++ enables programmers to write
-efficient code with defined semantics without the need for platform-specific assembly
-language. This is a real boon for those trying to write efficient, portable code; not only
-does the compiler take care of the platform specifics, but the optimizer can be written
-to take into account the semantics of the operations, thus enabling better optimiza-
-tion of the program as a whole.
+QString formatHms(qint64 time){
+    if(time == 0)
+        return "00";
+    if(time < 10)
+        return QString("0").append(QString::number(time));
+    else
+        return QString::number(time);
+}
+
+QString formatTime(qint64 time){
+    auto _time = time / 1000;
+    auto _hours = qFloor(_time / 3600);
+    _time = _time - hours * 3600;
+    auto _minutes = qFloor(_time / 60);
+    auto seconds = qFloor(_time - _minutes * 60);
+    if(_hours == 0)
+        return formatTimeBlock(_minutes).append(":").append(formatTimeBlock(seconds));
+    else
+        return formatTimeBlock(hours).append(":").append(formatTimeBlock(_minutes)).append(":").append(formatTimeBlock(seconds));
+}
+
+
+QObject::connect(mediaPlayer, &QMediaPlayer::durationChanged, this, &ControlWidget::setDuration);
+QObject::connect(mediaPlayer, &QMediaPlayer::positionChanged, this, &ControlWidget::trackPosition);
+
+
+void Xe::ControlWidget::setDuration(){
+    auto _duration = mediaPlayer->duration();
+    durationLbl->setText(formatTime(_duration));
+}
+
+void Xe::ControlWidget::trackPosition(){
+    auto pos = mediaPlayer->position();
+    elpsdLbl->setText(formatTime(pos));
+}

@@ -41,12 +41,12 @@ find_package(PkgConfig)
 #Find Gsl
 #pkg_search_module(gsl REQUIRED gsl gslcblas m)
 #FInd OpenCV
-find_package( OpenCV REQUIRED core)
+find_package( OpenCV REQUIRED core highgui )
 
 cxx_library_with_type(engine-8.0 STATIC "${cxx_strict}" src/engine.cc)
 set_target_properties(engine-8.0 PROPERTIES VERSION ${BLITZ_VERSION})
 
-message(${OpenCV_LIBS})
+#message(${OpenCV_LIBS})
 
 if (DEFINED CMAKE_VERSION AND NOT "${CMAKE_VERSION}" VERSION_LESS "2.8.11")
   target_include_directories(engine-8.0 SYSTEM INTERFACE

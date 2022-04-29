@@ -1,5 +1,5 @@
 #!/bin/bash
-#: Title          : st
+#: Title          : yen
 #: Date           : 2021-09-12
 #: Author         : Blitzwolf
 #: Version        : 1.0
@@ -7,4 +7,3 @@
 #: Options        : None
 
 
-python load.py

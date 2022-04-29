@@ -1,5 +1,5 @@
 
-option(alpha_build_tests "Build all alpha's tests" OFF)
+option(alpha_build_tests "Build all alpha's tests" ON)
 option(alpha_build_samples "Build alpha's sample programs" OFF)
 
 
@@ -18,7 +18,7 @@ if (POLICY CMP0063)
 endif (POLICY CMP0063)
 
 # Require C++20 and disable extensions for all targets
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -51,41 +51,46 @@ set(alpha_build_include_dirs
 include_directories(${alpha_build_include_dirs})
 
 #Find GTest
-#find_package(PkgConfig)
-#find_package(GTest REQUIRED)
+find_package(PkgConfig)
 
-#Find Boost
-#find_package(Boost 1.75.0 REQUIRED)
+find_package(GTest REQUIRED)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=thread -fsanitize=undefined -g -O3 -lsqlite3")
+find_package( Boost 1.78.0 COMPONENTS system regex thread REQUIRED )
 
-########################################################################
-
-# Blitz libraries.  We build them using more strict warnings than what
-# are used for other targets, to ensure that alpha can be compiled by a user
-# aggressive about warnings.
-cxx_library(alpha "${cxx_strict}" src/alpha.cc)
+cxx_library(alpha "${cxx_strict}" src/alpha.cc src/core.cc)
 set_target_properties(alpha PROPERTIES VERSION ${BLITZ_VERSION} )
+
+if(CMAKE_BUILD_TYPE STREQUAL "Asan")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=undefined -g -O3 -lsqlite3")
+endif(CMAKE_BUILD_TYPE STREQUAL "Asan")
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O3 -lsqlite3")
+endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+
+
+if(CMAKE_BUILD_TYPE STREQUAL "Tsan")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=thread -fsanitize=undefined -lsqlite3 -g -O3")
+endif(CMAKE_BUILD_TYPE STREQUAL "Tsan")
+
 
 if (DEFINED CMAKE_VERSION AND NOT "${CMAKE_VERSION}" VERSION_LESS "2.8.11")
   target_include_directories(alpha SYSTEM INTERFACE
-    "$<BUILD_INTERFACE:${alpha_build_include_dirs}>")
-    #"$<BUILD_INTERFACE:${Boost_INCLUDE_DIRS}>"
-    #"$<BUILD_INTERFACE:${GTEST_INCLUDE_DIR}")
-    #target_link_libraries(alpha PUBLIC ${Boost_LIBRARIES} PUBLIC ${GTEST_LIBRARIES})
+    "$<BUILD_INTERFACE:${alpha_build_include_dirs}>"
+    "$<BUILD_INTERFACE:${GTEST_INCLUDE_DIRS}"
+    "$<BUILD_INTERFACE:${BOOST_LIBRARIES}")
+
+  target_link_libraries(alpha PUBLIC ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES})
+
 endif()
-
-
 
 cxx_executable(alpha-main src alpha src/alpha-main.cc)
 
 if(alpha_build_tests)
-
   enable_testing()
   
-  cxx_test(alpha_controls_test alpha)
-  cxx_test(alpha_base_test alpha)
   cxx_test(alpha-tests alpha)
+  cxx_test(alpha_controls_test alpha)
 
 
 endif()
@@ -93,3 +98,51 @@ endif()
 if(alpha_build_samples)
   cxx_executable(tick samples alpha samples/tick.cc)
 endif()
+
+#----------------------------------------------------------------------
+#------------ ATX_CONFIG-----------------------------------------------
+
+set(atx_build_include_dirs
+  "${alpha_SOURCE_DIR}/at"
+)
+include_directories(atx_build_include_dirs)
+
+cxx_library(atx "${cxx_strict}" src/atx.cc)
+set_target_properties(atx PROPERTIES VERSION ${BLITZ_VERSION})
+
+if (DEFINED CMAKE_VERSION AND NOT "${CMAKE_VERSION}" VERSION_LESS "2.8.11")
+  
+  target_include_directories(atx SYSTEM INTERFACE
+    "$<BUILD_INTERFACE:${atx_build_include_dirs}>")
+
+  #target_link_libraries(atx PUBLIC ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES})
+
+endif()
+
+cxx_executable(atx-main src atx src/atx-main.cc)
+
+#set(Qt6Core_DIR "/opt/Qt/6.2.2/gcc_64/lib/cmake/Qt6Core")
+#set(Qt6_DIR "/opt/Qt/6.2.2/gcc_64/lib/cmake/Qt6")
+#set(QT_QMAKE_EXECUTABLE "/opt/Qt/6.2.2/gcc_64/bin/qmake")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,35 +1,23 @@
-class Node:
-  data = None
-  next = None
-  def __init__(self, _data=None):
-    self.data = _data
 
-class LinkedList:
-  head = Node()
 
-  def __init__(self):
-    head = None
 
-  def insert(self, data):
-    _node = Node(data)
-    if head == None:
-      head == _node
-    else:
-      _node.next = head
-      head = node
-  
-  def traverse(self):
-    begin = self.head
-    while begin != None:
-      print(begin.data, sep=' ')
-      begin = begin.next
+def printRatio(arr):
+    i = 0
+    j = 0
+    k = 0
+    sz = len(arr)
+
+    for v in range(sz):
+        if arr[v] == 0:
+            i += 1
+        if arr[v] > 0:
+            j += 1
+        if arr[v] < 0:
+            k += 1
+
+    output = "".format()
+
 
 if __name__ == '__main__':
-  list = LinkedList()
-  list.insert(8)
-  list.insert(64)
-  list.insert(2)
-  list.insert(1)
-  list.insert(32)
-  list.insert(16)
-  list.insert(4)
+    arr0 = [1, 1, -1, 0, -1]
+    printRatio(arr0)
