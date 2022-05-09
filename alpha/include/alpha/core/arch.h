@@ -22,7 +22,8 @@ public:
   GenericComponent(const std::string &_name);
 
 public:
-  GenericComponent(const GenericComponent&);
+  GenericComponent(const GenericComponent &);
+
 public:
   std::string name() const;
   void setName(std::string _name);
@@ -38,7 +39,7 @@ class Engine : public GenericComponent {
 public:
   Engine() {}
   explicit Engine(std::string n) : _name(n) {}
-  Engine(const Engine& engine) : GenericComponent(engine) {}
+  Engine(const Engine &engine) : GenericComponent(engine) {}
   void setName(std::string name) { _name = name; }
   std::string name() const override { return _name; }
   CType type() const override { return CType::ENGINE; }
@@ -67,13 +68,10 @@ private:
 
 class ComponentFactory {
 public:
-  static Component *create(const std::string &name = std::string("Unknown"),
+  static GenericComponent &create(const std::string &name = std::string("Unknown"),
                            CType type = CType::NONE) {
-    if (type == CType::ENGINE)
-      return new Engine(name);
-    if (type == CType::PISTON)
-      return new Piston(name);
-    return new GenericComponent(name);
+    GenericComponent component(name);
+    return std::ref(component);
   }
 };
 

@@ -5,8 +5,8 @@
 #include "alpha/core/arch.h"
 #include <condition_variable>
 #include <deque>
-#include <mutex>
 #include <future>
+#include <mutex>
 
 namespace alpha {
 
@@ -66,12 +66,21 @@ private:
 class ComponentAssembly {
 public:
   ComponentAssembly(const std::vector<std::string> &);
-  ItemQueue<Component*>* generateComponents();
+  ~ComponentAssembly();
+  void generateComponents();
   void processComponents();
+
+public:
+  ComponentAssembly(const ComponentAssembly &) = delete;
+  ComponentAssembly(ComponentAssembly &&) = delete;
+  ComponentAssembly &operator=(const ComponentAssembly &) = delete;
+  ComponentAssembly &operator=(ComponentAssembly &&) = delete;
+
+private:
   void next();
 
 private:
-  ItemQueue<Component *> *coll;
+  ItemQueue<GenericComponent> *coll;
   std::mutex g_mutex;
   bool done;
   bool processed;

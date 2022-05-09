@@ -1,7 +1,13 @@
 #ifndef ALPHA_INCLUDE_ALPHA_CORE_ALPHA_DATA_H_
 #define ALPHA_INCLUDE_ALPHA_CORE_ALPHA_DATA_H_
 
+#pragma pack(1)
+
+#include <iostream>
+#include <iomanip>
+
 #include "alpha/alpha.h"
+
 
 namespace alpha {
 
@@ -14,16 +20,15 @@ template <typename T> struct DoubleNode {
 };
 
 template <typename T> struct SingleNode {
-
-  SingleNode() {}
-  SingleNode(const T &_data) : data(_data) {}
   SingleNode<T> *next;
   T data;
 };
 
-template <typename T> class SinglyList {
+template <typename T> class SinglyList;
 
-  using node = SingleNode<T>;
+template <> class SinglyList<int> {
+
+  using node = SingleNode<int>;
 
 public:
   SinglyList() : front_(0), back_(0), size_(0) {}
@@ -32,40 +37,40 @@ public:
 public:
   unsigned int size() const { return size_; }
 
-  void insert(const T &_data) {
-    auto _node = new node(_data);
+  void insert(const int &_data) {
+    node _node;
+    _node.data = _data;
     if (front_ == nullptr) {
-      front_ = _node;
+      front_ = &_node;
       ++size_;
     } else {
-      _node->next = front_;
-      front_ = _node;
+      _node.next = front_;
+      front_ = &_node;
       ++size_;
     }
   }
 
-  void insert(int pos, const T &_data) {
-    auto _node = new node(_data);
+  void insert(const int &_data, uint pos) {
+    node _node;
+    _node.data = _data;
 
     auto t_node = front_;
-    for (int i = 1; i < pos; ++i) {
+    for (uint i = 1; i < pos; ++i) {
       if (t_node)
         t_node = t_node->next;
     }
-    _node->next = t_node->next;
-    t_node->next = _node;
+    _node.next = t_node->next;
+    t_node->next = &_node;
     ++size_;
   }
 
   bool empty() { return size_ > 0 ? false : true; }
 
   void remove(const node &_node, uint position) {
-    /*
-
-    */
+    // auto _node = new no
   }
 
-  void travese() {
+  void traverse() {
     auto begin = front_;
     if (!empty()) {
       while (begin != nullptr) {
@@ -148,6 +153,37 @@ private:
   T *data;
   T front_;
   T back_;
+};
+
+
+template <typename BufferValueType> class ring_buffer {
+  using T = BufferValueType;
+
+public:
+  ring_buffer() = delete;
+  ring_buffer(unsigned int size)
+      : m_begin(0), m_end(0), m_size(size) {
+    m_buffer = std::make_unique<T[]>(m_size);
+  }
+
+  T read() {
+    T data = m_buffer[m_begin++];
+    m_begin %= m_size;
+    return data;
+  }
+
+  void write(const T &data) {
+    m_buffer[m_end++] = data;
+    m_end %= m_size;
+  }
+
+  unsigned int size() const { return m_size; }
+
+private:
+  std::unique_ptr<T[]> m_buffer;
+  unsigned int m_size;
+  int m_end;
+  int m_begin;
 };
 
 } // namespace alpha

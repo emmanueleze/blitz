@@ -42,12 +42,15 @@ distance(InIterator begin, InIterator end, std::input_iterator_tag) {
 }
 
 template <typename Container>
-class asso_insert_iterator : public std::iterator<std::output_iterator_tag,
-                                       typename Container::value_type> {
+class asso_insert_iterator
+    : public std::iterator<std::output_iterator_tag,
+                           typename Container::value_type> {
 public:
-  explicit asso_insert_iterator(Container &_container) : container(_container) {}
+  explicit asso_insert_iterator(Container &_container)
+      : container(_container) {}
 
-  asso_insert_iterator<Container> &operator=(const typename Container::value_type &value) {
+  asso_insert_iterator<Container> &
+  operator=(const typename Container::value_type &value) {
     container.insert(value);
     return *this;
   }
@@ -62,8 +65,8 @@ protected:
   Container &container;
 };
 
-template<typename Container>
-inline asso_insert_iterator<Container> asso_inserter(Container& c) {
+template <typename Container>
+inline asso_insert_iterator<Container> asso_inserter(Container &c) {
   return asso_insert_iterator<Container>(c);
 }
 
@@ -108,13 +111,8 @@ public:
   static void remove(std::deque<T> &dq) { dq.pop_front(); }
 };
 
-/* template<typename T>
-class ascending {
-  public:
-    bool operator()(const T& val1, const T& val2){
-      return va1 > val2;
-    }
-}; */
+//  -------------- Variadic Template -------------------
+
 
 } //  namespace alpha
 

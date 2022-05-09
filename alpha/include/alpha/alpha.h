@@ -2,25 +2,25 @@
 #define ALPHA_INCLUDE_ALPHA_ALPHA_H_
 
 #include <cassert>
-#include <cstring>
-#include <deque>
-#include <iostream>
 #include <memory>
-#include <iterator>
-#include <ostream>
-#include <sstream>
+#include <list>
 #include <string>
 #include <thread>
 #include <type_traits>
 #include <vector>
+#include <iosfwd>
 
 #include "alpha/atypes.h"
 #include "alpha/core/alpha_alg.h"
+#include "alpha/core/alpha_stl.h"
 #include "alpha/core/alpha_data.h"
 #include "alpha/core/alpha_gnr.h"
 #include "alpha/core/alpha_mt.h"
-#include "alpha/core/alpha_stl.h"
+
 #include "alpha/core/arch.h"
+#include "alpha/core/alpha_asio.h"
+
+#define BLITZ_NOEXCEPT noexcept
 
 namespace alpha {
 
@@ -46,7 +46,7 @@ void sort(T& coll) {
 }
 
 template <typename T> void isEmpty(const T &collection) {
-  std::cout << (collection.empty() ? "true" : "false") << std::endl;
+  std::cout << std::boolalpha << (collection.empty() ? true : false) << std::endl;
 }
 
 template<typename Iter>

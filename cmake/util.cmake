@@ -1,4 +1,4 @@
-# Defines functions and macros useful for building BlitzAlpha
+# Defines functions and macros useful for building alpha
 
 if (POLICY CMP0054)
   cmake_policy(SET CMP0054 NEW)
@@ -157,6 +157,7 @@ endfunction()
 function(cxx_test_with_flags name cxx_flags libs)
   cxx_executable_with_flags(${name} "${cxx_flags}" "${libs}" ${ARGN})
     add_test(NAME ${name} COMMAND "$<TARGET_FILE:${name}>")
+    
 endfunction()
 
 # cxx_test(name libs srcs...)
@@ -166,5 +167,5 @@ endfunction()
 # test/name.cc is already implicitly included in the source file list.
 function(cxx_test name libs)
   cxx_test_with_flags("${name}" "${cxx_default}" "${libs}"
-    "test/${name}.cc" ${ARGN})
+    "${name}.cc" ${ARGN})
 endfunction()

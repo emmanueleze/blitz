@@ -1,8 +1,6 @@
+
 #include "alpha/alpha.h"
 
-using namespace alpha;
-
-template <typename T, typename AT = AccumulatorTrait<T>> void accumulate();
 
 std::vector<int> twoSum(const std::vector<int> &array_, int target) {
   std::vector<int> ivec;
@@ -22,30 +20,32 @@ std::vector<int> twoSum(const std::vector<int> &array_, int target) {
   return ivec;
 }
 
-GenericComponent::GenericComponent(const std::string &_name) : m_name(_name) {}
+alpha::GenericComponent::GenericComponent(const std::string &_name) : m_name(_name) {}
 
-GenericComponent::GenericComponent(const GenericComponent &component) {
+alpha::GenericComponent::GenericComponent(const GenericComponent &component) {
   this->m_name = component.m_name;
   this->_type = component._type;
 }
 
-std::string GenericComponent::name() const { return m_name; }
+std::string alpha::GenericComponent::name() const { return m_name; }
 
-void GenericComponent::setName(std::string _name) { m_name = _name; }
+void alpha::GenericComponent::setName(std::string _name) { m_name = _name; }
 
-CType GenericComponent::type() const { return _type; }
+alpha::CType alpha::GenericComponent::type() const { return _type; }
 
-void GenericComponent::setType(CType tp) { _type = tp; }
+void alpha::GenericComponent::setType(alpha::CType tp) { _type = tp; }
 
-ComponentAssembly::ComponentAssembly(const std::vector<std::string> &_list)
+alpha::ComponentAssembly::ComponentAssembly(const std::vector<std::string> &_list)
     : cmp_list(_list) {
 
-  coll = new ItemQueue<Component *>(10);
+  coll = new alpha::ItemQueue<alpha::GenericComponent>(10);
   processIndex = 0;
   done = false;
 }
 
-void ComponentAssembly::next() {
+alpha::ComponentAssembly::~ComponentAssembly() { delete coll; }
+
+void alpha::ComponentAssembly::next() {
 
   if (processIndex < (int)cmp_list.size())
     ++processIndex;
@@ -53,28 +53,43 @@ void ComponentAssembly::next() {
     done = true;
 }
 
-ItemQueue<Component*>* ComponentAssembly::generateComponents() {
-  std::lock_guard<std::mutex> _lock(g_mutex);
+void alpha::ComponentAssembly::generateComponents() {
+
   while (!done) {
-    auto data = ComponentFactory::create(cmp_list[processIndex]);
     {
+      auto data = alpha::cfactory::create(cmp_list[processIndex]);
+      std::lock_guard<std::mutex> _lock(g_mutex);
       coll->insert(data);
       next();
+      _cnd.notify_one();
     }
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
   }
-  return coll;
 }
 
-void ComponentAssembly::processComponents() {
+void alpha::ComponentAssembly::processComponents() {
   while (true) {
     std::unique_lock<std::mutex> _lock(g_mutex);
     _cnd.wait(_lock, [this] { return !coll->empty(); });
-    auto citem = coll->remove();
-    std::cout << "Processing " << citem->name() << ".\n";
+    const auto item = coll->remove();
+    std::cout << "Processing " << item.name() << ".\n";
     _lock.unlock();
     if (done) {
       std::cout << "Finished processing components.\n";
       break;
     }
   }
+}
+
+alpha::Name::Name() {
+  f_name = "";
+  s_name = "";
+}
+
+alpha::Name::Name(const std::string &fname, const std::string &sname)
+    : f_name(fname), s_name(sname) {}
+
+
+void alpha::alert() {
+  std::cout << "ALERT!" << std::endl;
 }
