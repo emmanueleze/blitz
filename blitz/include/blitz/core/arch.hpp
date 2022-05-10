@@ -20,6 +20,7 @@ class GenericComponent : public Component {
 public:
   GenericComponent() {}
   GenericComponent(const std::string &_name);
+  ~GenericComponent(){}
 
 public:
   GenericComponent(const GenericComponent &);

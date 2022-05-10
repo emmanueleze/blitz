@@ -1,0 +1,9 @@
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@
+
+Name: blitz
+Description: Blitz
+Version: @PROJECT_VERSION@
+
+Libs: -L${libdir} -lcore -lengine -lblitz @CMAKE_THREAD_LIBS_INIT@
+Cflags: -I${includedir} @BLITZ_HAS_PTHREAD_MACRO@
