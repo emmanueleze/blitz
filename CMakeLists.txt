@@ -14,6 +14,7 @@ set(BLITZ_VERSION 1.0.1)
 find_package(PkgConfig)
 find_package( Boost 1.78.0 COMPONENTS system regex thread REQUIRED )
 find_package(GTest REQUIRED)
+find_package( OpenCV REQUIRED core)
 
 # Include helper functions and macros used by blitz.
 include(cmake/util.cmake)
@@ -54,8 +55,7 @@ endif(CMAKE_PROJECT_NAME STREQUAL "alpha")
 include(CMakeDependentOption)
 include(GNUInstallDirs)
 
-add_subdirectory(alpha)
-add_subdirectory(engine-8.0)
+add_subdirectory(blitz)
 
 if(BLITZ_BUILD_TESTS)
   add_subdirectory(test)

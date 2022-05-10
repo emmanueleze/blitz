@@ -1,9 +1,9 @@
-#ifndef ALPHA_INCLUDE_ALPHA_CORE_ALPHA_GNR_H_
-#define ALPHA_INCLUDE_ALPHA_CORE_ALPHA_GNR_H_
+#ifndef BLITZ_INCLUDE_BLITZ_CORE_GENERIC_HPP
+#define BLITZ_INCLUDE_BLITZ_CORE_GENERIC_HPP
 
-#include "alpha/alpha.h"
+#include "blitz/blitz.hpp"
 
-namespace alpha {
+namespace blitz {
 
 template <typename T> struct alpha_iterator_traits;
 

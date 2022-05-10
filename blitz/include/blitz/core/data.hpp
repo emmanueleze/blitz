@@ -1,15 +1,15 @@
-#ifndef ALPHA_INCLUDE_ALPHA_CORE_ALPHA_DATA_H_
-#define ALPHA_INCLUDE_ALPHA_CORE_ALPHA_DATA_H_
+#ifndef BLITZ_INCLUDE_BLITZ_CORE_DATA_HPP
+#define BLITZ_INCLUDE_BLITZ_CORE_DATA_HPP
 
 #pragma pack(1)
 
 #include <iostream>
 #include <iomanip>
 
-#include "alpha/alpha.h"
+#include "blitz/blitz.hpp"
 
 
-namespace alpha {
+namespace blitz {
 
 template <typename T> struct DoubleNode {
   DoubleNode() {}
@@ -185,6 +185,10 @@ private:
   int m_end;
   int m_begin;
 };
+
+
+class HashTable;
+
 
 } // namespace alpha
 

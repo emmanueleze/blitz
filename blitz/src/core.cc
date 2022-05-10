@@ -1,5 +1,5 @@
 
-#include "alpha/alpha.h"
+#include "blitz/blitz.hpp"
 
 
 std::vector<int> twoSum(const std::vector<int> &array_, int target) {
@@ -20,32 +20,32 @@ std::vector<int> twoSum(const std::vector<int> &array_, int target) {
   return ivec;
 }
 
-alpha::GenericComponent::GenericComponent(const std::string &_name) : m_name(_name) {}
+blitz::GenericComponent::GenericComponent(const std::string &_name) : m_name(_name) {}
 
-alpha::GenericComponent::GenericComponent(const GenericComponent &component) {
+blitz::GenericComponent::GenericComponent(const GenericComponent &component) {
   this->m_name = component.m_name;
   this->_type = component._type;
 }
 
-std::string alpha::GenericComponent::name() const { return m_name; }
+std::string blitz::GenericComponent::name() const { return m_name; }
 
-void alpha::GenericComponent::setName(std::string _name) { m_name = _name; }
+void blitz::GenericComponent::setName(std::string _name) { m_name = _name; }
 
-alpha::CType alpha::GenericComponent::type() const { return _type; }
+blitz::CType blitz::GenericComponent::type() const { return _type; }
 
-void alpha::GenericComponent::setType(alpha::CType tp) { _type = tp; }
+void blitz::GenericComponent::setType(blitz::CType tp) { _type = tp; }
 
-alpha::ComponentAssembly::ComponentAssembly(const std::vector<std::string> &_list)
+blitz::concurrent::ComponentAssembly::ComponentAssembly(const std::vector<std::string> &_list)
     : cmp_list(_list) {
 
-  coll = new alpha::ItemQueue<alpha::GenericComponent>(10);
+  coll = new blitz::concurrent::ItemQueue<blitz::GenericComponent>(10);
   processIndex = 0;
   done = false;
 }
 
-alpha::ComponentAssembly::~ComponentAssembly() { delete coll; }
+blitz::concurrent::ComponentAssembly::~ComponentAssembly() { delete coll; }
 
-void alpha::ComponentAssembly::next() {
+void blitz::concurrent::ComponentAssembly::next() {
 
   if (processIndex < (int)cmp_list.size())
     ++processIndex;
@@ -53,11 +53,11 @@ void alpha::ComponentAssembly::next() {
     done = true;
 }
 
-void alpha::ComponentAssembly::generateComponents() {
+void blitz::concurrent::ComponentAssembly::generateComponents() {
 
   while (!done) {
     {
-      auto data = alpha::cfactory::create(cmp_list[processIndex]);
+      auto data = blitz::cfactory::create(cmp_list[processIndex]);
       std::lock_guard<std::mutex> _lock(g_mutex);
       coll->insert(data);
       next();
@@ -67,7 +67,7 @@ void alpha::ComponentAssembly::generateComponents() {
   }
 }
 
-void alpha::ComponentAssembly::processComponents() {
+void blitz::concurrent::ComponentAssembly::processComponents() {
   while (true) {
     std::unique_lock<std::mutex> _lock(g_mutex);
     _cnd.wait(_lock, [this] { return !coll->empty(); });
@@ -81,15 +81,11 @@ void alpha::ComponentAssembly::processComponents() {
   }
 }
 
-alpha::Name::Name() {
+blitz::Name::Name() {
   f_name = "";
   s_name = "";
 }
 
-alpha::Name::Name(const std::string &fname, const std::string &sname)
+blitz::Name::Name(const std::string &fname, const std::string &sname)
     : f_name(fname), s_name(sname) {}
 
-
-void alpha::alert() {
-  std::cout << "ALERT!" << std::endl;
-}

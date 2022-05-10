@@ -1,9 +1,9 @@
-#ifndef ALPHA_INCLUDE_ALPHA_CORE_ALPHA_ARCH_H_
-#define ALPHA_INCLUDE_ALPHA_CORE_ALPHA_ARCH_H_
+#ifndef BLITZ_INCLUDE_BLITZ_CORE_ARCH_HPP
+#define BLITZ_INCLUDE_BLITZ_CORE_ARCH_HPP
 
-#include "alpha/alpha.h"
+#include "blitz/blitz.hpp"
 
-namespace alpha {
+namespace blitz {
 
 enum Ops { t, e, q };
 

@@ -1,14 +1,14 @@
-#ifndef ALPHA_INCLUDE_ALPHA_CORE_ALPHA_ALG_H_
-#define ALPHA_INCLUDE_ALPHA_CORE_ALPHA_ALG_H_
+#ifndef BLITZ_INCLUDE_BLITZ_CORE_ALGORITHM_HPP
+#define BLITZ_INCLUDE_BLITZ_CORE_ALGORITHM_HPP
 
-#include "alpha/alpha.h"
-#include "alpha/core/alpha_data.h"
+#include "blitz/blitz.hpp"
+#include "blitz/core/data.hpp"
 
 #include <array>
 #include <functional>
 #include <numeric>
 
-namespace alpha {
+namespace blitz {
 
 template <typename T> SinglyList<T> *reverse_list(SinglyList<T> *list) {
   if (!list)

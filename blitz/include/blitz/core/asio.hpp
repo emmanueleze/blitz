@@ -1,11 +1,11 @@
-#ifndef ALPHA_INCLUDE_ALPHA_CORE_ALPHA_ASIO_H_
-#define ALPHA_INCLUDE_ALPHA_CORE_ALPHA_ASIO_H_
+#ifndef BLITZ_INCLUDE_BLITZ_CORE_ASIO_H
+#define BLITZ_INCLUDE_BLITZ_CORE_ASIO_H
 
 #include <boost/asio.hpp>
 
 #define BLITZ_ALPHA_NOEXCEPT BLITZ_NOEXCEPT
 
-namespace alpha {
+namespace blitz {
 
 /* struct Session {
   std::shared_ptr<boost::asio::ip::tcp::socket> sock;
@@ -24,9 +24,6 @@ void socket_write(std::shared_ptr<asio::ip::tcp::socket> sock) {
 
 
 // void socket_write(boost::asio::ip::tcp::socket& sock);
-
-// Print alert. ;)
-void alert();
 
 /* template <boost::asio::completion_handler_for<void(boost::asio::error_code
 &ec)> CompletionToken> auto async_read_some(boost::asio::ip::tcp::socket &s,

@@ -1,15 +1,16 @@
-#ifndef ALPHA_INCLUDE_ALPHA_CORE_ALPHA_MT_H_
-#define ALPHA_INCLUDE_ALPHA_CORE_ALPHA_MT_H_
+#ifndef BLITZ_INCLUDE_BLITZ_CORE_CONCURRENT_HPP
+#define BLITZ_INCLUDE_BLITZ_CORE_CONCURRENT_HPP
 
-#include "alpha/alpha.h"
-#include "alpha/core/arch.h"
+#include "blitz/blitz.hpp"
+#include "blitz/core/arch.hpp"
 #include <condition_variable>
 #include <deque>
 #include <future>
 #include <mutex>
 
-namespace alpha {
+namespace blitz {
 
+namespace concurrent {
 /* Item Queue
  * @brief A simple double ended queue. Elements are inserted
  * from the back and deleted from the front.
@@ -88,7 +89,8 @@ private:
   int processIndex;
   std::vector<std::string> cmp_list;
 };
+} // namespace concurrent
 
-} // namespace alpha
+} // namespace blitz
 
-#endif //  ALPHA_INCLUDE_ALPHA_CORE_ALPHA_MT_H_
+#endif //  BLITZ_INCLUDE_BLITZ_CORE_CONCURRENT_HPP

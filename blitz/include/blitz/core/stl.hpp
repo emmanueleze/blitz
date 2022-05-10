@@ -1,13 +1,13 @@
-#ifndef ALPHA_INCLUDE_ALPHA_CORE_ALPHA_STL_H_
-#define ALPHA_INCLUDE_ALPHA_CORE_ALPHA_STL_H_
+#ifndef BLITZ_INCLUDE_BLITZ_CORE_STL_HPP
+#define BLITZ_INCLUDE_BLITZ_CORE_STL_HPP
 
 #include <iostream>
 #include <deque>
 
-#include "alpha/alpha.h"
+#include "blitz/blitz.hpp"
 
 
-namespace alpha {
+namespace blitz {
 
 class nth {
   unsigned int n;

@@ -1,5 +1,5 @@
-#ifndef ALPHA_INCLUDE_ALPHA_ALPHA_H_
-#define ALPHA_INCLUDE_ALPHA_ALPHA_H_
+#ifndef BLITZ_INCLUDE_BLITZ_BLITZ_HPP
+#define BLITZ_INCLUDE_BLITZ_BLITZ_HPP
 
 #include <cassert>
 #include <memory>
@@ -10,19 +10,18 @@
 #include <vector>
 #include <iosfwd>
 
-#include "alpha/atypes.h"
-#include "alpha/core/alpha_alg.h"
-#include "alpha/core/alpha_stl.h"
-#include "alpha/core/alpha_data.h"
-#include "alpha/core/alpha_gnr.h"
-#include "alpha/core/alpha_mt.h"
 
-#include "alpha/core/arch.h"
-#include "alpha/core/alpha_asio.h"
+#include "blitz/core/algorithm.hpp"
+#include "blitz/core/stl.hpp"
+#include "blitz/core/data.hpp"
+#include "blitz/core/generic.hpp"
+#include "blitz/core/concurrent.hpp"
+#include "blitz/core/arch.hpp"
+#include "blitz/core/asio.hpp"
 
 #define BLITZ_NOEXCEPT noexcept
 
-namespace alpha {
+namespace blitz {
 
 
 inline void Init() {
@@ -36,7 +35,7 @@ template <typename _MsgType>
 void message(const _MsgType _message, const char *delim_ = "\n",
              std::ostream &os = std::cout) {
   os << _message << delim_;
-  if (!strcmp(delim_, "\n"))
+  if (strcmp(delim_, "\n"))
     os << "\n";
 }
 
@@ -91,6 +90,6 @@ public:
   Logger();
 };
 
-} // namespace alpha
+} // namespace blitz
 
 #endif
