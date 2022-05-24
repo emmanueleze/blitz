@@ -25,7 +25,7 @@ find_package( Boost 1.78.0 COMPONENTS system regex thread REQUIRED )
 find_package(GTest REQUIRED)
 find_package( OpenCV REQUIRED core)
 find_package(glfw3 REQUIRED)
-
+find_package(Vulkan REQUIRED)
 include(CMakeDependentOption)
 include(GNUInstallDirs)
 

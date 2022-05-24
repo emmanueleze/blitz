@@ -1,7 +1,6 @@
 #ifndef BLITZ_INCLUDE_BLITZ_CORE_DATA_HPP
 #define BLITZ_INCLUDE_BLITZ_CORE_DATA_HPP
 
-#pragma pack(1)
 
 #include <iomanip>
 #include <iostream>
@@ -22,7 +21,7 @@ public:
   // Returns the key value
   _Key key() const { return m_key; }
   // Sets the key value
-  void key(const _Key &_key) { m_key = key; }
+  void key(const _Key &_key) { m_key = _key; }
 
   inline binary_node *left() const { return left_child; }
   void set_left(binary_node *node) { left_child = node; }
@@ -170,7 +169,7 @@ public:
 private:
   node *front_;
   node *back_;
-  int size_;
+  unsigned int size_;
 };
 
 template <typename T> class DoublyList {

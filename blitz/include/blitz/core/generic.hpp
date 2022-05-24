@@ -8,9 +8,9 @@ namespace blitz {
 template <typename T> struct alpha_iterator_traits;
 
 template <typename T> struct alpha_iterator_traits<T *> {
-  typedef T::value_type value_type;
+  typedef typename T::value_type value_type;
   typedef ptrdiff_t difference_type;
-  typedef std::bidirectional_iterator_tag iterator_category;
+  typedef typename std::bidirectional_iterator_tag iterator_category;
   typedef T *pointer;
   typedef T &reference;
 };
@@ -41,34 +41,34 @@ distance(InIterator begin, InIterator end, std::input_iterator_tag) {
   return diff;
 }
 
-template <typename Container>
-class asso_insert_iterator
-    : public std::iterator<std::output_iterator_tag,
-                           typename Container::value_type> {
-public:
-  explicit asso_insert_iterator(Container &_container)
-      : container(_container) {}
+// template <typename Container>
+// class asso_insert_iterator
+//     : public std::iterator<std::output_iterator_tag,
+//                            typename Container::value_type> {
+// public:
+//   explicit asso_insert_iterator(Container &_container)
+//       : container(_container) {}
 
-  asso_insert_iterator<Container> &
-  operator=(const typename Container::value_type &value) {
-    container.insert(value);
-    return *this;
-  }
+//   asso_insert_iterator<Container> &
+//   operator=(const typename Container::value_type &value) {
+//     container.insert(value);
+//     return *this;
+//   }
 
-  asso_insert_iterator<Container> &operator*() { return *this; }
+//   asso_insert_iterator<Container> &operator*() { return *this; }
 
-  asso_insert_iterator<Container> &operator++() { return *this; }
+//   asso_insert_iterator<Container> &operator++() { return *this; }
 
-  asso_insert_iterator<Container> &operator++(int) { return *this; }
+//   asso_insert_iterator<Container> &operator++(int) { return *this; }
 
-protected:
-  Container &container;
-};
+// protected:
+//   Container &container;
+// };
 
-template <typename Container>
-inline asso_insert_iterator<Container> asso_inserter(Container &c) {
-  return asso_insert_iterator<Container>(c);
-}
+// template <typename Container>
+// inline asso_insert_iterator<Container> asso_inserter(Container &c) {
+//   return asso_insert_iterator<Container>(c);
+// }
 
 template <typename T> struct AccumulatorTrait;
 

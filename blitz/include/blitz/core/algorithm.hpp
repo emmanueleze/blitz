@@ -34,8 +34,7 @@ template <typename T> void isort(T *array_, int size_) {
 }
 
 template <typename T> int linear_search(const T *seq_, int size, const T &key) {
-  int pos = 0;
-  for (pos; pos < size; ++pos) {
+  for (int pos=0; pos < size; ++pos) {
     if (seq_[pos] == key)
       return pos;
   }
@@ -47,29 +46,7 @@ template <typename T> int linear_search(const T *seq_, int size, const T &key) {
  * @param array_ Vector of sorted integers.
  * @param target Target
  */
-std::vector<int> twoSum(const std::vector<int> &array_, int target);
-
-double random_generator(const double &min, const double &max);
-
-template <typename T> std::list<T> quicksort(std::list<T> coll) {
-  if (coll.empty()) {
-    return coll;
-  }
-  std::list<T> result;
-  result.splice(result.begin(), coll, coll.begin());
-  auto pivot = *(coll.begin());
-  auto divide_point = std::partition(coll.begin(), coll.end(),
-                                     [&](const T &t) { return t < pivot; });
-  std::list<T> lower_part;
-  lower_part.splice(lower_part.end(), coll, coll.begin(), divide_point);
-  auto new_lower(quicksort(std::move(lower_part)));
-  auto new_upper(quicksort(std::move(coll)));
-
-  result.splice(result.end(), new_upper);
-  result.splice(result.begin(), new_lower);
-
-  return result;
-}
+//std::vector<int> twoSum(const std::vector<int> &array_, int target);
 
 template <typename K, typename E> void tree_preorder(binary_node<K,E> *node) {
   if (!node)
@@ -180,5 +157,7 @@ private:
   Node<T> *tail;
   int _size;
 }; */
+
+
 
 #endif

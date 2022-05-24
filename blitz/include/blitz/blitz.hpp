@@ -1,6 +1,7 @@
 #ifndef BLITZ_INCLUDE_BLITZ_BLITZ_HPP
 #define BLITZ_INCLUDE_BLITZ_BLITZ_HPP
 
+
 #include <cassert>
 #include <memory>
 #include <list>
@@ -61,7 +62,7 @@ print(Iter begin, Iter end){
 }
 
 template <typename T> void print(const T &coll, const char *delim_ = " ") {
-  using value_type = T::value_type;
+  using value_type = typename T::value_type;
   std::copy(coll.cbegin(), coll.cend(),
             std::ostream_iterator<value_type>(std::cout, delim_));
   if (strcmp(delim_, "\n"))
