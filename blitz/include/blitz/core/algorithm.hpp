@@ -8,6 +8,7 @@
 #include <functional>
 #include <numeric>
 #include <random>
+#include <list>
 
 namespace blitz {
 
@@ -71,6 +72,12 @@ template <typename K, typename E> void tree_postorder(binary_node<K,E> *node) {
   tree_postorder(node->right());
   std::cout << node->value() << " ";
 }
+
+template<typename T>
+std::list<T> quick_sort(std::list<int> coll) {
+  return coll;
+}
+
 
 } // namespace blitz
 

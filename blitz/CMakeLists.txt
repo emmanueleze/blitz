@@ -25,8 +25,9 @@ set(BLITZ_INCLUDE_DIR
 include_directories(${BLITZ_INCLUDE_DIR})
 
 
-cxx_library(core "${cxx_strict}" src/core.cc)
 cxx_library(vkgp "${cxx_strict}" src/vkgp.cc)
+cxx_library(core "${cxx_strict}" src/core.cc)
+
 
 # cxx_library(engine "${cxx_strict}" src/engine.cc)
 # cxx_library(e64gl "${cxx_strict}" src/e64gl.cc)
@@ -39,6 +40,7 @@ cxx_library(vkgp "${cxx_strict}" src/vkgp.cc)
 
 
 set_target_properties(core PROPERTIES VERSION ${BLITZ_VERSION} )
+set_target_properties(vkgp PROPERTIES VERSION ${BLITZ_VERSION} )
 
 if(CMAKE_BUILD_TYPE STREQUAL "Asan")  
   target_compile_options(core PRIVATE -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer)

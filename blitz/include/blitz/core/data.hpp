@@ -368,6 +368,12 @@ void binary_search_tree<K, E>::bst_clear(node *_node) {
   delete _node;
 }
 
+template<typename _Key, typename _Value>
+class complete_binary_tree;
+
+template<typename _Key, typename _Value>
+using kabh = complete_binary_tree<_Key, _Value>;
+
 } // namespace blitz
 
 #endif
