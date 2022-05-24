@@ -1,10 +1,10 @@
 
 if (CMAKE_VERSION VERSION_LESS 3.0)
-project(samples CXX C)
+project(tests CXX C)
 set(PROJECT_VERSION ${BLITZ_VERSION})
 else()
 cmake_policy(SET CMP0048 NEW)
-project(samples VERSION ${BLITZ_VERSION} LANGUAGES CXX C )
+project(tests VERSION ${BLITZ_VERSION} LANGUAGES CXX C )
 endif()
 
 cmake_minimum_required(VERSION 2.8.12)
@@ -18,24 +18,13 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if(CMAKE_BUILD_TYPE STREQUAL "Asan")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=undefined -g -O3")
-endif(CMAKE_BUILD_TYPE STREQUAL "Asan")
+find_package(GTest COMPONENTS gtest-main)
 
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O3")
-endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-
-
-if(CMAKE_BUILD_TYPE STREQUAL "Tsan")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=thread -fsanitize=undefined -g -O3")
-endif(CMAKE_BUILD_TYPE STREQUAL "Tsan")
-
-
-#set(SAMPLES_INCLUDE_DIR "/")
-#include_directories(${SAMPLES_INCLUDE_DIR})
 
 if(BLITZ_BUILD_TESTS)
-  #cxx_test(alpha_test alpha alpha_test.cc)
-  gtest_add_tests(alpha_test alpha alpha_test.cc)
+  add_executable(blitz_test blitz_test.cc)
+  target_link_libraries(blitz_test PRIVATE gtest-main PUBLIC core)
+  add_test(NAME BLITZ_TEST COMMAND blitz_test)
 endif()
+
+

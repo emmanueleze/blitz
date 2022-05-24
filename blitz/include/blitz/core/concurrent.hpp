@@ -10,6 +10,7 @@
 
 namespace blitz {
 
+class GenericComponent;
 namespace concurrent {
 /* Item Queue
  * @brief A simple double ended queue. Elements are inserted
@@ -67,21 +68,20 @@ private:
 class ComponentAssembly {
 public:
   ComponentAssembly(const std::vector<std::string> &);
-  ~ComponentAssembly();
-  void generateComponents();
-  void processComponents();
-
-public:
   ComponentAssembly(const ComponentAssembly &) = delete;
   ComponentAssembly(ComponentAssembly &&) = delete;
   ComponentAssembly &operator=(const ComponentAssembly &) = delete;
   ComponentAssembly &operator=(ComponentAssembly &&) = delete;
 
+public:
+  void generateComponents();
+  void processComponents();
+
 private:
   void next();
 
 private:
-  ItemQueue<GenericComponent> *coll;
+  std::shared_ptr<ItemQueue<GenericComponent>> coll;
   std::mutex g_mutex;
   bool done;
   bool processed;
@@ -89,7 +89,13 @@ private:
   int processIndex;
   std::vector<std::string> cmp_list;
 };
+
+
+
 } // namespace concurrent
+
+
+
 
 } // namespace blitz
 

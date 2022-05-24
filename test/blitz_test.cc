@@ -1,8 +1,9 @@
-#include "alpha/core/arch.h"
+#include "blitz/core/arch.hpp"
 
 #include <gtest/gtest.h>
 
-using namespace alpha;
+using namespace blitz;
+using namespace blitz::concurrent;
 
 using factory = ComponentFactory;
 using CType::ENGINE;

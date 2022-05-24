@@ -18,6 +18,7 @@
 #include "blitz/core/concurrent.hpp"
 #include "blitz/core/arch.hpp"
 #include "blitz/core/asio.hpp"
+#include "blitz/e64gl/e64gl.hpp"
 
 #define BLITZ_NOEXCEPT noexcept
 
@@ -32,11 +33,16 @@ inline void Init() {
 // Writes input to output stream.
 // fix to accept multiple messages.
 template <typename _MsgType>
-void message(const _MsgType _message, const char *delim_ = "\n",
+void message(const _MsgType _message, const char *sep = " ", const char *delim_ = "\n",
              std::ostream &os = std::cout) {
-  os << _message << delim_;
+  os << _message << sep << delim_;
   if (strcmp(delim_, "\n"))
     os << "\n";
+}
+
+template<typename... Args>
+void message(const Args&... args){
+  message(args...);
 }
 
 template<typename T>

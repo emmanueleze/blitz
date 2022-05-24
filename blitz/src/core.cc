@@ -1,7 +1,6 @@
 
 #include "blitz/blitz.hpp"
 
-
 std::vector<int> twoSum(const std::vector<int> &array_, int target) {
   std::vector<int> ivec;
   auto sz = (int)array_.size();
@@ -20,7 +19,8 @@ std::vector<int> twoSum(const std::vector<int> &array_, int target) {
   return ivec;
 }
 
-blitz::GenericComponent::GenericComponent(const std::string &_name) : m_name(_name) {}
+blitz::GenericComponent::GenericComponent(const std::string &_name)
+    : m_name(_name) {}
 
 blitz::GenericComponent::GenericComponent(const GenericComponent &component) {
   this->m_name = component.m_name;
@@ -35,15 +35,14 @@ blitz::CType blitz::GenericComponent::type() const { return _type; }
 
 void blitz::GenericComponent::setType(blitz::CType tp) { _type = tp; }
 
-blitz::concurrent::ComponentAssembly::ComponentAssembly(const std::vector<std::string> &_list)
+blitz::concurrent::ComponentAssembly::ComponentAssembly(
+    const std::vector<std::string> &_list)
     : cmp_list(_list) {
 
-  coll = new blitz::concurrent::ItemQueue<blitz::GenericComponent>(10);
+  coll = std::make_shared<blitz::concurrent::ItemQueue<GenericComponent>>(10);
   processIndex = 0;
   done = false;
 }
-
-blitz::concurrent::ComponentAssembly::~ComponentAssembly() { delete coll; }
 
 void blitz::concurrent::ComponentAssembly::next() {
 
@@ -81,11 +80,24 @@ void blitz::concurrent::ComponentAssembly::processComponents() {
   }
 }
 
-blitz::Name::Name() {
-  f_name = "";
-  s_name = "";
+blitz::name::name() {}
+
+blitz::name::name(const name &_name) : m_names(_name.m_names) {}
+
+blitz::name::name(name &&_name) : m_names(std::move(_name.m_names)) {}
+
+std::shared_ptr<blitz::concurrent::ItemQueue<std::string>>
+blitz::concurrent::generateNames() {
+  std::vector<std::string> coll{"Eodire", "MaxToll", "SubSys", "Quartz"};
+  auto ret = std::make_shared<ItemQueue<std::string>>(4);
+  throw std::runtime_error("self gen error");
+  for (const auto &e : coll)
+    ret->insert(e);
+
+  return ret;
 }
-
-blitz::Name::Name(const std::string &fname, const std::string &sname)
-    : f_name(fname), s_name(sname) {}
-
+double blitz::random_generator(const double &min, const double &max) {
+  std::uniform_real_distribution<double> distr(min, max);
+  std::default_random_engine re;
+  return distr(re);
+}

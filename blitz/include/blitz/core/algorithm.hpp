@@ -7,6 +7,7 @@
 #include <array>
 #include <functional>
 #include <numeric>
+#include <random>
 
 namespace blitz {
 
@@ -48,9 +49,53 @@ template <typename T> int linear_search(const T *seq_, int size, const T &key) {
  */
 std::vector<int> twoSum(const std::vector<int> &array_, int target);
 
-} // namespace alpha
+double random_generator(const double &min, const double &max);
 
-// namespace alpha
+template <typename T> std::list<T> quicksort(std::list<T> coll) {
+  if (coll.empty()) {
+    return coll;
+  }
+  std::list<T> result;
+  result.splice(result.begin(), coll, coll.begin());
+  auto pivot = *(coll.begin());
+  auto divide_point = std::partition(coll.begin(), coll.end(),
+                                     [&](const T &t) { return t < pivot; });
+  std::list<T> lower_part;
+  lower_part.splice(lower_part.end(), coll, coll.begin(), divide_point);
+  auto new_lower(quicksort(std::move(lower_part)));
+  auto new_upper(quicksort(std::move(coll)));
+
+  result.splice(result.end(), new_upper);
+  result.splice(result.begin(), new_lower);
+
+  return result;
+}
+
+template <typename K, typename E> void tree_preorder(binary_node<K,E> *node) {
+  if (!node)
+    return;
+  std::cout << node->value() << " ";
+  tree_preorder(node->left());
+  tree_preorder(node->right());
+}
+
+template <typename K, typename E> void tree_inorder(binary_node<K,E> *node) {
+  if (!node)
+    return;
+  tree_inorder(node->left());
+  std::cout << node->key() << " ";
+  tree_inorder(node->right());
+}
+
+template <typename K, typename E> void tree_postorder(binary_node<K,E> *node) {
+  if (!node)
+    return;
+  tree_postorder(node->left());
+  tree_postorder(node->right());
+  std::cout << node->value() << " ";
+}
+
+} // namespace blitz
 
 /* template <typename T> class List {
 public:
