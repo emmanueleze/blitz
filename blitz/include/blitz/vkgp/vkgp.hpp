@@ -15,6 +15,7 @@
 #include <cassert>
 #include <stdexcept>
 #include <optional>
+#include <set>
 #include <vulkan/vulkan.hpp>
 
 namespace vkgp {
@@ -42,6 +43,7 @@ void destroy_debug_utils_messenger_ext(VkInstance instance,
 
 struct queue_family_indices {
   std::optional<uint32_t> graphics_family;
+  std::optional<uint32_t> present_family;
   
   bool is_complete();
 };
@@ -54,6 +56,7 @@ private:
   void cleanup();
   void create_instance();
   void create_logical_device();
+  void create_surface();
   void init_vulkan();
   void init_window();
   void main_loop();
@@ -75,6 +78,8 @@ private:
   VkPhysicalDevice physical_device = VK_NULL_HANDLE;
   VkDevice device;
   VkQueue graphics_queue;
+  VkSurfaceKHR surface;
+  VkQueue present_queue;
   GLFWwindow *window;
   int WIDTH = 800;
   int HEIGHT = 600;
