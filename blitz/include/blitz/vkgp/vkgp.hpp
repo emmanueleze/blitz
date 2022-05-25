@@ -12,7 +12,9 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <cassert>
 #include <stdexcept>
+#include <optional>
 #include <vulkan/vulkan.hpp>
 
 namespace vkgp {
@@ -38,6 +40,12 @@ void destroy_debug_utils_messenger_ext(VkInstance instance,
                                        VkDebugUtilsMessengerEXT debugMessenger,
                                        const VkAllocationCallbacks *pAllocator);
 
+struct queue_family_indices {
+  std::optional<uint32_t> graphics_family;
+  
+  bool is_complete();
+};
+
 class hello_triangle_application {
 public:
   void run();
@@ -49,6 +57,8 @@ private:
   void init_window();
   void main_loop();
   void setup_debug_messenger();
+  void select_physical_device();
+  queue_family_indices find_queue_families(VkPhysicalDevice);
   // message callback
   static VKAPI_ATTR VkBool32 VKAPI_CALL
   debug_callback(VkDebugUtilsMessageSeverityFlagBitsEXT message_severity,
@@ -56,10 +66,12 @@ private:
                  const VkDebugUtilsMessengerCallbackDataEXT *p_callback_data,
                  void *p_user_data);
   void populate_debug_messenger_create_info(VkDebugUtilsMessengerCreateInfoEXT &);
+  bool is_suitable(VkPhysicalDevice);
 
 private:
   VkInstance instance;
   VkDebugUtilsMessengerEXT debug_messenger;
+  VkPhysicalDevice physical_device = VK_NULL_HANDLE;
   GLFWwindow *window;
   int WIDTH = 800;
   int HEIGHT = 600;

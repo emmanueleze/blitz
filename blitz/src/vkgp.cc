@@ -10,6 +10,10 @@ const bool enable_validation_layer = true;
 const std::vector<const char *> validation_layers{
     "VK_LAYER_KHRONOS_validation_layer"};
 
+bool vkgp::queue_family_indices::is_complete() {
+  return graphics_family.has_value();
+}
+
 bool vkgp::check_validation_layer_support() {
   uint32_t layer_count;
   vkEnumerateInstanceLayerProperties(&layer_count, nullptr);
@@ -133,7 +137,35 @@ void vkgp::hello_triangle_application::cleanup() {
   glfwTerminate();
 }
 
-void vkgp::hello_triangle_application::init_vulkan() { create_instance(); }
+vkgp::queue_family_indices
+vkgp::hello_triangle_application::find_queue_families(VkPhysicalDevice device) {
+  queue_family_indices indices;
+
+  uint32_t count = 0;
+  vkGetPhysicalDeviceQueueFamilyProperties(device, &count, nullptr);
+  std::vector<VkQueueFamilyProperties> queue_families(count);
+  vkGetPhysicalDeviceQueueFamilyProperties(device, &count,
+                                           queue_families.data());
+
+  int i = 0;
+  for (const auto &q_family : queue_families) {
+    if (q_family.queueFlags == VK_QUEUE_GRAPHICS_BIT) {
+      indices.graphics_family = i;
+    }
+    if(indices.is_complete()){
+      break;
+    }
+    i++;
+  }
+
+  return indices;
+}
+
+void vkgp::hello_triangle_application::init_vulkan() {
+  create_instance();
+  setup_debug_messenger();
+  select_physical_device();
+}
 
 void vkgp::hello_triangle_application::init_window() {
 
@@ -165,12 +197,38 @@ void vkgp::hello_triangle_application::populate_debug_messenger_create_info(
   create_info.pfnUserCallback = debug_callback;
 }
 
+void vkgp::hello_triangle_application::select_physical_device() {
+  uint32_t count = 0;
+  vkEnumeratePhysicalDevices(instance, &count, nullptr);
+  if (count == 0)
+    throw std::runtime_error("failed to find GPUs with Vulkan support.");
+
+  std::vector<VkPhysicalDevice> devices(count);
+  vkEnumeratePhysicalDevices(instance, &count, devices.data());
+
+  for (const auto &dev : devices) {
+    if (is_suitable(dev)) {
+      physical_device = dev;
+      break;
+    }
+  }
+  if (physical_device == VK_NULL_HANDLE)
+    throw std::runtime_error("failed to find a suitable GPU.");
+}
+
+bool vkgp::hello_triangle_application::is_suitable(VkPhysicalDevice device) {
+  auto indices = find_queue_families(device);
+  std::cout << std::boolalpha << indices.is_complete() << std::endl;
+  return indices.is_complete();
+
+}
+
 void vkgp::hello_triangle_application::setup_debug_messenger() {
   if (!enable_validation_layer)
     return;
   VkDebugUtilsMessengerCreateInfoEXT create_info{};
   populate_debug_messenger_create_info(create_info);
-  
+
   if (create_debug_utils_messenger_ext(instance, &create_info, nullptr,
                                        &debug_messenger) != VK_SUCCESS)
     throw std::runtime_error("failed to create debug messenger!");
