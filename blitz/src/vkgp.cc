@@ -73,7 +73,7 @@ void vkgp::destroy_debug_utils_messenger_ext(
   }
 }
 
-void vkgp::hello_triangle_application::create_instance() {
+void vkgp::demo_application::create_instance() {
   if (enable_validation_layer && !check_validation_layer_support()) {
     throw std::runtime_error("validation layers requested but not available");
   }
@@ -107,8 +107,44 @@ void vkgp::hello_triangle_application::create_instance() {
     throw std::runtime_error("failed to create instance.");
 }
 
+void vkgp::demo_application::create_logical_device(){
+  auto indices = find_queue_families(physical_device);
+  // Specifying the queues to be created.
+  VkDeviceQueueCreateInfo queue_create_info {};
+  queue_create_info.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+  queue_create_info.queueFamilyIndex = indices.graphics_family.value();
+  queue_create_info.queueCount = 1;
+  // Setting queue priority
+  float queue_priority = 1.0f;
+  queue_create_info.pQueuePriorities = &queue_priority;
+  // Specifying used device features
+  VkPhysicalDeviceFeatures device_features {};
+  // Creating the logical device
+  VkDeviceCreateInfo create_info {};
+  create_info.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+  create_info.pQueueCreateInfos = &queue_create_info;
+  create_info.queueCreateInfoCount = 1;
+  create_info.pEnabledFeatures = &device_features;
+  create_info.enabledExtensionCount = 0;
+
+  if(enable_validation_layer){
+    create_info.enabledLayerCount = 
+    static_cast<uint32_t>(validation_layers.size());
+    create_info.ppEnabledLayerNames = validation_layers.data();
+  }else{
+    create_info.enabledLayerCount = 0;
+  }
+    // Instantiate logical device
+  if(vkCreateDevice(physical_device, &create_info, nullptr, &device) != VK_SUCCESS){
+    throw std::runtime_error("failed to create logical device.");
+  }
+
+  // Retrieve queue handle;
+  vkGetDeviceQueue(device, indices.graphics_family.value(), 0, &graphics_queue);
+}
+
 // message callback
-VKAPI_ATTR VkBool32 VKAPI_CALL vkgp::hello_triangle_application::debug_callback(
+VKAPI_ATTR VkBool32 VKAPI_CALL vkgp::demo_application::debug_callback(
     VkDebugUtilsMessageSeverityFlagBitsEXT message_severity,
     VkDebugUtilsMessageTypeFlagsEXT message_type,
     const VkDebugUtilsMessengerCallbackDataEXT *p_callback_data,
@@ -118,17 +154,19 @@ VKAPI_ATTR VkBool32 VKAPI_CALL vkgp::hello_triangle_application::debug_callback(
   return VK_FALSE;
 }
 
-void vkgp::hello_triangle_application::run() {
+void vkgp::demo_application::run() {
   init_vulkan();
   init_window();
   main_loop();
   cleanup();
 }
 
-void vkgp::hello_triangle_application::cleanup() {
+void vkgp::demo_application::cleanup() {
 
   if (enable_validation_layer)
     destroy_debug_utils_messenger_ext(instance, debug_messenger, nullptr);
+  
+  vkDestroyDevice(device, nullptr);
 
   vkDestroyInstance(instance, nullptr);
 
@@ -138,18 +176,18 @@ void vkgp::hello_triangle_application::cleanup() {
 }
 
 vkgp::queue_family_indices
-vkgp::hello_triangle_application::find_queue_families(VkPhysicalDevice device) {
+vkgp::demo_application::find_queue_families(VkPhysicalDevice _device) {
   queue_family_indices indices;
 
   uint32_t count = 0;
-  vkGetPhysicalDeviceQueueFamilyProperties(device, &count, nullptr);
+  vkGetPhysicalDeviceQueueFamilyProperties(_device, &count, nullptr);
   std::vector<VkQueueFamilyProperties> queue_families(count);
-  vkGetPhysicalDeviceQueueFamilyProperties(device, &count,
+  vkGetPhysicalDeviceQueueFamilyProperties(_device, &count,
                                            queue_families.data());
 
   int i = 0;
   for (const auto &q_family : queue_families) {
-    if (q_family.queueFlags == VK_QUEUE_GRAPHICS_BIT) {
+    if (q_family.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
       indices.graphics_family = i;
     }
     if(indices.is_complete()){
@@ -161,13 +199,13 @@ vkgp::hello_triangle_application::find_queue_families(VkPhysicalDevice device) {
   return indices;
 }
 
-void vkgp::hello_triangle_application::init_vulkan() {
+void vkgp::demo_application::init_vulkan() {
   create_instance();
   setup_debug_messenger();
   select_physical_device();
 }
 
-void vkgp::hello_triangle_application::init_window() {
+void vkgp::demo_application::init_window() {
 
   glfwInit();
 
@@ -177,13 +215,13 @@ void vkgp::hello_triangle_application::init_window() {
   window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan", nullptr, nullptr);
 }
 
-void vkgp::hello_triangle_application::main_loop() {
+void vkgp::demo_application::main_loop() {
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
   }
 }
 
-void vkgp::hello_triangle_application::populate_debug_messenger_create_info(
+void vkgp::demo_application::populate_debug_messenger_create_info(
     VkDebugUtilsMessengerCreateInfoEXT &create_info) {
   create_info = {};
   create_info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
@@ -197,7 +235,7 @@ void vkgp::hello_triangle_application::populate_debug_messenger_create_info(
   create_info.pfnUserCallback = debug_callback;
 }
 
-void vkgp::hello_triangle_application::select_physical_device() {
+void vkgp::demo_application::select_physical_device() {
   uint32_t count = 0;
   vkEnumeratePhysicalDevices(instance, &count, nullptr);
   if (count == 0)
@@ -216,14 +254,12 @@ void vkgp::hello_triangle_application::select_physical_device() {
     throw std::runtime_error("failed to find a suitable GPU.");
 }
 
-bool vkgp::hello_triangle_application::is_suitable(VkPhysicalDevice device) {
-  auto indices = find_queue_families(device);
-  std::cout << std::boolalpha << indices.is_complete() << std::endl;
+bool vkgp::demo_application::is_suitable(VkPhysicalDevice _device) {
+  auto indices = find_queue_families(_device);
   return indices.is_complete();
-
 }
 
-void vkgp::hello_triangle_application::setup_debug_messenger() {
+void vkgp::demo_application::setup_debug_messenger() {
   if (!enable_validation_layer)
     return;
   VkDebugUtilsMessengerCreateInfoEXT create_info{};

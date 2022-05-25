@@ -46,13 +46,14 @@ struct queue_family_indices {
   bool is_complete();
 };
 
-class hello_triangle_application {
+class demo_application {
 public:
   void run();
 
 private:
   void cleanup();
   void create_instance();
+  void create_logical_device();
   void init_vulkan();
   void init_window();
   void main_loop();
@@ -72,6 +73,8 @@ private:
   VkInstance instance;
   VkDebugUtilsMessengerEXT debug_messenger;
   VkPhysicalDevice physical_device = VK_NULL_HANDLE;
+  VkDevice device;
+  VkQueue graphics_queue;
   GLFWwindow *window;
   int WIDTH = 800;
   int HEIGHT = 600;
