@@ -81,7 +81,8 @@ VkExtent2D vkgp::demo_application::choose_swap_extent(
   if (capabilities.currentExtent.width != UINT32_MAX) {
     return capabilities.currentExtent;
   } else {
-    VkExtent2D actual_extent = {static_cast<uint32_t>(WIDTH), static_cast<uint32_t>(HEIGHT)};
+    VkExtent2D actual_extent = {static_cast<uint32_t>(WIDTH),
+                                static_cast<uint32_t>(HEIGHT)};
     actual_extent.width = std::max(
         capabilities.minImageExtent.width,
         std::min(capabilities.maxImageExtent.width, actual_extent.width));
@@ -131,6 +132,32 @@ bool vkgp::demo_application::check_device_extension_support(
     required_extensions.erase(ext.extensionName);
 
   return required_extensions.empty();
+}
+
+void vkgp::demo_application::create_image_views() {
+  swapchain_image_views.resize(swapchain_images.size());
+
+  for (size_t i = 0; i < swapchain_images.size(); ++i) {
+    VkImageViewCreateInfo create_info{};
+    create_info.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+    create_info.image = swapchain_images[i];
+    create_info.viewType = VK_IMAGE_VIEW_TYPE_2D;
+    create_info.format = swapchain_image_format;
+    create_info.components.r = VK_COMPONENT_SWIZZLE_IDENTITY;
+    create_info.components.g = VK_COMPONENT_SWIZZLE_IDENTITY;
+    create_info.components.b = VK_COMPONENT_SWIZZLE_IDENTITY;
+    create_info.components.a = VK_COMPONENT_SWIZZLE_IDENTITY;
+    create_info.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+    create_info.subresourceRange.baseMipLevel = 0;
+    create_info.subresourceRange.levelCount = 1;
+    create_info.subresourceRange.baseArrayLayer = 0;
+    create_info.subresourceRange.layerCount = 1;
+
+    if (vkCreateImageView(device, &create_info, nullptr,
+                          &swapchain_image_views[i]) != VK_SUCCESS) {
+      throw std::runtime_error("failed to create image views");
+    }
+  }
 }
 
 void vkgp::demo_application::create_instance() {
@@ -274,7 +301,8 @@ void vkgp::demo_application::create_swap_chain() {
   }
   vkGetSwapchainImagesKHR(device, swap_chain, &image_count, nullptr);
   swapchain_images.resize(image_count);
-  vkGetSwapchainImagesKHR(device, swap_chain, &image_count, swapchain_images.data());
+  vkGetSwapchainImagesKHR(device, swap_chain, &image_count,
+                          swapchain_images.data());
   swapchain_image_format = surface_format.format;
   swapchain_image_extent = extent;
 }
@@ -301,6 +329,10 @@ void vkgp::demo_application::cleanup() {
 
   if (enable_validation_layer)
     destroy_debug_utils_messenger_ext(instance, debug_messenger, nullptr);
+
+  for (auto image_view : swapchain_image_views) {
+    vkDestroyImageView(device, image_view, nullptr);
+  }
 
   vkDestroySwapchainKHR(device, swap_chain, nullptr);
 

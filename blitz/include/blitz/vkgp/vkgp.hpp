@@ -67,6 +67,7 @@ private:
   choose_swap_present_mode(const std::vector<VkPresentModeKHR> &);
   VkExtent2D choose_swap_extent(const VkSurfaceCapabilitiesKHR &);
   void cleanup();
+  void create_image_views();
   void create_instance();
   void create_logical_device();
   void create_surface();
@@ -101,6 +102,7 @@ private:
   std::vector<VkImage> swapchain_images;
   VkFormat swapchain_image_format;
   VkExtent2D swapchain_image_extent;
+  std::vector<VkImageView> swapchain_image_views;
   GLFWwindow *window;
   int WIDTH = 800;
   int HEIGHT = 600;
