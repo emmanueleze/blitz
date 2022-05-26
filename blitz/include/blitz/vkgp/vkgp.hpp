@@ -9,13 +9,15 @@
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
 
+#include <algorithm>
+#include <cassert>
+#include <cstdint>
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <cassert>
-#include <stdexcept>
 #include <optional>
 #include <set>
+#include <stdexcept>
 #include <vulkan/vulkan.hpp>
 
 namespace vkgp {
@@ -44,8 +46,14 @@ void destroy_debug_utils_messenger_ext(VkInstance instance,
 struct queue_family_indices {
   std::optional<uint32_t> graphics_family;
   std::optional<uint32_t> present_family;
-  
+
   bool is_complete();
+};
+
+struct swapchain_support_details {
+  VkSurfaceCapabilitiesKHR capabilities;
+  std::vector<VkSurfaceFormatKHR> format;
+  std::vector<VkPresentModeKHR> present_modes;
 };
 
 class demo_application {
@@ -53,15 +61,22 @@ public:
   void run();
 
 private:
+  VkSurfaceFormatKHR
+  choose_swap_surface_format(std::vector<VkSurfaceFormatKHR> &);
+  VkPresentModeKHR
+  choose_swap_present_mode(const std::vector<VkPresentModeKHR> &);
+  VkExtent2D choose_swap_extent(const VkSurfaceCapabilitiesKHR &);
   void cleanup();
   void create_instance();
   void create_logical_device();
   void create_surface();
+  void create_swap_chain();
   void init_vulkan();
   void init_window();
   void main_loop();
   void setup_debug_messenger();
   void select_physical_device();
+  bool check_device_extension_support(VkPhysicalDevice);
   queue_family_indices find_queue_families(VkPhysicalDevice);
   // message callback
   static VKAPI_ATTR VkBool32 VKAPI_CALL
@@ -69,8 +84,10 @@ private:
                  VkDebugUtilsMessageTypeFlagsEXT message_type,
                  const VkDebugUtilsMessengerCallbackDataEXT *p_callback_data,
                  void *p_user_data);
-  void populate_debug_messenger_create_info(VkDebugUtilsMessengerCreateInfoEXT &);
+  void
+  populate_debug_messenger_create_info(VkDebugUtilsMessengerCreateInfoEXT &);
   bool is_suitable(VkPhysicalDevice);
+  swapchain_support_details query_swap_chain_support(VkPhysicalDevice);
 
 private:
   VkInstance instance;
@@ -80,6 +97,10 @@ private:
   VkQueue graphics_queue;
   VkSurfaceKHR surface;
   VkQueue present_queue;
+  VkSwapchainKHR swap_chain;
+  std::vector<VkImage> swapchain_images;
+  VkFormat swapchain_image_format;
+  VkExtent2D swapchain_image_extent;
   GLFWwindow *window;
   int WIDTH = 800;
   int HEIGHT = 600;
