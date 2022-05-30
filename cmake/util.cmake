@@ -4,7 +4,6 @@ if (POLICY CMP0054)
   cmake_policy(SET CMP0054 NEW)
 endif (POLICY CMP0054)
 
-
 macro(config_compiler_and_linker)
   # BlitzAlpha: pthreads on MinGW is not supported, even if available
   # instead, we use windows threading primitives
@@ -16,8 +15,6 @@ macro(config_compiler_and_linker)
       set(BLITZ_ALPHA_HAS_PTHREAD ON)
     endif()
   endif()
-
-  
 
   if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     set(cxx_base_flags "-Wall -Wshadow -Wconversion")
@@ -90,7 +87,7 @@ function(cxx_library_with_type name type cxx_flags)
     COMPILE_PDB_NAME "${name}"
     COMPILE_PDB_NAME_DEBUG "${name}${pdb_debug_postfix}")
 
-  if (DEFINED BLITZ_ALPHA_HAS_PTHREAD)
+  if (DEFINED BLITZ_HAS_PTHREAD)
     if ("${CMAKE_VERSION}" VERSION_LESS "3.1.0")
       set(threads_spec ${CMAKE_THREAD_LIBS_INIT})
     else()

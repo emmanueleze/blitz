@@ -2,8 +2,3 @@
 
 Personal scrapbook project.
 
-## alpha
-  ...
-
-## engine
-  ...

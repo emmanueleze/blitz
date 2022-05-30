@@ -19,7 +19,6 @@
 #include "blitz/core/concurrent.hpp"
 #include "blitz/core/arch.hpp"
 #include "blitz/core/asio.hpp"
-#include "blitz/e64gl/e64gl.hpp"
 
 #define BLITZ_NOEXCEPT noexcept
 

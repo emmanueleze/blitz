@@ -78,6 +78,7 @@ std::list<T> quick_sort(std::list<int> coll) {
   return coll;
 }
 
+std::vector<int> twoSum(const std::vector<int> &array_, int target);
 
 } // namespace blitz
 
