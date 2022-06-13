@@ -1,7 +1,7 @@
-#ifndef BLITZ_INCLUDE_BLITZ_CORE_GENERIC_HPP
-#define BLITZ_INCLUDE_BLITZ_CORE_GENERIC_HPP
+#ifndef BLITZ_INCLUDE_CORE_GENERIC_HPP
+#define BLITZ_INCLUDE_CORE_GENERIC_HPP
 
-#include "blitz/blitz.hpp"
+#include "blitz.hpp"
 
 namespace blitz {
 

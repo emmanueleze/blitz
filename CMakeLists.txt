@@ -22,7 +22,8 @@ endif()
 
 find_package( Boost 1.78.0 COMPONENTS system regex thread REQUIRED )
 find_package(GTest REQUIRED)
-find_package( OpenCV REQUIRED core)
+find_package( OpenCV REQUIRED core highgui)
+#find_package(gsl REQUIRED gsl gslcblasm)
 include(CMakeDependentOption)
 include(GNUInstallDirs)
 

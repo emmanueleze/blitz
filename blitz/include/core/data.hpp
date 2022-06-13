@@ -1,52 +1,15 @@
-#ifndef BLITZ_INCLUDE_BLITZ_CORE_DATA_HPP
-#define BLITZ_INCLUDE_BLITZ_CORE_DATA_HPP
+#ifndef BLITZ_INCLUDE_CORE_DATA_HPP
+#define BLITZ_INCLUDE_CORE_DATA_HPP
 
-
+#include <deque>
+#include <exception>
 #include <iomanip>
 #include <iostream>
 
-#include "blitz/blitz.hpp"
+#include "blitz.hpp"
 
-namespace blitz {
-
-template <typename _Key, typename _Element> class binary_node {
-public:
-  binary_node(const _Key &_key, const _Element &_value)
-      : m_key(_key), m_value(_value), left_child(0), right_child(0) {}
-
-  // Returns the value of the node.
-  _Element value() const { return m_value; }
-  // Sets th value of the node.
-  void value(const _Element &_value) { m_value = _value; }
-  // Returns the key value
-  _Key key() const { return m_key; }
-  // Sets the key value
-  void key(const _Key &_key) { m_key = _key; }
-
-  inline binary_node *left() const { return left_child; }
-  void set_left(binary_node *node) { left_child = node; }
-  inline binary_node *right() const { return right_child; }
-  void set_right(binary_node *node) { right_child = node; }
-
-  bool is_leaf() const {
-    return (left_child == nullptr) && (right_child == nullptr);
-  }
-
-private:
-  binary_node<_Key, _Element> *left_child;
-  binary_node<_Key, _Element> *right_child;
-  _Key m_key;
-  _Element m_value;
-};
-
-template <typename T> struct DoubleNode {
-  DoubleNode() {}
-  DoubleNode(const T &_data) : m_data(_data), prev(0), next(0) {}
-  DoubleNode<T> *next;
-  DoubleNode<T> *prev;
-  T m_data;
-};
-
+namespace blitz {}
+/*
 template <typename T> class single_node {
 public:
   single_node() : next(0), m_data({}) {}
@@ -270,8 +233,6 @@ private:
   int m_begin;
 };
 
-class HashTable;
-
 template <typename K, typename E> class binary_search_tree {
 public:
   using key_type = K;
@@ -324,7 +285,7 @@ private:
 
 template <typename K, typename E>
 bool binary_search_tree<K, E>::bst_search(node *_node, const K &_key) {
-  if(!_node)
+  if (!_node)
     return false;
   if (_node->key() == _key)
     return true;
@@ -347,7 +308,7 @@ E binary_search_tree<K, E>::bst_find(node *_node, const K &key) const {
 }
 
 template <typename K, typename E>
-binary_node<K, E> *binary_search_tree<K, E>::bst_insert(node *_node,
+core::binary_node<K, E> *binary_search_tree<K, E>::bst_insert(node *_node,
                                                         const K &key,
                                                         const E &value) {
   if (!_node)
@@ -368,12 +329,267 @@ void binary_search_tree<K, E>::bst_clear(node *_node) {
   delete _node;
 }
 
-template<typename _Key, typename _Value>
-class complete_binary_tree;
+template <typename _Key, typename _Value> class complete_binary_tree;
 
-template<typename _Key, typename _Value>
+template <typename _Key, typename _Value>
 using kabh = complete_binary_tree<_Key, _Value>;
 
-} // namespace blitz
+} // namespace blitz */
+
+
+
+namespace core {
+
+template <typename T> class stack {
+
+protected:
+  std::deque<T> _deque;
+
+public:
+  // Exception class for pop() and top() with empty stack.
+  class empty_stack : public std::exception {
+  public:
+    virtual const char *what() const throw() { return "empty stack."; }
+  };
+
+public:
+  void push(const T &item) { _deque.push_back(item); }
+
+  T pop() {
+    if (_deque.empty()) {
+      throw empty_stack();
+    }
+    T elem(_deque.back());
+    _deque.pop_back();
+    return elem;
+  }
+
+  T &top() {
+    if (_deque.empty()) {
+      throw empty_stack();
+    }
+    return _deque.back();
+  }
+
+  typename std::deque<T>::size_type size() const { return _deque.size(); }
+
+  bool empty() const { return _deque.empty(); }
+};
+
+template<typename T, unsigned N> class stack_v2 {
+
+public:
+  // Exception class for pop() and top() with empty stack.
+  class empty_stack : public std::exception {
+  public:
+    virtual const char *what() const throw() { return "empty stack."; }
+  };
+
+public:
+  stack_v2() : _size(-2), _data(new T[N]){}
+  void push(const T& item) {
+    if(_size < N){
+      _data[_size] = item;
+      ++_size;
+      
+    }
+  }
+  T pop() {
+    if(_size < 0){
+      throw empty_stack();
+    }
+    T elem = _data[_size];
+    return elem;
+  }
+  T& top();
+  bool empty() const;
+  int size() const;
+
+private:
+  T* _data;
+  int _size;
+  T *_top;
+};
+
+template <typename _Tp> class single_node {
+  single_node(_Tp _data) : data(_data), next(0) {}
+  single_node<_Tp> *next;
+  _Tp data;
+  template <typename> friend class single_list;
+};
+
+template <typename _Tp> class double_node {
+  double_node(_Tp _data) : data(_data), next(0), prev(0) {}
+  double_node<_Tp> *next;
+  double_node<_Tp> *prev;
+  _Tp data;
+  template <typename> friend class double_list;
+};
+
+template <typename _Key, typename _Element> class binary_node {
+public:
+  binary_node(const _Key &_key, const _Element &_value)
+      : m_key(_key), m_value(_value), left_child(0), right_child(0) {}
+
+  // Returns the value of the node.
+  _Element value() const { return m_value; }
+  // Sets th value of the node.
+  void value(const _Element &_value) { m_value = _value; }
+  // Returns the key value
+  _Key key() const { return m_key; }
+  // Sets the key value
+  void key(const _Key &_key) { m_key = _key; }
+
+  inline binary_node *left() const { return left_child; }
+  void set_left(binary_node *node) { left_child = node; }
+  inline binary_node *right() const { return right_child; }
+  void set_right(binary_node *node) { right_child = node; }
+
+  bool is_leaf() const {
+    return (left_child == nullptr) && (right_child == nullptr);
+  }
+
+private:
+  binary_node<_Key, _Element> *left_child;
+  binary_node<_Key, _Element> *right_child;
+  _Key m_key;
+  _Element m_value;
+};
+
+// template<typename T>
+// class single_list;
+
+// template<typename T>
+// std::ostream& operator<<(std::ostream& os, const single_list<T> list);
+
+template <typename _Tp> class single_list {
+public:
+  using node = single_node<_Tp>;
+
+  single_list() : head(0), _size(0) {}
+  // single_list(const single_list& list);
+  // single_list(single_list&& list);
+
+  // single_list& operator=(const single_list& list);
+  // single_list& operator=(single_list&& list);
+
+public:
+  // _Tp& operator[](int _index);
+
+  void insert(const _Tp& value) {
+    node *n0 = new node(value);
+    if (head == nullptr) {
+      head = n0;
+      ++_size;
+    } else {
+      n0->next = head;
+      head = n0;
+      ++_size;
+    }
+  }
+  // void remove(uint16_t position);
+  // void clear();
+  size_t size() const { return _size; }
+
+  // friend std::ostream & operator<< <_Tp> (std::ostream &os, const
+  // single_list<_Tp> &list);
+
+  void traverse() {
+    node *_node = head;
+    while (_node != nullptr) {
+      std::cout << _node->data << " ";
+      _node = _node->next;
+    }
+  }
+
+private:
+  node *head;
+  size_t _size;
+};
+
+// template<typename _Tp>
+// std::ostream & operator<<(std::ostream &os, const single_list<_Tp> &list) {
+//     auto node = list.head;
+//     while(!node){
+//       os << node->data << " ";
+//       node = node->next;
+//     }
+//     os << "\n";
+//     return os;
+//   }
+
+template <typename _Tp> class double_list;
+
+} // namespace core
+
+namespace dsa {
+
+template <typename E> class _list {
+public:
+  _list() {}
+
+  virtual ~_list() {}
+
+  virtual void clear() = 0;
+
+  virtual void insert(const E &) = 0;
+
+  virtual void append(const E &) = 0;
+
+  virtual E remove() = 0;
+
+  virtual void advance_begin() = 0;
+
+  virtual void advance_end() = 0;
+
+  virtual void prev() = 0;
+
+  virtual void next() = 0;
+
+  virtual int length() = 0;
+
+  virtual int index() = 0;
+
+  virtual void move() = 0;
+
+  virtual const E &value() = 0;
+
+private:
+  // protect assingment operator and copy constructor
+  void operator=(const _list &) {}
+  _list(const _list &) {}
+};
+
+template <typename E> class array_list : public _list<E> {
+public:
+  array_list(int size = 8) {
+    list_size = current_index = 0;
+    max_size = size;
+    data = new E[max_size];
+  }
+
+  ~array_list() { delete[] data; }
+
+  void clear() {
+    delete[] data;
+    list_size = current_index = 0;
+    data = new E[max_size];
+  }
+
+  void insert(const E &item) {
+    if (list_size == max_size) {
+      throw std::runtime_error("array_list: maximum capacity");
+    }
+    // for(i=list_size; )
+  }
+
+private:
+  int max_size;
+  int current_index;
+  int list_size;
+  E *data;
+};
+
+} // namespace dsa
 
 #endif

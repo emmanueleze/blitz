@@ -8,12 +8,9 @@
 #include <cmath>
 #include <map>
 
-#include "blitz/blitz.hpp"
+#include "blitz.hpp"
 
 namespace blitz {
-
-template <typename Str>
-concept convertible_to_string = std::is_convertible_v<Str, std::string>;
 
 template <typename T> class allocator {
 public:

@@ -1,5 +1,5 @@
-#ifndef BLITZ_INCLUDE_BLITZ_CORE_ASIO_H
-#define BLITZ_INCLUDE_BLITZ_CORE_ASIO_H
+#ifndef BLITZ_INCLUDE_CORE_ASIO_H
+#define BLITZ_INCLUDE_CORE_ASIO_H
 
 #include <boost/asio.hpp>
 

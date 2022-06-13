@@ -1,26 +1,26 @@
-#ifndef BLITZ_INCLUDE_BLITZ_CORE_ALGORITHM_HPP
-#define BLITZ_INCLUDE_BLITZ_CORE_ALGORITHM_HPP
+#ifndef BLITZ_INCLUDE_CORE_ALGORITHM_HPP
+#define BLITZ_INCLUDE_CORE_ALGORITHM_HPP
 
-#include "blitz/blitz.hpp"
-#include "blitz/core/data.hpp"
+#include "blitz.hpp"
+#include "core/data.hpp"
 
 #include <array>
 #include <functional>
+#include <list>
 #include <numeric>
 #include <random>
-#include <list>
+
+namespace core {
+
+// Euclid's greatest common divisor.
+uint32_t gcd(uint32_t m, uint32_t n);
+
+//std::vector<int> two_sum(const std::vector<int> &array_, int target);
+
+
+} // namespace core
 
 namespace blitz {
-
-template <typename T> SinglyList<T> *reverse_list(SinglyList<T> *list) {
-  if (!list)
-    return nullptr;
-}
-
-template <typename T> SinglyList<T> *sort(SinglyList<T> *list) {
-  if (!list)
-    return nullptr;
-}
 
 template <typename T> void isort(T *array_, int size_) {
   for (int i = 0; i < size_; ++i) {
@@ -35,7 +35,7 @@ template <typename T> void isort(T *array_, int size_) {
 }
 
 template <typename T> int linear_search(const T *seq_, int size, const T &key) {
-  for (int pos=0; pos < size; ++pos) {
+  for (int pos = 0; pos < size; ++pos) {
     if (seq_[pos] == key)
       return pos;
   }
@@ -47,9 +47,10 @@ template <typename T> int linear_search(const T *seq_, int size, const T &key) {
  * @param array_ Vector of sorted integers.
  * @param target Target
  */
-//std::vector<int> twoSum(const std::vector<int> &array_, int target);
+// std::vector<int> twoSum(const std::vector<int> &array_, int target);
 
-template <typename K, typename E> void tree_preorder(binary_node<K,E> *node) {
+template <typename K, typename E>
+void tree_preorder(core::binary_node<K, E> *node) {
   if (!node)
     return;
   std::cout << node->value() << " ";
@@ -57,7 +58,8 @@ template <typename K, typename E> void tree_preorder(binary_node<K,E> *node) {
   tree_preorder(node->right());
 }
 
-template <typename K, typename E> void tree_inorder(binary_node<K,E> *node) {
+template <typename K, typename E>
+void tree_inorder(core::binary_node<K, E> *node) {
   if (!node)
     return;
   tree_inorder(node->left());
@@ -65,7 +67,8 @@ template <typename K, typename E> void tree_inorder(binary_node<K,E> *node) {
   tree_inorder(node->right());
 }
 
-template <typename K, typename E> void tree_postorder(binary_node<K,E> *node) {
+template <typename K, typename E>
+void tree_postorder(core::binary_node<K, E> *node) {
   if (!node)
     return;
   tree_postorder(node->left());
@@ -73,8 +76,7 @@ template <typename K, typename E> void tree_postorder(binary_node<K,E> *node) {
   std::cout << node->value() << " ";
 }
 
-template<typename T>
-std::list<T> quick_sort(std::list<int> coll) {
+template <typename T> std::list<T> quick_sort(std::list<int> coll) {
   return coll;
 }
 
@@ -165,7 +167,5 @@ private:
   Node<T> *tail;
   int _size;
 }; */
-
-
 
 #endif

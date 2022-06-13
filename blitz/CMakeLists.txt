@@ -12,7 +12,7 @@ if (POLICY CMP0054)
 endif (POLICY CMP0054)
 
 # Require C++20 and disable extensions for all targets
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -26,16 +26,14 @@ include_directories(${BLITZ_INCLUDE_DIR})
 
 
 cxx_library(core "${cxx_strict}" src/core.cc)
-cxx_library(engine "${cxx_strict}" src/engine.cc)
+cxx_library(vision "${cxx_strict}" src/vision.cc)
 
 set_target_properties(core PROPERTIES VERSION ${BLITZ_VERSION} )
-set_target_properties(engine PROPERTIES VERSION ${BLITZ_VERSION} )
+set_target_properties(vision PROPERTIES VERSION ${BLITZ_VERSION} )
 
 if(CMAKE_BUILD_TYPE STREQUAL "Asan")  
   target_compile_options(core PRIVATE -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer)
   target_link_options(core PUBLIC -fsanitize=address)
-  target_compile_options(vkgp PRIVATE -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer)
-  target_link_options(vkgp PUBLIC -fsanitize=address)
 endif(CMAKE_BUILD_TYPE STREQUAL "Asan")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -56,6 +54,8 @@ if (DEFINED CMAKE_VERSION AND NOT "${CMAKE_VERSION}" VERSION_LESS "2.8.11")
     "$<BUILD_INTERFACE:${GTEST_INCLUDE_DIRS}"
     "$<BUILD_INTERFACE:${BOOST_LIBRARIES}")
 
+  target_include_directories(vision PUBLIC ${BLITZ_INCLUDE_DIR} SYSTEM INTERFACE ${OpenCV_INCLUDE_DIRS})
+  target_link_libraries(vision PUBLIC ${OpenCV_LIBS})
   target_link_libraries(core PUBLIC ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES})
 endif()
 
