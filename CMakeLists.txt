@@ -12,7 +12,7 @@ include(cmake/util.cmake)
 
 config_compiler_and_linker()  # Defined in utils.cmake.
 
-option(BLITZ_BUILD_TESTS "Build all blitz's tests" OFF)
+option(BLITZ_BUILD_TESTS "Build all blitz's tests" ON)
 mark_as_advanced(BLITZ_BUILD_TESTS)
 
 if(BLITZ_BUILD_TESTS)
@@ -21,7 +21,6 @@ if(BLITZ_BUILD_TESTS)
 endif()
 
 find_package( Boost 1.78.0 COMPONENTS system regex thread REQUIRED )
-find_package(GTest REQUIRED)
 find_package( OpenCV REQUIRED core highgui)
 #find_package(gsl REQUIRED gsl gslcblasm)
 include(CMakeDependentOption)

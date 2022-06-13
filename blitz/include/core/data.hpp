@@ -336,8 +336,6 @@ using kabh = complete_binary_tree<_Key, _Value>;
 
 } // namespace blitz */
 
-
-
 namespace core {
 
 template <typename T> class stack {
@@ -410,6 +408,8 @@ private:
   int _size;
   T *_top;
 };
+
+
 
 template <typename _Tp> class single_node {
   single_node(_Tp _data) : data(_data), next(0) {}

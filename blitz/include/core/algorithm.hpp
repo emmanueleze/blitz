@@ -2,7 +2,7 @@
 #define BLITZ_INCLUDE_CORE_ALGORITHM_HPP
 
 #include "blitz.hpp"
-#include "core/data.hpp"
+#include "data.hpp"
 
 #include <array>
 #include <functional>
@@ -15,8 +15,14 @@ namespace core {
 // Euclid's greatest common divisor.
 uint32_t gcd(uint32_t m, uint32_t n);
 
-//std::vector<int> two_sum(const std::vector<int> &array_, int target);
+std::vector<int> two_sum(const std::vector<int> &array_, int target);
 
+uint32_t factorial(uint32_t N) {
+  if(N == 0)
+    return 1;
+  else
+    return N * factorial(N - 1);
+}
 
 } // namespace core
 
@@ -49,32 +55,32 @@ template <typename T> int linear_search(const T *seq_, int size, const T &key) {
  */
 // std::vector<int> twoSum(const std::vector<int> &array_, int target);
 
-template <typename K, typename E>
-void tree_preorder(core::binary_node<K, E> *node) {
-  if (!node)
-    return;
-  std::cout << node->value() << " ";
-  tree_preorder(node->left());
-  tree_preorder(node->right());
-}
+// template <typename K, typename E>
+// void tree_preorder(core::binary_node<K, E> *_node) {
+//   if (!_node)
+//     return;
+//   std::cout << _node->value() << " ";
+//   tree_preorder(_node->left());
+//   tree_preorder(_node->right());
+// }
 
-template <typename K, typename E>
-void tree_inorder(core::binary_node<K, E> *node) {
-  if (!node)
-    return;
-  tree_inorder(node->left());
-  std::cout << node->key() << " ";
-  tree_inorder(node->right());
-}
+// template <typename K, typename E>
+// void tree_inorder(core::binary_node<K, E> *_node) {
+//   if (!_node)
+//     return;
+//   tree_inorder(_node->left());
+//   std::cout << _node->key() << " ";
+//   tree_inorder(_node->right());
+// }
 
-template <typename K, typename E>
-void tree_postorder(core::binary_node<K, E> *node) {
-  if (!node)
-    return;
-  tree_postorder(node->left());
-  tree_postorder(node->right());
-  std::cout << node->value() << " ";
-}
+// template <typename K, typename E>
+// void tree_postorder(core::binary_node<K, E> *_node) {
+//   if (!_node)
+//     return;
+//   tree_postorder(_node->left());
+//   tree_postorder(_node->right());
+//   std::cout << _node->value() << " ";
+// }
 
 template <typename T> std::list<T> quick_sort(std::list<int> coll) {
   return coll;
@@ -89,68 +95,68 @@ public:
   List() : head(0), tail(0), _size(0) {}
   int size() { return _size; }
   void insert(Node<T> *data, int position) {
-    auto node = new Node<T>();
-    node->data = data->data;
-    node->next = nullptr;
-    node->prev = nullptr;
+    auto _node = new Node<T>();
+    _node->data = data->data;
+    _node->next = nullptr;
+    _node->prev = nullptr;
     // Check position value.
     if (position < 1) {
       std::cout << "Position should be greater than 1." << std::endl;
     } else if (position == 1) {
-      node->next = head;
-      head = node;
+      _node->next = head;
+      head = _node;
       ++_size;
     } else {
-      auto t_node = head;
+      auto t__node = head;
       for (int i = 1; i < position - 1; ++i) {
-        if (t_node != nullptr) {
-          t_node = t_node->next;
+        if (t__node != nullptr) {
+          t__node = t__node->next;
         }
       }
-      if (t_node != nullptr) {
-        node->next = t_node->next;
-        node->prev = t_node;
-        t_node->next = node;
-        if (node->next != nullptr)
-          node->next->prev = node;
+      if (t__node != nullptr) {
+        _node->next = t__node->next;
+        _node->prev = t__node;
+        t__node->next = _node;
+        if (_node->next != nullptr)
+          _node->next->prev = _node;
         ++_size;
       } else {
-        std::cout << "The previous node is null." << std::endl;
+        std::cout << "The previous _node is null." << std::endl;
       }
     }
   }
   List<T> &operator=(const List &_list) {
     if (&_list != this) {
-      Node<T> *t_node = head;
+      Node<T> *t__node = head;
 
-      while (t_node->next) {
+      while (t__node->next) {
         head = head->next;
-        delete t_node;
-        t_node = head;
+        delete t__node;
+        t__node = head;
       }
 
-      t_node = _list.head;
-      while (t_node) {
-        append(t_node);
-        t_node = t_node->next;
+      t__node = _list.head;
+      while (t__node) {
+        append(t__node);
+        t__node = t__node->next;
       }
     }
 
     return *this;
   }
 
-  void append(const Node<T>* node ){
+  void append(const Node<T>* _node ){
 
     if (NULL == head) {
-        auto _node = new Node<T>(node->data);
-        head = _node;
+        auto __node = new Node<T>(_node->data);
+        head = __node;
     } else {
         auto current = head;
         while (current->next) {
             current = current->next;
         }
-        auto _node = new Node<T>(node->data);
-        current->next = _node;
+        auto __node = new Node<T>(_node->data);
+        current->next = __node;
     }
 }
 

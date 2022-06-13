@@ -1,14 +1,44 @@
 #ifndef BLITZ_INCLUDE_BLITZ_CORE_STL_HPP
 #define BLITZ_INCLUDE_BLITZ_CORE_STL_HPP
 
+#include <cmath>
 #include <deque>
 #include <iostream>
-#include <set>
-#include <random>
-#include <cmath>
 #include <map>
+#include <random>
+#include <set>
 
 #include "blitz.hpp"
+
+
+namespace core {
+
+class greaterthanzero {
+  public:
+  bool operator()(int i) const {
+    return i > 0;
+  }
+};
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 namespace blitz {
 
@@ -20,7 +50,7 @@ public:
   template <typename E> allocator(const allocator<E> &) noexcept {}
 
   T *allocate(std::size_t num) {
-      return static_cast<T*>(::operator new(num * sizeof(T)));
+    return static_cast<T *>(::operator new(num * sizeof(T)));
   }
 
   void deallocate(T *s, std::size_t num) { ::operator delete(s); }
@@ -36,14 +66,13 @@ bool operator!=(const allocator<R1> &, const allocator<R2> &) noexcept {
   return false;
 }
 
-
 template <typename Distr, typename Engine>
 void distr(Distr _dist, Engine e, const std::string &name) {
   std::cout << name << ":" << std::endl;
   std::cout << "-min(): " << _dist.min() << std::endl;
   std::cout << "-max(): " << _dist.max() << std::endl;
-  std::cout << "-values: " << _dist(e) << " " << _dist(e) << " " << _dist(e) << " "
-       << _dist(e) << std::endl;
+  std::cout << "-values: " << _dist(e) << " " << _dist(e) << " " << _dist(e)
+            << " " << _dist(e) << std::endl;
 
   std::map<long long, int> vcounter;
   for (int i = 0; i < 200000; ++i) {
