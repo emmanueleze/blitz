@@ -12,16 +12,71 @@
 
 namespace core {
 
+
+template<typename T, unsigned N>
+int binary_search(const T(&_array)[N], const int&  _key) {
+  int lower = 0;
+  int upper = N - 1;
+
+  while (lower <= upper) {
+    int mid = ((lower + upper) / 2);
+    auto mid_value = _array[mid];
+    if (mid_value == _key) {
+      return mid;
+    } else if (mid_value < _key) {
+      lower = mid + 1;
+    } else if (mid_value > _key) {
+      upper = mid - 1;
+    }
+  }
+  return -1;
+  
+}
+
+template<typename T>
+int binary_search(const T& _array, const typename T::value_type& _key){
+  int lower = 0;
+  int upper = static_cast<int>(_array.size());
+
+  while (lower <= upper) {
+    int mid = ((lower + upper) / 2);
+    auto mid_value = _array[mid];
+    if (mid_value == _key) {
+      return mid;
+    } else if (mid_value < _key) {
+      lower = mid + 1;
+    } else if (mid_value > _key) {
+      upper = mid - 1;
+    }
+  }
+  return -1;
+}
+
+
+
 // Euclid's greatest common divisor.
 uint32_t gcd(uint32_t m, uint32_t n);
 
 std::vector<int> two_sum(const std::vector<int> &array_, int target);
 
-uint32_t factorial(uint32_t N) {
-  if(N == 0)
-    return 1;
-  else
-    return N * factorial(N - 1);
+uint32_t factorial(uint32_t N);
+
+template <typename T> void traverse(const double_list<T> &_list) {
+  if (_list.head == nullptr)
+    return;
+
+  auto *_node = _list.head;
+  while (_node != nullptr) {
+    std::cout << _node->data << " ";
+    _node = _node->next;
+  }
+  std::cout << "\n";
+}
+
+template <typename T>
+std::ostream &operator<<(std::ostream &os, const double_list<T> &_list) {
+  os << _list._size << std::endl;
+  return os;
 }
 
 } // namespace core

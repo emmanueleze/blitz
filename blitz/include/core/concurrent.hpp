@@ -69,7 +69,8 @@ private:
 public:
   semaphore(int initial_count = 0) {
     assert(initial_count >= 0);
-    semaphore_create(mach_task_self(), &m_sema, SYNC_POLICY_FIFO, initial_count);
+    semaphore_create(mach_task_self(), &m_sema, SYNC_POLICY_FIFO,
+                     initial_count);
   }
 
   ~semaphore() { semaphore_destroy(mach_task_self(), m_sema); }
@@ -100,7 +101,7 @@ private:
   semaphore &operator=(const semaphore &other) = delete;
 
 public:
-  semaphore(int initial_count = 0) {
+  semaphore(unsigned int initial_count = 0) {
     assert(initial_count >= 0);
     sem_init(&m_sema, 0, initial_count);
   }
@@ -194,20 +195,15 @@ template <typename T> std::list<T> quick_sort(std::list<T> coll) {
   return coll;
 }
 
-class spinlock_mutex {
-
+class component_assembly {
 public:
-  spinlock_mutex() : flag(ATOMIC_FLAG_INIT) {}
-
-  void lock() {
-    while (flag.test_and_set(std::memory_order_acquire))
-      ;
-  }
-
-  void unlock() { flag.clear(std::memory_order_release); }
-
+  component_assembly(const std::vector<std::string> &_data) : data(_data) {}
+  void generate_components(){}
+  void process_components(){}
 private:
-  std::atomic_flag flag;
+  std::mutex m_mutex;
+  std::condition_variable m_cv;
+  std::vector<std::string> data;
 };
 
 } // namespace concurrent

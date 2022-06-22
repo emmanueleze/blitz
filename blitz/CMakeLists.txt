@@ -27,9 +27,13 @@ include_directories(${BLITZ_INCLUDE_DIR})
 
 cxx_library(core "${cxx_strict}" src/core.cc)
 cxx_library(vision "${cxx_strict}" src/vision.cc)
+cxx_library(math "${cxx_strict}" src/math.cc)
 
 set_target_properties(core PROPERTIES VERSION ${BLITZ_VERSION} )
 set_target_properties(vision PROPERTIES VERSION ${BLITZ_VERSION} )
+
+target_precompile_headers(core PUBLIC "${blitz_SOURCE_DIR}/include/blitz-std.hpp")
+
 
 if(CMAKE_BUILD_TYPE STREQUAL "Asan")  
   target_compile_options(core PRIVATE -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer)
@@ -53,18 +57,14 @@ if (DEFINED CMAKE_VERSION AND NOT "${CMAKE_VERSION}" VERSION_LESS "2.8.11")
     "$<BUILD_INTERFACE:${BLITZ_INCLUDE_DIR}>"
     "$<BUILD_INTERFACE:${GTEST_INCLUDE_DIRS}"
     "$<BUILD_INTERFACE:${BOOST_LIBRARIES}")
-
-  target_include_directories(vision PUBLIC ${BLITZ_INCLUDE_DIR} SYSTEM INTERFACE ${OpenCV_INCLUDE_DIRS})
+  
+  target_include_directories(core PUBLIC "${blitz_SOURCE_DIR}/include/internals" PUBLIC ${BLITZ_INCLUDE_DIR}  )
+  
+  target_include_directories(vision PUBLIC ${BLITZ_INCLUDE_DIR} PRIVATE "${blitz_SOURCE_DIR}/include/internals"  SYSTEM INTERFACE ${OpenCV_INCLUDE_DIRS})
   target_link_libraries(vision PUBLIC ${OpenCV_LIBS})
-  target_link_libraries(core PUBLIC ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES})
+  target_link_libraries(core PUBLIC ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES} )
+  target_include_directories(math PUBLIC ${BLITZ_INCLUDE_DIR})
 endif()
-
-
-
-
-
-
-
 
 
 

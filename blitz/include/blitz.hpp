@@ -1,14 +1,7 @@
 #ifndef BLITZ_INCLUDE_BLITZ_BLITZ_HPP
 #define BLITZ_INCLUDE_BLITZ_BLITZ_HPP
 
-#include <cassert>
-#include <iosfwd>
-#include <list>
-#include <memory>
-#include <string>
-#include <thread>
-#include <type_traits>
-#include <vector>
+#include "blitz-std.hpp"
 
 #include "core/algorithm.hpp"
 #include "core/arch.hpp"
@@ -37,9 +30,10 @@ template <typename T> typename T::size_type len(const T &t) noexcept {
   return t.size();
 }
 
-inline void Init() {
-  std::cout.precision(4);
-  std::cout.setf(std::ios::fixed);
+template <typename T> void print_type_of(const T &);
+
+template <typename T, unsigned N> void array_sz(const T (&)[N]) {
+  std::cout << N << "\n";
 }
 
 // Writes input to output stream.
@@ -79,14 +73,22 @@ template <typename T> void print(const T &coll, const char *delim_ = " ") {
 enum class Interval { Open, Closed, OpenClosed, ClosedOpen };
 
 template <typename T>
-bool in_interval(const T &x, const T &a, const T &b,
-                 Interval interval = Interval::Closed) {
+bool in_range(const T &x, const T &a, const T &b,
+              Interval interval = Interval::Closed) {
   switch (interval) {
   case Interval::Closed:
     if (a <= x && x <= b)
       return true;
     break;
-
+  case Interval::ClosedOpen:
+    if (a <= x && x < b)
+      return true;
+  case Interval::OpenClosed:
+    if (a < x && x <= b)
+      return true;
+  case Interval::Open:
+    if (a < x && x < b)
+      return true;
   default:
     break;
   }
@@ -99,9 +101,22 @@ template <typename T> void swap(T *first, T *second) {
   *second = temp;
 }
 
-class Logger {
+class SqlHandler {
 public:
-  Logger();
+  SqlHandler();
+  SqlHandler(const std::string &filename);
+  SqlHandler(const std::string &filename, int open_flag);
+  ~SqlHandler();
+
+public:
+  void set_file_name();
+  std::string filename() const;
+  int open(const std::string&);
+  int open(const std::string&, int flags);
+  int close();
+
+private:
+  sqlite3 *db;
 };
 
 } // namespace blitz

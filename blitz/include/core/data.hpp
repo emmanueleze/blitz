@@ -1,6 +1,8 @@
 #ifndef BLITZ_INCLUDE_CORE_DATA_HPP
 #define BLITZ_INCLUDE_CORE_DATA_HPP
 
+#include "internals/core_internals.hpp"
+
 #include <deque>
 #include <exception>
 #include <iomanip>
@@ -374,7 +376,7 @@ public:
   bool empty() const { return _deque.empty(); }
 };
 
-template<typename T, unsigned N> class stack_v2 {
+template <typename T, unsigned N> class stack_v2 {
 
 public:
   // Exception class for pop() and top() with empty stack.
@@ -384,99 +386,90 @@ public:
   };
 
 public:
-  stack_v2() : _size(-2), _data(new T[N]){}
-  void push(const T& item) {
-    if(_size < N){
+  stack_v2() : _size(-2), _data(new T[N]) {}
+  void push(const T &item) {
+    if (_size < N) {
       _data[_size] = item;
       ++_size;
-      
     }
   }
   T pop() {
-    if(_size < 0){
+    if (_size < 0) {
       throw empty_stack();
     }
     T elem = _data[_size];
     return elem;
   }
-  T& top();
+  T &top();
   bool empty() const;
   int size() const;
 
 private:
-  T* _data;
+  T *_data;
   int _size;
   T *_top;
 };
 
 
 
-template <typename _Tp> class single_node {
-  single_node(_Tp _data) : data(_data), next(0) {}
-  single_node<_Tp> *next;
-  _Tp data;
-  template <typename> friend class single_list;
-};
-
-template <typename _Tp> class double_node {
-  double_node(_Tp _data) : data(_data), next(0), prev(0) {}
-  double_node<_Tp> *next;
-  double_node<_Tp> *prev;
-  _Tp data;
-  template <typename> friend class double_list;
-};
-
-template <typename _Key, typename _Element> class binary_node {
-public:
-  binary_node(const _Key &_key, const _Element &_value)
-      : m_key(_key), m_value(_value), left_child(0), right_child(0) {}
-
-  // Returns the value of the node.
-  _Element value() const { return m_value; }
-  // Sets th value of the node.
-  void value(const _Element &_value) { m_value = _value; }
-  // Returns the key value
-  _Key key() const { return m_key; }
-  // Sets the key value
-  void key(const _Key &_key) { m_key = _key; }
-
-  inline binary_node *left() const { return left_child; }
-  void set_left(binary_node *node) { left_child = node; }
-  inline binary_node *right() const { return right_child; }
-  void set_right(binary_node *node) { right_child = node; }
-
-  bool is_leaf() const {
-    return (left_child == nullptr) && (right_child == nullptr);
-  }
-
-private:
-  binary_node<_Key, _Element> *left_child;
-  binary_node<_Key, _Element> *right_child;
-  _Key m_key;
-  _Element m_value;
-};
-
-// template<typename T>
-// class single_list;
-
-// template<typename T>
-// std::ostream& operator<<(std::ostream& os, const single_list<T> list);
-
 template <typename _Tp> class single_list {
 public:
   using node = single_node<_Tp>;
 
   single_list() : head(0), _size(0) {}
-  // single_list(const single_list& list);
-  // single_list(single_list&& list);
+  single_list(std::initializer_list<_Tp> coll) {
+    for (auto const &elem : coll) {
+      push_front(elem);
+    }
+  }
+  single_list(const single_list &list) = delete;
+  single_list(single_list &&list) = delete;
 
-  // single_list& operator=(const single_list& list);
-  // single_list& operator=(single_list&& list);
+  single_list &operator=(const single_list &list) = delete;
+  single_list &operator=(single_list &&list) = delete;
+  ~single_list() { clear(); }
 
 public:
-  // _Tp& operator[](int _index);
+  _Tp &operator[](int index) {
+    if (!(0 <= index && index < _size)) {
+      throw std::range_error("index is invalid.");
+    } else {
+      auto n0 = head;
+      for (int i = 0; i < index - 1; ++i) {
+        n0 = n0->next;
+      }
+      return n0->data;
+    }
+  }
 
-  void insert(const _Tp& value) {
+  void insert(const _Tp &value, unsigned int index) {
+    if (!(0 <= index && index < _size)) {
+      throw std::range_error("index is invalid.");
+    }
+    node *n0 = new node(value);
+    if (head == nullptr) {
+      head == n0;
+      ++_size;
+    } else if (index == 0) {
+      n0->next = head;
+      head = n0;
+      ++_size;
+    } else {
+      auto current_node = head;
+      for (int i = 0; i < index - 1; ++i) {
+        current_node = current_node->next;
+      }
+      n0->next = current_node->next;
+      current_node->next = n0;
+      ++_size;
+    }
+  }
+
+  inline node &begin() const { return head; }
+
+  _Tp front() const { return head->data; }
+
+  void push_front(const _Tp &value) {
     node *n0 = new node(value);
     if (head == nullptr) {
       head = n0;
@@ -487,19 +480,42 @@ public:
       ++_size;
     }
   }
-  // void remove(uint16_t position);
-  // void clear();
-  size_t size() const { return _size; }
 
-  // friend std::ostream & operator<< <_Tp> (std::ostream &os, const
-  // single_list<_Tp> &list);
+  void pop_front() {
+    if (head) {
+      auto rnode = head;
+      head = head->next;
+      delete rnode;
+      --_size;
+    }
+  }
 
-  void traverse() {
+  // Returns true is single_list is empty.
+  inline bool empty() const noexcept { return _size == 0; }
+
+  void clear() {
+    if (head == nullptr)
+      return;
+    node *current;
+    while (head != nullptr) {
+      current = head;
+      head = head->next;
+      delete current;
+    }
+    _size = 0;
+  }
+  inline size_t size() const noexcept { return _size; }
+
+  void traverse() noexcept {
+    if (head == nullptr)
+      return;
+
     node *_node = head;
     while (_node != nullptr) {
       std::cout << _node->data << " ";
       _node = _node->next;
     }
+    std::cout << "\n";
   }
 
 private:
@@ -507,18 +523,120 @@ private:
   size_t _size;
 };
 
-// template<typename _Tp>
-// std::ostream & operator<<(std::ostream &os, const single_list<_Tp> &list) {
-//     auto node = list.head;
-//     while(!node){
-//       os << node->data << " ";
-//       node = node->next;
-//     }
-//     os << "\n";
-//     return os;
-//   }
+template <typename T> class double_list;
 
-template <typename _Tp> class double_list;
+template <typename E> void traverse(const double_list<E> &);
+
+template <typename _Tp> class double_list {
+public:
+  using node = double_node<_Tp>;
+
+  double_list() : head(nullptr), tail(head), _size(0) {}
+
+  double_list(std::initializer_list<_Tp> coll) {
+    for (auto const &elem : coll) {
+      push_back(elem);
+    }
+  }
+
+  _Tp &operator[](unsigned int index) {
+    if (!(0 <= index && index < _size)) {
+      throw std::range_error("index is invalid.");
+    } else {
+      auto n0 = head;
+      for (int i = 0; i < index - 1; ++i) {
+        n0 = n0->next;
+      }
+      return n0->data;
+    }
+  }
+
+  ~double_list() { clear(); }
+
+public:
+  void push_back(const _Tp &value) {
+    auto n0 = new node(value);
+    if (head == nullptr) {
+      head = tail = n0;
+      ++_size;
+    } else {
+      n0->prev = tail;
+      tail->next = n0;
+      tail = n0;
+      ++_size;
+    }
+  }
+
+  void push_front(const _Tp &value) {
+    node *n0 = new node(value);
+    if (head == nullptr) {
+      head = tail = n0;
+      ++_size;
+    } else {
+      n0->next = head;
+      head = n0;
+      ++_size;
+    }
+  }
+
+  void pop_back() noexcept {
+    if (tail) {
+      auto rnode = tail;
+      tail = tail->prev;
+      delete rnode;
+      --_size;
+    }
+  }
+
+  void pop_front() noexcept {
+    if (head) {
+      auto rnode = head;
+      head = head->next;
+      delete rnode;
+      --_size;
+    }
+  }
+
+  _Tp &front() const {
+    if (!head) {
+      throw std::runtime_error("trying to get _front from empty list.");
+    }
+    return head->data;
+  }
+  _Tp back() const {
+    if (!tail) {
+      throw std::runtime_error("trying to get _back from empty list.");
+    }
+    return tail->data;
+  }
+
+  void clear() {
+    if (head == nullptr)
+      return;
+
+    node *current;
+    while (head != nullptr) {
+      current = head;
+      head = head->next;
+      delete current;
+    }
+    _size = 0;
+  }
+
+  bool empty() const { return _size == 0; }
+
+  size_t size() const { return _size; }
+
+  template <typename E> friend void core::traverse(const double_list<E> &);
+
+  template <typename E>
+  friend std::ostream &operator<<(std::ostream &, const double_list<E> &);
+
+private:
+  node *head;
+  node *tail;
+  size_t _size;
+};
 
 } // namespace core
 
